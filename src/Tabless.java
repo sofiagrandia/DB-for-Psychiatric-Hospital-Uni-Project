@@ -132,7 +132,6 @@ public class Tabless {
 			stmtSeq.close();
 			
 			// Close database connection!!!!! IMPORTANT
-			c.close();
 			System.out.println("Database connection closed.");
 		} catch (SQLException e) {
 			e.getMessage().contains("already exists");
