@@ -7,6 +7,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import Project.Contract;
+import Project.Doctor;
+import Project.Nurse;
+import Project.Patient;
+
 public interface Manager {
 	public void connection() ;
 	
@@ -22,7 +27,7 @@ public interface Manager {
 	public void updateDoctor(Doctor doctor);
 	public void insertDoctor(Doctor doctor);
 	public Doctor getDoctorId(Integer id)throws SQLException ;
-	//PATIENT:
+	//PATIENT:JPA CAMBIAR
 	public void insertPatient(Patient patient);
 	public List<Patient> getPatient(String name);
 	public Patient getPatientId(Integer id) throws SQLException ;
@@ -36,7 +41,7 @@ public interface Manager {
 	public Contract getContractId(Integer id) throws SQLException;
 	public List<Contract> selectContract();
 	public void updateContract(Contract contract);
-	
+	//TREATMENT
 	
 	
 	}

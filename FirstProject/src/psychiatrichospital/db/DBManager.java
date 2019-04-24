@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Project.Nurse;
 import Project.Patient;
+import Project.Room;
 import Project.Doctor;
 import Project.Contract;
 
@@ -302,7 +303,7 @@ public class DBManager {
 
 	}
 	
-	public class createRoom(Room room) {
+	public void createRoom(Room room) {
 		
 		
 	}
@@ -468,8 +469,8 @@ public class DBManager {
 				PreparedStatement p = c.prepareStatement(s);
 				p.setFloat(1, contract.getMoney());
 				p.setInt(2,contract.getHolidays());
-				p.setDate(3, contract.getD1());
-				p.setDate(4, contract.getD2());
+				p.setDate(3, contract.getDob());
+				p.setDate(4, contract.getDob());
 				p.executeUpdate();
 				p.close();
 				
@@ -544,15 +545,15 @@ public class DBManager {
 
 		}
 
-
+//HEMOS CAMBIADO LA FECHA!!! era getD1 y getD2
 		public void updateContract(Contract contract) {
 			try{
 				String sql = "UPDATE contract SET money=?, holidays=?, d1=?, d2=? WHERE id=?";
 				PreparedStatement prep = c.prepareStatement(sql);
 				prep.setFloat(1, contract.getMoney());
 				prep.setInt(2, contract.getHolidays());
-				prep.setDate(3, contract.getD1());
-				prep.setDate(4, contract.getD2());
+				prep.setDate(3, contract.getDob());
+				prep.setDate(4, contract.getDob());
 			}catch(Exception e) {
 				System.out.println(e.getMessage());
 		}}
