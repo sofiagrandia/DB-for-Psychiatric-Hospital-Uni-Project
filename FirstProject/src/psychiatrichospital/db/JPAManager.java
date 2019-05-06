@@ -14,6 +14,7 @@ import javax.persistence.Query;
 import Project.Doctor;
 import Project.Nurse;
 import Project.Patient;
+import Project.Room;
 import Project.Treatment;
 import sample.db.pojos.Department;
 
