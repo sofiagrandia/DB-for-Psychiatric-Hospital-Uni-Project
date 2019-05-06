@@ -1,4 +1,4 @@
-
+package psychiatrichospital.db;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -8,62 +8,99 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 
+import Project.Contract;
 import Project.Doctor;
 import Project.Nurse;
 import Project.Patient;
+import Project.Room;
 import Project.Treatment;
-import sample.db.pojos.Department;
 
-public class JPAManager {
-	
-	private EntityManager em;
+public class JPAManager implements Manager {
+private EntityManager em;
 	
 	public void connection(){
 	
 			em = Persistence.createEntityManagerFactory("psychiatric-provider").createEntityManager();
-			em.getTransaction().begin();Á
+			em.getTransaction().begin();
 			em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 			em.getTransaction().commit();
-		
-
 }
 	
-	
-	public void insertRoom(Room room, Patient patient) {
+@Override
+	public void closeConnection() {
+		// TODO Auto-generated method stub
 		
-		em.getTransaction().begin();
-		em.persist(room);
-		// 2.- Link room and patient
-		room.addPatient(patient);
-		patient.addRoom(room);
-		em.getTransaction().commit();
-	
 	}
-	
-	public Room selectRoom(Integer id) {
-		Query q1 = em.createNativeQuery("SELECT * FROM room WHERE id LIKE ?", Room.class);
-		q1.setParameter(1, room_id);
-		Room r = (Room) q1.getSingleResult();
-		return r;
+	//NURSE
+
+	@Override
+	public Nurse getNurseId(Integer id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	
+
+	@Override
+	public void updateNurse(Nurse nurse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+@Override	
 	public void insertNurse(Nurse nurse) {
+		// TODO Auto-generated method stub
 		
 	}
 	
-	public void insertDoctor(Doctor doctor) {
+	@Override
+	public List<Nurse> getNurse(String name) {
+
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
+	@Override
+	public List<Nurse> selectNurse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void deleteNurse(int id) throws SQLException {
+		// TODO Auto-generated method stub
+	}
+	//DOCTOR
 	
-	//LISTA DE PATIENTS SIN PASAR NAME 
+@Override
+	public void updateDoctor(Doctor doctor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Doctor> selectDoctor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void insertDoctor(Doctor doctor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Doctor getDoctorId(Integer id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//PATIENT a√±adir lo de abajo
+	
 	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment) {
 		em.getTransaction().begin();
 		em.persist(patient);
-		patient.addRoom(room);
+		patient.setRoom(room);
 		room.addPatient(patient);
 		patient.addNurse(nurse);
 		patient.addDoctor(doctor);
@@ -71,7 +108,7 @@ public class JPAManager {
 		em.getTransaction().commit();
 		
 	}
-	
+
 	public List<Patient> selectPatientByName(String name){
 		Query q1 = em.createNativeQuery("SELECT * FROM patient WHERE name LIKE ?", Patient.class);
 		q1.setParameter(1, "%" + name + "%");
@@ -79,30 +116,102 @@ public class JPAManager {
 		// Se imprime en el UI 
 		return patients;
 	}
-	
+
 	public Patient selectPatientByid(Integer id) {
 		Query q1 = em.createNativeQuery("SELECT * FROM patient WHERE id LIKE ?", Patient.class);
-		q1.setParameter(1, patient_id);
+		q1.setParameter(1, id);
 		Patient p = (Patient) q1.getSingleResult();
 		return p;
 	}
-	
-	public void insertNurse(Nurse nurse) {
-	
+
+	public void updatePatient(Patient patient) {
+		//Query q = em.createNativeQuery("SELECT * FROM patient WHERE id = ?", Patient.class);
+		//q.setParameter(1, patient_id);
+		//Patient p = (Patient) q.getSingleResult();
+		//String newName = reader.readLine();
+		//String newGender = reader.readLine();
+		//Date newDate = reader.readLine();
+		em.flush();
+		//Integer newRoom = reader.readLine();
+		//Blob newPhoto = reader.readLine();
+		//OBJETOS
+		// Begin transaction
+		em.getTransaction().begin();
+		// Make changes
+		//patient.setFloor(newF);
+		// End transaction
+		em.getTransaction().commit();
 	}
-	public List<Nurse> getNurse(String name) throws SQLException {
-	
+
+	@Override
+	public List<Patient> selectPatient() {
+		List<Patient> p = new ArrayList<Patient>();
+		Query q1 = em.createNativeQuery("SELECT * FROM patient ", Patient.class);
+		p =q1.getResultList();
+		return p;
 	}
-	public List<Nurse> selectNurse() {
+
+	//TABLAS
+	
+	@Override
+	public void createTables() {
+		// TODO Auto-generated method stub
 		
 	}
-	public Doctor getDoctorId(Integer id) throws SQLException {
+
+	//CONTRACT
+	
+	@Override
+	public void insertContract(Contract contract) {
+		// TODO Auto-generated method stub
 		
 	}
-	public List<Doctor> selectDoctor() {
+
+	@Override
+	public List<Contract> getContractId(float money) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contract getContractId(Integer id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Contract> selectContract() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateContract(Contract contract) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//ROOM
+	//Nos falta un metodo que muestre todas las rooms
+	
+	public void insertRoom(Room room, Patient patient) {
+		
+		em.getTransaction().begin();
+		em.persist(room);
+		// 2.- Link room and patient
+		room.addPatient(patient);
+		patient.setRoom(room);
+		em.getTransaction().commit();
+	
 	}
 	
-	//CAMBIAMOS NEWLOCATION POR NEWFLOOR TENEMOS QUE UPDATE PATIENT
+	public Room selectRoomById(Integer id) {
+		Query q1 = em.createNativeQuery("SELECT * FROM room WHERE id LIKE ?", Room.class);
+		q1.setParameter(1, id);
+		Room r = (Room) q1.getSingleResult();
+		return r;
+	}
+	
 	public void updateRoom(Room room) {
 		//Query q = em.createNativeQuery("SELECT * FROM room WHERE id = ?", Room.class);
 		//q.setParameter(1, room_id);
@@ -118,21 +227,23 @@ public class JPAManager {
 		em.getTransaction().commit();
 		
 	}
-	public void updatePatient(Patient patient) {
-		//Query q = em.createNativeQuery("SELECT * FROM patient WHERE id = ?", Patient.class);
-		//q.setParameter(1, patient_id);
-		//Patient p = (Patient) q.getSingleResult();
-		//String newName = reader.readLine();
-		//String newGender = reader.readLine();
-		//Date newDate = reader.readLine();
-		em.flush();
-		//Integer newRoom = reader.readLine();
-		//Blob newPhoto = reader.readLine();
-		//OBJETOS
+
+	public List<Room> selectRoom(){
+		List<Room> r = new ArrayList<Room>();
+		Query q1 = em.createNativeQuery("SELECT * FROM room ", Room.class);
+		r =q1.getResultList();
+		return r;
+	}
+	
+	public void deleteRoom(int id) {
+		Query q2 = em.createNativeQuery("SELECT * FROM room WHERE id = ?", Room.class);
+		q2.setParameter(1, id);
+		Room r = (Room) q2.getSingleResult();
+
 		// Begin transaction
 		em.getTransaction().begin();
-		// Make changes
-		p.setFloor(newF);
+		// Store the object
+		em.remove(r);
 		// End transaction
 		em.getTransaction().commit();
 	}

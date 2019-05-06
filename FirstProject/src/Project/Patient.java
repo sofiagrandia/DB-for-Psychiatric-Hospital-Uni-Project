@@ -1,23 +1,20 @@
 package Project;
 
-@Entity
-@Table(name = "patients")
+
 
 import Project.Nurse;
 import Project.Doctor;
 import Project.Treatment;
-import sample.db.pojos.Department;
 import Project.Room;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
+
+@Entity
+@Table(name = "patients")
 
 public class Patient implements Serializable {
 
@@ -30,7 +27,7 @@ public class Patient implements Serializable {
 	private String name;
 	private String gender;
 	private Date dob;
-    @OneToOne(mappedBy= "room")
+    @OnetoOne(mappedBy= "room")
 	private int room_id;
 	private byte [] photo;
 	private Room room;
@@ -140,6 +137,40 @@ public class Patient implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	public void addNurse(Nurse n) {
+		if (!nurses.contains(n)) {
+			this.nurses.add(n);
+		}
+	}
+	public void removeNurse(Nurse n) {
+		if (nurses.contains(n)) {
+			this.nurses.remove(n);
+		}
+	}
+	public void addDoctor(Doctor d) {
+		if (!doctors.contains(d)) {
+			this.doctors.add(d);
+		}
+	}
+	public void removeDoctor(Doctor d) {
+		if (doctors.contains(d)) {
+			this.doctors.remove(d);
+		}
+	}
+	public void addTreatment(Treatment t) {
+		if (treatments.contains(t)) {
+			this.treatments.add(t);
+		}
+	}
+	public void removeTreatment(Treatment t) {
+		if (treatments.contains(t)) {
+			this.treatments.remove(t);
+		}
+	}
+	
+	public void removeRoom() {
+		this.room=null;
+	}
 	@Override
 	public String toString() {
 		return "Patient [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob + ", room_id=" + room_id
@@ -150,11 +181,9 @@ public class Patient implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
-
-	// Equals uses primary keys, since they are unique
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -164,13 +193,11 @@ public class Patient implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}
+	
 	
 	
 }
