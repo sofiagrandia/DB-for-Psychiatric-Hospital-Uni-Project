@@ -12,10 +12,11 @@ import java.util.List;
 import Project.Nurse;
 import Project.Patient;
 import Project.Room;
+import Project.Treatment;
 import Project.Doctor;
 import Project.Contract;
 
-public class DBManager {
+public class DBManager implements Manager{
 
 	private Connection c;
      
@@ -36,6 +37,7 @@ public class DBManager {
 	}
 
 	//NURSE:
+	
 	public void insertNurse(Nurse nurse) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
@@ -98,7 +100,6 @@ public class DBManager {
 		return n;
 
 	}
-
 	public Nurse getNurseId(Integer id) throws SQLException {
 		Nurse nurse=null;
 		Statement stmt = c.createStatement();
@@ -116,7 +117,6 @@ public class DBManager {
 		stmt.close();
 		return nurse;
 	}
-	
 	public void updateNurse(Nurse nurse) {
 		try {
 		String sql = "UPDATE nurse SET name=?,gender=?, dob=?, hours=? WHERE id=?" ;
@@ -131,9 +131,12 @@ public class DBManager {
 				System.out.println(e.getMessage());
 		}
 	}
-
-	
-	
+	public void deleteNurse(int id) throws SQLException {
+		String sql = "DELETE FROM nurse WHERE id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, id);
+		prep.executeUpdate();
+	}
 	
 	//DOCTOR:
 	public List<Doctor> selectDoctor() {
@@ -194,7 +197,6 @@ public class DBManager {
 			e.printStackTrace();
 		}
 	}
-	
 	public Doctor getDoctorId(Integer id) throws SQLException {
 		Doctor doctor=null;
 		Statement stmt = c.createStatement();
@@ -216,114 +218,9 @@ public class DBManager {
 	
 	
 	
-	//PATIENT:
-	
-	public void insertPatient(Patient patient) {
-		// Inserts into the data base the patient that is passed as a parameter
-		try {
-			String s = "INSERT INTO patient (name,gender,dob,room_id,phoyo)" + "VALUES (?, ?, ?, ?,?,?)";
-			PreparedStatement p = c.prepareStatement(s);
-			p.setString(1, patient.getName());
-			p.setString(2, patient.getGender());
-			p.setDate(3, patient.getDob());
-			p.setInt(4, patient.getRoom_id());
-			p.setBytes(5, patient.getPhoto());
-			p.executeUpdate();
-			p.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public List<Patient> getPatient(String name) throws SQLException {
-		List<Patient> p = new ArrayList<Patient>();
-		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM patient WHERE name LIKE '%"+name+"%' ";
-		ResultSet rs = stmt.executeQuery(sql);
-		while (rs.next()) {
-			int id = rs.getInt("id");
-			String name2 = rs.getString("name");
-			String gender = rs.getString("gender");
-			Date date = rs.getDate("dob");
-			int room_id = rs.getInt("room_id");
-			byte[] blobArray = rs.getBytes("photo");
-			Patient patient = new Patient (id, name2, gender, date, room_id, blobArray);
-			p.add(patient);
-		}		
-		rs.close();
-		stmt.close();
-		return p;
-	}
-
-	public Patient getPatientId(Integer id) throws SQLException {
-		Patient patient=null;
-		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM patient WHERE id ='"+id+"' ";
-		ResultSet rs = stmt.executeQuery(sql);
-		while (rs.next()) {
-			int id1 = rs.getInt("id");
-			String name = rs.getString("name");
-			String gender = rs.getString("gender");
-			Date date = rs.getDate("dob");
-			int room_id = rs.getInt("room_id");
-			byte[] blobArray = rs.getBytes("photo");
-			patient = new Patient (id1, name, gender, date, room_id, blobArray);
-		}		
-		rs.close();
-		stmt.close();
-		return patient;
-	}
-	
-	public List<Patient> selectPatient() {
-		List<Patient> p = new ArrayList<Patient>();
-		try {
-			String sql = "SELECT * FROM patient";
-			PreparedStatement ps = c.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			Patient patient1;
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String name2 = rs.getString("name");
-				String gender = rs.getString("gender");
-				Date date = rs.getDate("dob");
-				int room_id = rs.getInt("room_id");
-				byte[] blobArray = rs.getBytes("photo");
-				patient1 = new Patient (id, name2, gender, date, room_id, blobArray);
-				p.add(patient1);
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return p;
-
-	}
-	
-	public void createRoom(Room room) {
-		
-		
-	}
-	
-	public void updatePatient(Patient patient) {
-		try {
-		String sql = "UPDATE patient SET name=?,gender=?, dob=?, room_id=?, photo=? WHERE id=?" ;
-		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setString(1, patient.getName());
-		prep.setString(2, patient.getGender());
-		prep.setDate(3,patient.getDob());
-		prep.setInt(4, patient.getRoom_id());
-		prep.setBytes(5,  patient.getPhoto());
-		prep.executeUpdate();
-		}catch(Exception e) {
-				System.out.println(e.getMessage());
-		}
-	}
 	
 	// CREATE TABLES
+	
 	public void createTables() {
 		try {
 		
@@ -480,18 +377,18 @@ public class DBManager {
 			}
 		}
 
-		public List<Contract> getContractId(float money) throws SQLException {
+	public List<Contract> getContractId(float money) throws SQLException {
 			List<Contract> cn = new ArrayList<Contract>();
 			Statement stmt = c.createStatement();
 			String sqlCon = "SELECT * FROM contract WHERE money LIKE '%"+money+"%' ";
 			ResultSet rs = stmt.executeQuery(sqlCon);
 			while (rs.next()) {
 				int id4 = rs.getInt("id");
-				float money = rs.getFloat("money");
+				float money1 = rs.getFloat("money");
 				int holidays = rs.getInt("holidays");
 				Date d1 = rs.getDate("d1");
 				Date d2 =rs.getDate("d2");
-				Contract contract= new Contract(id4, money, holidays, d1, d2);
+				Contract contract= new Contract(id4, money1, holidays, d1, d2);
 				cn.add(contract);
 			}		
 			rs.close();
@@ -517,7 +414,7 @@ public class DBManager {
 			return contract;
 		}
 
-		public List<Contract> selectContract() {
+	public List<Contract> selectContract() {
 			List<Contract> n = new ArrayList<Contract>();
 			try {
 				String sql = "SELECT * FROM contract";
@@ -545,8 +442,9 @@ public class DBManager {
 
 		}
 
-//HEMOS CAMBIADO LA FECHA!!! era getD1 y getD2
-		public void updateContract(Contract contract) {
+	//HEMOS CAMBIADO LA FECHA!!! era getD1 y getD2
+	
+	public void updateContract(Contract contract) {
 			try{
 				String sql = "UPDATE contract SET money=?, holidays=?, d1=?, d2=? WHERE id=?";
 				PreparedStatement prep = c.prepareStatement(sql);
@@ -557,13 +455,75 @@ public class DBManager {
 			}catch(Exception e) {
 				System.out.println(e.getMessage());
 		}}
+
 	
-	
-	
-	
-	
-	
+	//ROOM
+
+	@Override
+	public void insertRoom(Room room, Patient patient) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public Room selectRoomById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateRoom(Room room) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Room> selectRoom() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void deleteRoom(int id) {
+		// TODO Auto-generated method stub
+	}
+	
+	//PATIENT
+
+	@Override
+	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Patient> selectPatientByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Patient selectPatientByid(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Patient> selectPatient() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updatePatient(Patient patient) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+	
+}
 
 
 
