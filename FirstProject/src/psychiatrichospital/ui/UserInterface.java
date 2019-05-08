@@ -18,10 +18,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import Project.Patient;
-
+import Project.Room;
+import Project.Treatment;
 import psychiatrichospital.db.*;
 
-public class UserInterface {
+
+public class UserInterface  {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	// It is going to have a main
@@ -31,7 +33,8 @@ public class UserInterface {
 		Patient patient;
 		DBManager db = new DBManager();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
+		JPAManager jpa=new JPAManager();
+		UtilitiesUI uui= new UtilitiesUI();
 
 		// Shows several options to the user and lest her choose one
 		// One option includes reading from the keyboard the information of the nurse
@@ -41,23 +44,16 @@ public class UserInterface {
 
 			int option;
 			do {
-				System.out.println("---------MAIN --------");
-				System.out.println("Introduce an option:");
-				System.out.println("1.Create table");
-				System.out.println("2.Insert nurse");
-				System.out.println("3.Select nurse");
-				System.out.println("4.Update nurse");
-				System.out.println("5.Insert patient");
-				System.out.println("6.Select patient");
-				System.out.println("7.Update patient");
+				uui.menuPpal();
 				String stringLeido = reader.readLine();
 				option = Integer.parseInt(stringLeido);
 				db.connection();
-
+				jpa.connection();
+				db.createTables();
+				
 				switch (option) {
 				case 1:
 					// create table
-					db.createTables();
 					break;
 
 				case 2:
@@ -142,13 +138,27 @@ public class UserInterface {
 					System.out.print("Type the file name as it appears in folder /photos, including extension: ");
 					String fileName = reader.readLine();
 					File photo = new File("./photos/" + fileName);
-					InputStream streamBlob = new FileInputStream(photo);
+					/*InputStream streamBlob = new FileInputStream(photo);
 					byte[] bytesBlob = new byte[streamBlob.available()];
 					streamBlob.read(bytesBlob);
-					streamBlob.close();
+					streamBlob.close();*/
 					patient = new Patient (nameP, genderP, dP, room_idP, bytesBlob);
-					System.out.println("Nurse created correctly");
-					db.insertPatient(patient);
+					System.out.println(jpa.selectRoom());
+					int rid=Integer.parseInt(reader.readLine());
+					Room r = jpa.selectRoomById(rid);
+					System.out.println(db.selectNurse());
+					int nid=Integer.parseInt(reader.readLine());
+					Nurse nu= db.getNurseId(nid);
+					System.out.println(db.selectDoctor());
+					int did=Integer.parseInt(reader.readLine());
+					Doctor doc= db.getDoctorId(did);
+					System.out.println(db.selectTreatment());
+					int tid=Integer.parseInt(reader.readLine());
+					Treatment t= db.getTreatmentId(tid);
+					db.insertPatient(patient,r,nu,doc,t);
+					System.out.println("Patient created correctly");
+					
+					
 					break;
 				case 6:
 					// Select patient(shows you the patients)
@@ -167,7 +177,7 @@ public class UserInterface {
 					}
 					System.out.println("Choose a nurse, type its Id: ");
 					int idPat = Integer.parseInt(reader.readLine());
-					Patient pat = db.getPatientId(idPat);
+					Patient pat = db.selectPatientByid(idPat);
 					System.out.print("Name: " + pat.getName());
 					String newNamePat = reader.readLine();
 					if (!newNamePat.equals("")) {
@@ -264,6 +274,7 @@ public class UserInterface {
 			} while (option != 0);
 			// Close database connection!!!!! IMPORTANT
 			db.closeConnection();
+			jpa.closeConnection();
 			System.out.println("Database connection closed.");
 
 		}

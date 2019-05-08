@@ -274,4 +274,40 @@ public class JPAManager implements Manager {
 			// TODO Auto-generated method stub
 
 		}
+//TREATMENT
+		@Override
+		public void insertTreatment(Treatment t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public List<Treatment> getTreatmentId(String type) throws SQLException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Treatment getTreatmentId(Integer id) throws SQLException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public List<Treatment> selectTreatment() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void updateTreatment(Treatment t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void deleteTreatment(int id) throws SQLException {
+			// TODO Auto-generated method stub
+			
+		}
 }

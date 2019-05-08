@@ -546,6 +546,16 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
+	
+	//PATIENT-DOCTOR
+	public void deleteRelationshipPD(int pid, int did) throws SQLException {
+		String sql = "DELETE FROM doctor_patient WHERE patient_id=? AND doctor_id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, pid);
+		prep.setInt(2,did);
+		prep.executeUpdate();
+	}
+	
 	// CREATE TABLES
 	public void createTables() {
 			try {
