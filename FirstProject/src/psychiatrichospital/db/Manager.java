@@ -81,6 +81,17 @@ public interface Manager {
 	public void deleteRoom(int id);
 	
 	// TREATMENT dtd
+	public void insertTreatment(Treatment t);
+	
+	public List<Treatment> getTreatmentId(String type) throws SQLException;
+	
+	public Treatment getTreatmentId(Integer id) throws SQLException ;
+	
+	public List<Treatment> selectTreatment();
+	
+	public void updateTreatment(Treatment t) ;
+	
+	public void deleteTreatment(int id) throws SQLException;
 	
 	// CREATE TABLES
 		public void createTables();
