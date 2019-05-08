@@ -21,6 +21,13 @@ public class Treatment implements Serializable {
 		this.number = number;
 		this.doctor_id = doctor_id;
 	}
+	public Treatment(int id, String type, int number) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.number = number;
+	
+	}
 
 	@Override
 	public int hashCode() {

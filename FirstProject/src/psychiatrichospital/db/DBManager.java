@@ -192,7 +192,7 @@ public class DBManager implements Manager {
 	public void insertDoctor(Doctor doctor) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
-			String s = "INSERT INTO doctor (name,gender,dob,hours)" + "VALUES (?, ?, ?, ?)";
+			String s = "INSERT INTO doctor (name,gender,dob,hours)" + " VALUES (?, ?, ?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setString(1, doctor.getName());
 			p.setString(2, doctor.getGender());
@@ -232,6 +232,102 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 
+	
+	
+	//TREATMENT
+	
+	public void insertTreatment(Treatment t) {
+		try {
+			String s = "INSERT INTO treatment (type, number)" + "VALUES (?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setString(1, t.getType());
+			p.setInt(2, t.getNumber());
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+	public List<Treatment> getTreatmentId(String type) throws SQLException {
+		List<Treatment> t = new ArrayList<Treatment>();
+		Statement stmt = c.createStatement();
+		String sqlCon = "SELECT * FROM treatment WHERE type LIKE '%" + type + "%' ";
+		ResultSet rs = stmt.executeQuery(sqlCon);
+		while (rs.next()) {
+			int id4 = rs.getInt("id");
+			String type1 = rs.getString("type");
+			int number = rs.getInt("number");
+			Treatment treat = new Treatment(id4, type1, number);
+			t.add(treat);
+		}
+		rs.close();
+		stmt.close();
+		return t;
+	}
+	
+	public Treatment getTreatmentId(Integer id) throws SQLException {
+		Treatment t = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM treatment WHERE id ='" + id + "' ";
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			int id4 = rs.getInt("id");
+			String type1 = rs.getString("type");
+			int number = rs.getInt("number");
+			t = new Treatment(id4, type1, number);
+		}
+		rs.close();
+		stmt.close();
+		return t;
+	}
+	public List<Treatment> selectTreatment() {
+		List<Treatment> t2 = new ArrayList<Treatment>();
+		try {
+			String sql = "SELECT * FROM treatment";
+			PreparedStatement p = c.prepareStatement(sql);
+			ResultSet rs = p.executeQuery();
+			Treatment t1;
+			while (rs.next()) {
+				int id4 = rs.getInt("id");
+				String type1 = rs.getString("type");
+				int number = rs.getInt("number");
+				t1 = new Treatment(id4, type1, number);
+				t2.add(t1);
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return t2;
+
+	}
+	
+	public void updateTreatment(Treatment t) {
+		try {
+			String sql = "UPDATE treatment SET type=?, number=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, t.getType());
+			prep.setInt(2, t.getNumber());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+
+	public void deleteTreatment(int id) throws SQLException {
+		String sql = "DELETE FROM treatment WHERE id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, id);
+		prep.executeUpdate();
+	}
+	
 	
 	// PATIENT
 	@Override
@@ -273,7 +369,7 @@ public class DBManager implements Manager {
 	// CONTRACT
 	public void insertContract(Contract contract) {
 		try {
-			String s = "INSERT INTO contract (money, holidays, d1, d2)" + "VALUES (?, ?, ?, ?)";
+			String s = "INSERT INTO contract (money, holidays, d1, d2)" + " VALUES (?, ?, ?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setFloat(1, contract.getMoney());
 			p.setInt(2, contract.getHolidays());
