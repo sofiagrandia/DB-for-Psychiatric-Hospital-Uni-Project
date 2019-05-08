@@ -16,10 +16,11 @@ import Project.Treatment;
 import Project.Doctor;
 import Project.Contract;
 
-public class DBManager implements Manager{
+public class DBManager implements Manager {
 
+	//CONNECTION
 	private Connection c;
-     
+
 	public void connection() {
 		try {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/tables.db");
@@ -31,13 +32,13 @@ public class DBManager implements Manager{
 		}
 
 	}
-	
-	public void closeConnection () throws SQLException {
+
+	public void closeConnection() throws SQLException {
 		c.close();
 	}
 
-	//NURSE:
 	
+	// NURSE
 	public void insertNurse(Nurse nurse) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
@@ -55,24 +56,26 @@ public class DBManager implements Manager{
 			e.printStackTrace();
 		}
 	}
+
 	public List<Nurse> getNurse(String name) throws SQLException {
 		List<Nurse> n = new ArrayList<Nurse>();
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM nurse WHERE name LIKE '%"+name+"%' ";
+		String sql = "SELECT * FROM nurse WHERE name LIKE '%" + name + "%' ";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
 			int id = rs.getInt("id");
 			String name2 = rs.getString("name");
 			String gender = rs.getString("gender");
 			Date date = rs.getDate("dob");
-			int hours=rs.getInt("hours");
-			Nurse nurse= new Nurse(id, name2, gender, date, hours);
+			int hours = rs.getInt("hours");
+			Nurse nurse = new Nurse(id, name2, gender, date, hours);
 			n.add(nurse);
-		}		
+		}
 		rs.close();
 		stmt.close();
 		return n;
 	}
+
 	public List<Nurse> selectNurse() {
 		List<Nurse> n = new ArrayList<Nurse>();
 		try {
@@ -100,45 +103,49 @@ public class DBManager implements Manager{
 		return n;
 
 	}
+
 	public Nurse getNurseId(Integer id) throws SQLException {
-		Nurse nurse=null;
+		Nurse nurse = null;
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM nurse WHERE id ='"+id+"' ";
+		String sql = "SELECT * FROM nurse WHERE id ='" + id + "' ";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
 			int id1 = rs.getInt("id");
 			String name = rs.getString("name");
 			String gender = rs.getString("gender");
 			Date date = rs.getDate("dob");
-			int hours=rs.getInt("hours");
-			nurse= new Nurse(id1, name, gender, date, hours);
-		}		
+			int hours = rs.getInt("hours");
+			nurse = new Nurse(id1, name, gender, date, hours);
+		}
 		rs.close();
 		stmt.close();
 		return nurse;
 	}
+
 	public void updateNurse(Nurse nurse) {
 		try {
-		String sql = "UPDATE nurse SET name=?,gender=?, dob=?, hours=? WHERE id=?" ;
-		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setString(1, nurse.getName());
-		prep.setString(2, nurse.getGender());
-		prep.setDate(3,nurse.getDob());
-		prep.setInt(4, nurse.getHours());
-		prep.setInt(5, nurse.getId());
-		prep.executeUpdate();
-		}catch(Exception e) {
-				System.out.println(e.getMessage());
+			String sql = "UPDATE nurse SET name=?,gender=?, dob=?, hours=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, nurse.getName());
+			prep.setString(2, nurse.getGender());
+			prep.setDate(3, nurse.getDob());
+			prep.setInt(4, nurse.getHours());
+			prep.setInt(5, nurse.getId());
+			prep.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
+
 	public void deleteNurse(int id) throws SQLException {
 		String sql = "DELETE FROM nurse WHERE id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setInt(1, id);
 		prep.executeUpdate();
 	}
+
 	
-	//DOCTOR:
+	// DOCTOR
 	public List<Doctor> selectDoctor() {
 		List<Doctor> n = new ArrayList<Doctor>();
 		try {
@@ -166,20 +173,22 @@ public class DBManager implements Manager{
 		return n;
 
 	}
+
 	public void updateDoctor(Doctor doctor) {
 		try {
-		String sql = "UPDATE doctor SET name=?,gender=?, dob=?, hours=? WHERE id=?" ;
-		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setString(1, doctor.getName());
-		prep.setString(2, doctor.getGender());
-		prep.setDate(3,doctor.getDob());
-		prep.setInt(4, doctor.getHours());
-		prep.setInt(5, doctor.getId());
-		prep.executeUpdate();
-		}catch(Exception e) {
-				System.out.println(e.getMessage());
+			String sql = "UPDATE doctor SET name=?,gender=?, dob=?, hours=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, doctor.getName());
+			prep.setString(2, doctor.getGender());
+			prep.setDate(3, doctor.getDob());
+			prep.setInt(4, doctor.getHours());
+			prep.setInt(5, doctor.getId());
+			prep.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
+
 	public void insertDoctor(Doctor doctor) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
@@ -197,272 +206,181 @@ public class DBManager implements Manager{
 			e.printStackTrace();
 		}
 	}
+
 	public Doctor getDoctorId(Integer id) throws SQLException {
-		Doctor doctor=null;
+		Doctor doctor = null;
 		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM doctor WHERE id ='"+id+"' ";
+		String sql = "SELECT * FROM doctor WHERE id ='" + id + "' ";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
 			int id1 = rs.getInt("id");
 			String name = rs.getString("name");
 			String gender = rs.getString("gender");
 			Date date = rs.getDate("dob");
-			int hours=rs.getInt("hours");
-			doctor= new Doctor(id1, name, gender, date, hours);
-		}		
+			int hours = rs.getInt("hours");
+			doctor = new Doctor(id1, name, gender, date, hours);
+		}
 		rs.close();
 		stmt.close();
 		return doctor;
 	}
+
+	public void deleteDoctor(int id) throws SQLException {
+		String sql = "DELETE FROM doctor WHERE id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, id);
+		prep.executeUpdate();
+	}
+
 	
+	// PATIENT
+	@Override
+	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment) {
+			// TODO Auto-generated method stub
+
+		}
+
+	@Override
+	public List<Patient> selectPatientByName(String name) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	@Override
+	public Patient selectPatientByid(Integer id) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	@Override
+	public List<Patient> selectPatient() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	@Override
+	public void updatePatient(Patient patient) {
+			// TODO Auto-generated method stub
+
+		}
+
+	@Override
+	public void deletePatient(int id) {
+			// TODO Auto-generated method stub
+		}
 	
-	
-	
-	
-	// CREATE TABLES
-	
-	public void createTables() {
-		try {
-		
-					// Open database connection
-					// CHOOSES THE DATA BASE THAT WE ARE USING
-					Class.forName("org.sqlite.JDBC");
-					//ACTIVATES
-					c.createStatement().execute("PRAGMA foreign_keys=ON");
-					System.out.println("Opened correctly.");
-					// Create tables: begin
-					// OJO CÓMO SE ESCRIBE. LOS ESPACIOS, LAS COMAS, LAS COMILLLAS....
-					Statement stmt1 = c.createStatement();
-					String sql1 = "CREATE TABLE room "
-							   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT, "
-							   + " type TEXT NOT NULL, "
-							   + " floor  INTEGER NOT NULL)";
-					stmt1.executeUpdate(sql1);
-					stmt1.close();
-					
-					Statement stmt2 = c.createStatement();
-					String sql2 = "CREATE TABLE patient "
-							   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
-							   + " name     TEXT     NOT NULL, "
-							   + " gender  TEXT 	NOT NULL, "
-							   + " dob      DATE	 NOT NULL, "
-							   + " room_id   INTEGER NOT NULL, "
-							   + " photo	BLOB,"
-							   + " FOREIGN KEY (room_id) REFERENCES room (id) )";
-					stmt2.executeUpdate(sql2);
-					stmt2.close();
-					Statement stmt3 = c.createStatement();
-					String sql3 = "CREATE TABLE contract "
-							   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
-							   + " money     REAL     NOT NULL, "
-							   + " duration  DATETIME, "
-							   + " holidays		INTEGER NOT NULL)";
-					stmt3.executeUpdate(sql3);
-					stmt3.close();
-					
-					Statement stmt4 = c.createStatement();
-					String sql4 = "CREATE TABLE doctor "
-							   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
-							   + " name     TEXT     NOT NULL," 
-							   + " gender  TEXT 	NOT NULL," 
-							   + " dob      DATE	 NOT NULL," 
-							   + " hours   INTEGER NOT NULL," 
-							   +" photo	BLOB," 
-							   + "contract_id INTEGER,"
-							   +" FOREIGN KEY (contract_id) REFERENCES contract (id) )";
-					
-					stmt4.executeUpdate(sql4);
-					stmt4.close();
-					
-					Statement stmt5 = c.createStatement();
-					String sql5 = "CREATE TABLE nurse"
-							+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-							+ "name TEXT NOT NULL,"
-							+ "gender TEXT NOT NULL,"
-							+ "dob DATE NOT NULL,"
-							+ "hours INTEGER NOT NULL,"
-							+"photo BLOB,"
-							+"contract_id INTEGER,"
-							+"FOREIGN KEY (contract_id) REFERENCES contract (id))";
-					stmt5.executeUpdate(sql5);
-					stmt5.close();
-					
-					Statement stmt6 = c.createStatement();
-					String sql6 = "CREATE TABLE treatment"
-							+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-							+" type TEXT NOT NULL,"
-							+"number INTEGER NOT NULL,"
-							+"doctor_id INTEGER,"
-							+"FOREIGN KEY (doctor_id) REFERENCES doctor (id))";
-					stmt6.executeUpdate(sql6);
-					stmt6.close();
-					
-					Statement stmt7 = c.createStatement();
-					String sql7 = "CREATE TABLE patient_treatment"
-							+"(patient_id INTEGER,"
-							+"treatment_id INTEGER,"
-							+"FOREIGN KEY (patient_id) REFERENCES patient (id),"
-							+"FOREIGN KEY (treatment_id) REFERENCES treatment (id),"
-							+"PRIMARY KEY (patient_id, treatment_id),)";
-					stmt7.executeUpdate(sql7);
-					stmt7.close();
-					
-					Statement stmt8 = c.createStatement();
-					String sql8 = "CREATE TABLE nurse_patient"
-							+"(patient_id INTEGER,"
-							+"nurse_id INTEGER,"
-							+"FOREIGN KEY (patient_id) REFERENCES patient (id),"
-							+"FOREIGN KEY (nurse_id) REFERENCES nurse (id),"
-							+"PRIMARY KEY (patient_id, nurse_id),)";
-					stmt8.executeUpdate(sql8);
-					stmt8.close();
-					
-					Statement stmt9 = c.createStatement();
-					String sql9 = "CREATE TABLE doctor_patient"
-							+"(patient_id INTEGER,"
-							+"doctor_id INTEGER,"
-							+"FOREIGN KEY (patient_id) REFERENCES patient (id),"
-							+"FOREIGN KEY (doctor_id) REFERENCES doctor (id),"
-							+"PRIMARY KEY (patient_id, doctor_id),)";
-					stmt9.executeUpdate(sql9);
-					stmt9.close();
-					
-					System.out.println("Tables created.");
-					// Create table: end
-					
-					// - Set initial values for the Primary Keys
-					// - Don't try to understand this until JPA is explained
-					// This is usually not needed, since the initial values
-					// are set when the first row is inserted, but since we
-					// are using JPA and JDBC in the same project, and JPA
-					// needs an initial value, we do this.
-					// TODAVIA NO ENTENDEMOS
-					Statement stmtSeq = c.createStatement();
-					String sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('departments', 1)";
-					stmtSeq.executeUpdate(sqlSeq);
-					sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('employees', 1)";
-					stmtSeq.executeUpdate(sqlSeq);
-					sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('reports', 1)";
-					stmtSeq.executeUpdate(sqlSeq);
-					stmtSeq.close();		} catch (SQLException e) {
-						e.getMessage().contains("already exists");
-						if (e.getMessage().contains("already exists")==true) {
-							System.out.println(" ");
-						}else {
-							e.printStackTrace();
-						}
-						
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} 
-					
-					
-			}
 	
 	// CONTRACT
 	public void insertContract(Contract contract) {
-			try {
-				String s = "INSERT INTO contract (money, holidays, d1, d2)" + "VALUES (?, ?, ?, ?)";
-				PreparedStatement p = c.prepareStatement(s);
-				p.setFloat(1, contract.getMoney());
-				p.setInt(2,contract.getHolidays());
-				p.setDate(3, contract.getDob());
-				p.setDate(4, contract.getDob());
-				p.executeUpdate();
-				p.close();
-				
-			}catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			String s = "INSERT INTO contract (money, holidays, d1, d2)" + "VALUES (?, ?, ?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setFloat(1, contract.getMoney());
+			p.setInt(2, contract.getHolidays());
+			p.setDate(3, contract.getDob());
+			p.setDate(4, contract.getDob());
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 
 	public List<Contract> getContractId(float money) throws SQLException {
-			List<Contract> cn = new ArrayList<Contract>();
-			Statement stmt = c.createStatement();
-			String sqlCon = "SELECT * FROM contract WHERE money LIKE '%"+money+"%' ";
-			ResultSet rs = stmt.executeQuery(sqlCon);
-			while (rs.next()) {
-				int id4 = rs.getInt("id");
-				float money1 = rs.getFloat("money");
-				int holidays = rs.getInt("holidays");
-				Date d1 = rs.getDate("d1");
-				Date d2 =rs.getDate("d2");
-				Contract contract= new Contract(id4, money1, holidays, d1, d2);
-				cn.add(contract);
-			}		
-			rs.close();
-			stmt.close();
-			return cn;
+		List<Contract> cn = new ArrayList<Contract>();
+		Statement stmt = c.createStatement();
+		String sqlCon = "SELECT * FROM contract WHERE money LIKE '%" + money + "%' ";
+		ResultSet rs = stmt.executeQuery(sqlCon);
+		while (rs.next()) {
+			int id4 = rs.getInt("id");
+			float money1 = rs.getFloat("money");
+			int holidays = rs.getInt("holidays");
+			Date d1 = rs.getDate("d1");
+			Date d2 = rs.getDate("d2");
+			Contract contract = new Contract(id4, money1, holidays, d1, d2);
+			cn.add(contract);
 		}
+		rs.close();
+		stmt.close();
+		return cn;
+	}
 
-	public Contract getContractId(Integer id) throws SQLException{
-			Contract contract= null;
-			Statement stmt=c.createStatement();
-			String sql = "SELECT * FROM contract WHERE id ='"+id+"' ";
-			ResultSet rs = stmt.executeQuery(sql);
+	public Contract getContractId(Integer id) throws SQLException {
+		Contract contract = null;
+		Statement stmt = c.createStatement();
+		String sql = "SELECT * FROM contract WHERE id ='" + id + "' ";
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			int idCon = rs.getInt("id");
+			float money = rs.getFloat("money");
+			int holidays = rs.getInt("holidays");
+			Date d1 = rs.getDate("d1");
+			Date d2 = rs.getDate("d2");
+			contract = new Contract(idCon, money, holidays, d1, d2);
+		}
+		rs.close();
+		stmt.close();
+		return contract;
+	}
+
+	public List<Contract> selectContract() {
+		List<Contract> n = new ArrayList<Contract>();
+		try {
+			String sql = "SELECT * FROM contract";
+			PreparedStatement p = c.prepareStatement(sql);
+			ResultSet rs = p.executeQuery();
+			Contract contract1;
 			while (rs.next()) {
-				int idCon = rs.getInt("id");
+				int id = rs.getInt("id");
 				float money = rs.getFloat("money");
 				int holidays = rs.getInt("holidays");
 				Date d1 = rs.getDate("d1");
 				Date d2 = rs.getDate("d2");
-				contract = new Contract(idCon, money, holidays, d1, d2);
-			}
-			rs.close();
-			stmt.close();
-			return contract;
-		}
 
-	public List<Contract> selectContract() {
-			List<Contract> n = new ArrayList<Contract>();
-			try {
-				String sql = "SELECT * FROM contract";
-				PreparedStatement p = c.prepareStatement(sql);
-				ResultSet rs = p.executeQuery();
-				Contract contract1;
-				while (rs.next()) {
-					int id = rs.getInt("id");
-					float money = rs.getFloat("money");
-					int holidays = rs.getInt("holidays");
-					Date d1 = rs.getDate("d1");
-					Date d2 = rs.getDate("d2");
+				contract1 = new Contract(id, money, holidays, d1, d2);
+				n.add(contract1);
 
-					contract1 = new Contract(id, money, holidays, d1, d2);
-					n.add(contract1);
-
-				}
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 
-			return n;
-
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-	//HEMOS CAMBIADO LA FECHA!!! era getD1 y getD2
-	
+		return n;
+
+	}
+
+	/*cambio de fecha!!! era getD1 y getD2*/
+
 	public void updateContract(Contract contract) {
-			try{
-				String sql = "UPDATE contract SET money=?, holidays=?, d1=?, d2=? WHERE id=?";
-				PreparedStatement prep = c.prepareStatement(sql);
-				prep.setFloat(1, contract.getMoney());
-				prep.setInt(2, contract.getHolidays());
-				prep.setDate(3, contract.getDob());
-				prep.setDate(4, contract.getDob());
-			}catch(Exception e) {
-				System.out.println(e.getMessage());
-		}}
+		try {
+			String sql = "UPDATE contract SET money=?, holidays=?, d1=?, d2=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setFloat(1, contract.getMoney());
+			prep.setInt(2, contract.getHolidays());
+			prep.setDate(3, contract.getDob());
+			prep.setDate(4, contract.getDob());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public void deleteContract(int id) throws SQLException {
+		String sql = "DELETE FROM contract WHERE id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, id);
+		prep.executeUpdate();
+	}
 
 	
-	//ROOM
-
+	// ROOM
 	@Override
 	public void insertRoom(Room room, Patient patient) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -474,7 +392,7 @@ public class DBManager implements Manager{
 	@Override
 	public void updateRoom(Room room) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -483,49 +401,118 @@ public class DBManager implements Manager{
 		return null;
 	}
 
+	@Override
 	public void deleteRoom(int id) {
 		// TODO Auto-generated method stub
 	}
-	
-	//PATIENT
 
-	@Override
-	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	// CREATE TABLES
+	public void createTables() {
+			try {
 
-	@Override
-	public List<Patient> selectPatientByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+				// Open database connection
+				// CHOOSES THE DATA BASE THAT WE ARE USING
+				Class.forName("org.sqlite.JDBC");
+				// ACTIVATES
+				c.createStatement().execute("PRAGMA foreign_keys=ON");
+				System.out.println("Opened correctly.");
+				// Create tables: begin
+				// OJO CÓMO SE ESCRIBE. LOS ESPACIOS, LAS COMAS, LAS COMILLLAS....
+				Statement stmt1 = c.createStatement();
+				String sql1 = "CREATE TABLE room " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT, "
+						+ " type TEXT NOT NULL, " + " floor  INTEGER NOT NULL)";
+				stmt1.executeUpdate(sql1);
+				stmt1.close();
 
-	@Override
-	public Patient selectPatientByid(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+				Statement stmt2 = c.createStatement();
+				String sql2 = "CREATE TABLE patient " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
+						+ " name     TEXT     NOT NULL, " + " gender  TEXT 	NOT NULL, " + " dob      DATE	 NOT NULL, "
+						+ " room_id   INTEGER NOT NULL, " + " photo	BLOB,"
+						+ " FOREIGN KEY (room_id) REFERENCES room (id) )";
+				stmt2.executeUpdate(sql2);
+				stmt2.close();
+				Statement stmt3 = c.createStatement();
+				String sql3 = "CREATE TABLE contract " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
+						+ " money     REAL     NOT NULL, " + " duration  DATETIME, " + " holidays		INTEGER NOT NULL)";
+				stmt3.executeUpdate(sql3);
+				stmt3.close();
 
-	@Override
-	public List<Patient> selectPatient() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+				Statement stmt4 = c.createStatement();
+				String sql4 = "CREATE TABLE doctor " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
+						+ " name     TEXT     NOT NULL," + " gender  TEXT 	NOT NULL," + " dob      DATE	 NOT NULL,"
+						+ " hours   INTEGER NOT NULL," + " photo	BLOB," + "contract_id INTEGER,"
+						+ " FOREIGN KEY (contract_id) REFERENCES contract (id) )";
 
-	@Override
-	public void updatePatient(Patient patient) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
-	
-	
+				stmt4.executeUpdate(sql4);
+				stmt4.close();
+
+				Statement stmt5 = c.createStatement();
+				String sql5 = "CREATE TABLE nurse" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL,"
+						+ "gender TEXT NOT NULL," + "dob DATE NOT NULL," + "hours INTEGER NOT NULL," + "photo BLOB,"
+						+ "contract_id INTEGER," + "FOREIGN KEY (contract_id) REFERENCES contract (id))";
+				stmt5.executeUpdate(sql5);
+				stmt5.close();
+
+				Statement stmt6 = c.createStatement();
+				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT NOT NULL,"
+						+ "number INTEGER NOT NULL," + "doctor_id INTEGER,"
+						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id))";
+				stmt6.executeUpdate(sql6);
+				stmt6.close();
+
+				Statement stmt7 = c.createStatement();
+				String sql7 = "CREATE TABLE patient_treatment" + "(patient_id INTEGER," + "treatment_id INTEGER,"
+						+ "FOREIGN KEY (patient_id) REFERENCES patient (id),"
+						+ "FOREIGN KEY (treatment_id) REFERENCES treatment (id),"
+						+ "PRIMARY KEY (patient_id, treatment_id),)";
+				stmt7.executeUpdate(sql7);
+				stmt7.close();
+
+				Statement stmt8 = c.createStatement();
+				String sql8 = "CREATE TABLE nurse_patient" + "(patient_id INTEGER," + "nurse_id INTEGER,"
+						+ "FOREIGN KEY (patient_id) REFERENCES patient (id),"
+						+ "FOREIGN KEY (nurse_id) REFERENCES nurse (id)," + "PRIMARY KEY (patient_id, nurse_id),)";
+				stmt8.executeUpdate(sql8);
+				stmt8.close();
+
+				Statement stmt9 = c.createStatement();
+				String sql9 = "CREATE TABLE doctor_patient" + "(patient_id INTEGER," + "doctor_id INTEGER,"
+						+ "FOREIGN KEY (patient_id) REFERENCES patient (id),"
+						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id)," + "PRIMARY KEY (patient_id, doctor_id),)";
+				stmt9.executeUpdate(sql9);
+				stmt9.close();
+
+				System.out.println("Tables created.");
+				// Create table: end
+
+				// - Set initial values for the Primary Keys
+				// - Don't try to understand this until JPA is explained
+				// This is usually not needed, since the initial values
+				// are set when the first row is inserted, but since we
+				// are using JPA and JDBC in the same project, and JPA
+				// needs an initial value, we do this.
+				// TODAVIA NO ENTENDEMOS
+				Statement stmtSeq = c.createStatement();
+				String sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('departments', 1)";
+				stmtSeq.executeUpdate(sqlSeq);
+				sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('employees', 1)";
+				stmtSeq.executeUpdate(sqlSeq);
+				sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('reports', 1)";
+				stmtSeq.executeUpdate(sqlSeq);
+				stmtSeq.close();
+			} catch (SQLException e) {
+				e.getMessage().contains("already exists");
+				if (e.getMessage().contains("already exists") == true) {
+					System.out.println(" ");
+				} else {
+					e.printStackTrace();
+				}
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 }
-
-
-
-
-

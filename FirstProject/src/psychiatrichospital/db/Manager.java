@@ -11,47 +11,77 @@ import Project.Room;
 import Project.Treatment;
 
 public interface Manager {
-	public void connection() ;
-	
-	public void closeConnection () throws SQLException ;
-	//NURSE: esta hecho
+	public void connection();
+
+	public void closeConnection() throws SQLException;
+
+	// NURSE: esta hecho
 	public void insertNurse(Nurse nurse);
-	public List<Nurse> getNurse(String name) throws SQLException ;
+
+	public List<Nurse> getNurse(String name) throws SQLException;
+
 	public List<Nurse> selectNurse();
-	public Nurse getNurseId(Integer id)throws SQLException ;
+
+	public Nurse getNurseId(Integer id) throws SQLException;
+
 	public void updateNurse(Nurse nurse);
-	public void deleteNurse(int id) throws SQLException ;
-	//DOCTOR:
+
+	public void deleteNurse(int id) throws SQLException;
+
+	
+	// DOCTOR:
 	public List<Doctor> selectDoctor();
+
 	public void updateDoctor(Doctor doctor);
+
 	public void insertDoctor(Doctor doctor);
-	public Doctor getDoctorId(Integer id)throws SQLException ;
-	//PATIENT:JPA CAMBIAR
+
+	public Doctor getDoctorId(Integer id) throws SQLException;
+
+	public void deleteDoctor(int id) throws SQLException;
+
+	
+	// PATIENT:JPA CAMBIAR
 	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment);
+
 	public List<Patient> selectPatientByName(String name);
-	public Patient selectPatientByid(Integer id) ;
+
+	public Patient selectPatientByid(Integer id);
+
 	public List<Patient> selectPatient();
+
 	public void updatePatient(Patient patient);
-	// CREATE TABLES
-	public void createTables();
+
+	public void deletePatient(int id);
+
+
 	// CONTRACT
 	public void insertContract(Contract contract);
+
 	public List<Contract> getContractId(float money) throws SQLException;
+
 	public Contract getContractId(Integer id) throws SQLException;
+
 	public List<Contract> selectContract();
+
 	public void updateContract(Contract contract);
-	//TREATMENT dtd
-	//ROOM jpa
+
+	public void deleteContract(int id) throws SQLException;
+
+	
+	// ROOM jpa
 	public void insertRoom(Room room, Patient patient);
+
 	public Room selectRoomById(Integer id);
+
 	public void updateRoom(Room room);
+
 	public List<Room> selectRoom();
+
 	public void deleteRoom(int id);
-	}
-
-
-
-
-
-
-
+	
+	// TREATMENT dtd
+	
+	// CREATE TABLES
+		public void createTables();
+}
