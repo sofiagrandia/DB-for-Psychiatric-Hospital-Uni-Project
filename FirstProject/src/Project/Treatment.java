@@ -1,13 +1,45 @@
 package Project;
 
 import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.*;
+
+
+
+
+@Entity
+@Table(name = "treatment")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Treatment")
+@XmlType(propOrder = { "type", "number", "doctor" })
 
 public class Treatment implements Serializable {
-
-	private static final long serialVersionUID = -5847813978949146445L;
-	private int id;
+	@Id
+	@GeneratedValue(generator="treatment")
+	@TableGenerator(name="treatment", table="sqlite_sequence",
+	    pkColumnName="type", valueColumnName="number", pkColumnValue="treatment")
+	@XmlAttribute
+	private Integer id;
+	@XmlAttribute
 	private String type;
-	private int number;
+	@XmlAttribute
+	private Integer number;
+	@OneToMany(mappedBy="treatment")
+	@XmlElement(name = "Doctor")
+    @XmlElementWrapper(name = "Doctors")
+	private Doctor doctor;
+	
+	
+	
+	
+	private static final long serialVersionUID = -5847813978949146445L;
 	private int doctor_id;
 	
 	public Treatment() {

@@ -501,8 +501,51 @@ public class DBManager implements Manager {
 	public void deleteRoom(int id) {
 		// TODO Auto-generated method stub
 	}
+	// DOCTOR-PATIENT
+	public void createRelationshipPD(int did, int pid) {
+		try {
+			String s = "INSERT INTO doctor_patient (did, pid)" + " VALUES (?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, did);
+			p.setInt(2, pid);
+			p.executeUpdate();
+			p.close();
 
-	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	// NURSE-PATIENT
+	public void createRelationshipPN(int nid, int pid) {
+		try {
+			String s = "INSERT INTO doctor_patient (nid, pid)" + " VALUES (?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, nid);
+			p.setInt(2, pid);
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	// TREATMENT-PATIENT
+	public void createRelationshipTP(int tid, int pid) {
+		try {
+			String s = "INSERT INTO doctor_patient (tid, pid)" + " VALUES (?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, tid);
+			p.setInt(2, pid);
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	// CREATE TABLES
 	public void createTables() {
 			try {
