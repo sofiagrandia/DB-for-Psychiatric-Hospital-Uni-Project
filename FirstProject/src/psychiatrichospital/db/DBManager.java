@@ -1,4 +1,4 @@
-package psychiatrichospital.db;
+  package psychiatrichospital.db;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -501,7 +501,55 @@ public class DBManager implements Manager {
 	public void deleteRoom(int id) {
 		// TODO Auto-generated method stub
 	}
-	// DOCTOR-PATIENT
+
+	// NURSE-PATIENT
+	public void createRelationshipNP(int nid, int pid) {
+		try {
+			String s = "INSERT INTO nurse_patient (nid, pid)" + " VALUES (?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, nid);
+			p.setInt(2, pid);
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteRelationshipNP(int pid, int nid) throws SQLException {
+		String sql = "DELETE FROM doctor_patient WHERE patient_id=? AND nurse_id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, pid);
+		prep.setInt(2,nid);
+		prep.executeUpdate();
+	}
+	// TREATMENT-PATIENT
+	public void createRelationshipPT(int tid, int pid) {
+		try {
+			String s = "INSERT INTO patient_treatment (tid, pid)" + " VALUES (?, ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, tid);
+			p.setInt(2, pid);
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteRelationshipPT(int tid, int pid) throws SQLException {
+		String sql = "DELETE FROM patient_treatment WHERE patient_id=? AND doctor_id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1,pid);
+		prep.setInt(2,tid);
+		prep.executeUpdate();
+	}
+	
+	//PATIENT-DOCTOR
 	public void createRelationshipPD(int did, int pid) {
 		try {
 			String s = "INSERT INTO doctor_patient (did, pid)" + " VALUES (?, ?)";
@@ -516,38 +564,6 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-	// NURSE-PATIENT
-	public void createRelationshipPN(int nid, int pid) {
-		try {
-			String s = "INSERT INTO doctor_patient (nid, pid)" + " VALUES (?, ?)";
-			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1, nid);
-			p.setInt(2, pid);
-			p.executeUpdate();
-			p.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	// TREATMENT-PATIENT
-	public void createRelationshipTP(int tid, int pid) {
-		try {
-			String s = "INSERT INTO doctor_patient (tid, pid)" + " VALUES (?, ?)";
-			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1, tid);
-			p.setInt(2, pid);
-			p.executeUpdate();
-			p.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	//PATIENT-DOCTOR
 	public void deleteRelationshipPD(int pid, int did) throws SQLException {
 		String sql = "DELETE FROM doctor_patient WHERE patient_id=? AND doctor_id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
@@ -577,7 +593,7 @@ public class DBManager implements Manager {
 				Statement stmt2 = c.createStatement();
 				String sql2 = "CREATE TABLE patient " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 						+ " name     TEXT     NOT NULL, " + " gender  TEXT 	NOT NULL, " + " dob      DATE	 NOT NULL, "
-						+ " room_id   INTEGER NOT NULL, " + " photo	BLOB,"
+						+ " room_id   INTEGER NOT NULL, " 
 						+ " FOREIGN KEY (room_id) REFERENCES room (id) )";
 				stmt2.executeUpdate(sql2);
 				stmt2.close();
@@ -590,7 +606,7 @@ public class DBManager implements Manager {
 				Statement stmt4 = c.createStatement();
 				String sql4 = "CREATE TABLE doctor " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 						+ " name     TEXT     NOT NULL," + " gender  TEXT 	NOT NULL," + " dob      DATE	 NOT NULL,"
-						+ " hours   INTEGER NOT NULL," + " photo	BLOB," + "contract_id INTEGER,"
+						+ " hours   INTEGER NOT NULL," + "contract_id INTEGER,"
 						+ " FOREIGN KEY (contract_id) REFERENCES contract (id) )";
 
 				stmt4.executeUpdate(sql4);
@@ -598,8 +614,7 @@ public class DBManager implements Manager {
 
 				Statement stmt5 = c.createStatement();
 				String sql5 = "CREATE TABLE nurse" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL,"
-						+ "gender TEXT NOT NULL," + "dob DATE NOT NULL," + "hours INTEGER NOT NULL," + "photo BLOB,"
-						+ "contract_id INTEGER," + "FOREIGN KEY (contract_id) REFERENCES contract (id))";
+						+ "gender TEXT NOT NULL," + "dob DATE NOT NULL," + "hours INTEGER NOT NULL," + "contract_id INTEGER," + "FOREIGN KEY (contract_id) REFERENCES contract (id))";
 				stmt5.executeUpdate(sql5);
 				stmt5.close();
 

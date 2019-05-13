@@ -310,4 +310,40 @@ public class JPAManager implements Manager {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public void createRelationshipNP(int nid, int pid) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void deleteRelationshipNP(int pid, int nid) throws SQLException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void createRelationshipPT(int tid, int pid) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void deleteRelationshipPT(int tid, int pid) throws SQLException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void createRelationshipPD(int did, int pid) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void deleteRelationshipPD(int pid, int did) throws SQLException {
+			// TODO Auto-generated method stub
+			
+		}
 }
