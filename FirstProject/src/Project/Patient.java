@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "patients")
@@ -27,10 +28,10 @@ public class Patient implements Serializable {
 	private String name;
 	private String gender;
 	private Date dob;
-    @OnetoOne(mappedBy= "room")
-	private int room_id;
 	private byte [] photo;
+    @OneToMany(mappedBy= "patients")
 	private Room room;
+    @Transient
 	private List <Treatment> treatments;
 	private List <Doctor> doctors;
 	private List <Nurse> nurses;

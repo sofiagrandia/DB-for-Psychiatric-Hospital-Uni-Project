@@ -22,9 +22,9 @@ import javax.xml.bind.annotation.*;
 @XmlType(propOrder = { "type", "number", "doctor" ,"p"})
 
 public class Treatment implements Serializable {
-	public Treatment(Integer id, String type, Integer number) {
+	public Treatment(String type, Integer number) {
 		super();
-		this.id = id;
+		
 		this.type = type;
 		this.number = number;
 	}

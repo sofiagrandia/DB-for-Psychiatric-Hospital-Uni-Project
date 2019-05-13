@@ -20,7 +20,7 @@ public class Room  implements Serializable{
 	private static final long serialVersionUID = -50179526691591647L;
 	private int id;
 	private int floor;
-    @OneToMany(mappedBy= "patient")
+    @OneToMany(mappedBy= "room")
     @JoinColumn
 	private List <Patient> patients;
 	public Room(int id, int floor, List <Patient> patients) {

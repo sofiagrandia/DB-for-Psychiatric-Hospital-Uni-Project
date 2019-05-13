@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -365,6 +367,39 @@ public class UtilitiesUI {
 	}
 
 	
+	
+	public void insertTreatmentMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
+			throws NumberFormatException, IOException, SQLException {
+		
+		System.out.println("Please, input the treatment info:");
+		System.out.print("Name of treatment: ");
+		String nameTreatment = reader.readLine();
+		System.out.print("Number: ");
+		int number = Integer.parseInt(reader.readLine());
+		
+		Treatment treatment = new Treatment(nameTreatment,number);
+		db.insertTreatment(treatment);
+		System.out.println(jpa.selectPatient());
+		do {
+			System.out.println("Select patient id");
+			int chosenId = Integer.parseInt(reader.readLine());
+			db.createRelationshipPT(treatment.getId(), chosenId);
+		} while (reader.readLine() == "");
+
+		System.out.println("Patient(s) selected correctly");
+		
+		System.out.println(db.selectDoctor());
+		System.out.println("Select doctor id");
+		int chosenId = Integer.parseInt(reader.readLine());
+		String sql = "UPDATE treatment SET id=? ";
+		Connection c=db.getConnection();
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, chosenId);
+		
+		System.out.println("Doctor selected correctly");
+		System.out.println("Treatment inserted");
+		
+	}
 
 	
 

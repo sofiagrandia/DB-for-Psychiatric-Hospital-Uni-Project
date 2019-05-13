@@ -129,9 +129,17 @@ public class UserInterface {
 					int optionTreatment = Integer.parseInt(reader.readLine());
 					switch (optionTreatment) {
 					case 1:
+						uui.selectTreatmentMenu(db, reader);
+						break;
 					case 2:
+						uui.insertTreatmentMenu(db, jpa, reader, formatter);
+						break;
 					case 3:
+						uui.deleteTreatmentMenu(db, reader);
+						break;
 					case 4:
+						uui.updateTreatmentMenu(db, reader, formatter);
+						break;
 					}
 
 					break;
@@ -152,9 +160,5 @@ public class UserInterface {
 
 	}
 
-	private static void uui.insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa,
-			DateTimeFormatter formatter2) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

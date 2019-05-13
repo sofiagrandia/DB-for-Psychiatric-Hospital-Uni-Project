@@ -20,7 +20,9 @@ public class DBManager implements Manager {
 
 	//CONNECTION
 	private Connection c;
-
+	public Connection getConnection() {
+		return c;
+	}
 	public void connection() {
 		try {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/tables.db");
@@ -192,6 +194,7 @@ public class DBManager implements Manager {
 	public void insertDoctor(Doctor doctor) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
+			System.out.println(doctor);
 			String s = "INSERT INTO doctor (name,gender,dob,hours)" + " VALUES (?, ?, ?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setString(1, doctor.getName());
@@ -471,6 +474,8 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 
+	
+	
 	
 	// ROOM
 	@Override
