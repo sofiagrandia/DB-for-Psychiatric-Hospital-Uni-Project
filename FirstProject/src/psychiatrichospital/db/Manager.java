@@ -93,6 +93,21 @@ public interface Manager {
 	
 	public void deleteTreatment(int id) throws SQLException;
 	
+	
 	// CREATE TABLES
 		public void createTables();
+		
+		
+	//REALATIONSHIPS
+		public void createRelationshipNP(int nid, int pid);
+		
+		public void deleteRelationshipNP(int pid, int nid) throws SQLException;
+		
+		public void createRelationshipPT(int tid, int pid) ;
+		
+		public void deleteRelationshipPT(int tid, int pid) throws SQLException;
+		
+		public void createRelationshipPD(int did, int pid);
+		
+		public void deleteRelationshipPD(int pid, int did) throws SQLException;
 }
