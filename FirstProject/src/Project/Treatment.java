@@ -14,13 +14,29 @@ import javax.xml.bind.annotation.*;
 
 
 
+
 @Entity
 @Table(name = "treatment")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Treatment")
-@XmlType(propOrder = { "type", "number", "doctor" })
+@XmlType(propOrder = { "type", "number", "doctor" ,"p"})
 
 public class Treatment implements Serializable {
+	public Treatment(Integer id, String type, Integer number) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.number = number;
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public Treatment() {
+		super();
+	}
+	
 	@Id
 	@GeneratedValue(generator="treatment")
 	@TableGenerator(name="treatment", table="sqlite_sequence",
@@ -33,45 +49,37 @@ public class Treatment implements Serializable {
 	private Integer number;
 	@OneToMany(mappedBy="treatment")
 	@XmlElement(name = "Doctor")
-    @XmlElementWrapper(name = "Doctors")
+    //@XmlElementWrapper(name = "Doctors")
 	private Doctor doctor;
-	
-	
-	
-	
-	private static final long serialVersionUID = -5847813978949146445L;
-	private int doctor_id;
-	
-	public Treatment() {
-		super();
-	}
-
-	public Treatment(int id, String type, int number, int doctor_id) {
+	@ManyToMany
+	@JoinTable(name="patients",
+		joinColumns={@JoinColumn(name="treatment_id", referencedColumnName="id")},
+			    inverseJoinColumns={@JoinColumn(name="patient_id", referencedColumnName="id")})
+	@XmlElement(name = "Patient")
+    @XmlElementWrapper(name = "Patients")
+	private List<Patient> p;
+	public Treatment(Integer id, String type, Integer number, Doctor doctor, List<Patient> p) {
 		super();
 		this.id = id;
 		this.type = type;
 		this.number = number;
-		this.doctor_id = doctor_id;
+		this.doctor = doctor;
+		this.p = p;
 	}
-	public Treatment(int id, String type, int number) {
+	public Treatment(String type, Integer number, Doctor doctor, List<Patient> p) {
 		super();
-		this.id = id;
 		this.type = type;
 		this.number = number;
-	
+		this.doctor = doctor;
+		this.p = p;
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + doctor_id;
-		result = prime * result + id;
-		result = prime * result + number;
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -81,55 +89,47 @@ public class Treatment implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Treatment other = (Treatment) obj;
-		if (doctor_id != other.doctor_id)
-			return false;
-		if (id != other.id)
-			return false;
-		if (number != other.number)
-			return false;
-		if (type == null) {
-			if (other.type != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!type.equals(other.type))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
-
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
-
-	public int getDoctor_id() {
-		return doctor_id;
+	public Doctor getDoctor() {
+		return doctor;
 	}
-
-	public void setDoctor_id(int doctor_id) {
-		this.doctor_id = doctor_id;
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
 	}
-
+	public List<Patient> getP() {
+		return p;
+	}
+	public void setP(List<Patient> p) {
+		this.p = p;
+	}
 	@Override
 	public String toString() {
-		return "Treatment [id=" + id + ", type=" + type + ", number=" + number + ", doctor_id=" + doctor_id + "]";
+		return "Treatment [id=" + id + ", type=" + type + ", number=" + number + ", doctor=" + doctor + ", p=" + p
+				+ "]";
 	}
-	
+
 }

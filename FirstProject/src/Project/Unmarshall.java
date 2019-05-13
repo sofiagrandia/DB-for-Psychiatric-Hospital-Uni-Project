@@ -27,7 +27,9 @@ public class Unmarshall {
 		System.out.println("Treatment:");
 		System.out.println("Type: " + t.getType());
 		System.out.println("Number: " + t.getNumber());
-		System.out.println("Doctor id: " + t.getDoctor_id());
+		System.out.println("Doctor id: " + t.getDoctor());
+		System.out.println("List of patients:" + t.getP());
+		
 
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
 		EntityManager em = factory.createEntityManager();
