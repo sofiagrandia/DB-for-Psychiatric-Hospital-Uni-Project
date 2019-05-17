@@ -81,12 +81,11 @@ public class UtilitiesUI {
 		System.out.println("3)Delete treatment");
 		System.out.println("4)Update treatment");
 	}
-	
-	
-	
-	//DOCTOR
-	
-	public void insertDoctorMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException {
+
+	// DOCTOR
+
+	public void insertDoctorMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
+			throws NumberFormatException, IOException {
 		System.out.println("Please, input the doctor info:");
 		System.out.print("Name: ");
 		String nameDoc = reader.readLine();
@@ -109,10 +108,11 @@ public class UtilitiesUI {
 
 		System.out.println("Patient(s) selected correctly");
 		System.out.println("Doctor inserted");
-		
+
 	}
-	
-	public void selectDoctorMenu(DBManager db, BufferedReader reader) throws NumberFormatException, IOException, SQLException {
+
+	public void selectDoctorMenu(DBManager db, BufferedReader reader)
+			throws NumberFormatException, IOException, SQLException {
 		List<Doctor> lista = new ArrayList<Doctor>();
 		lista = db.selectDoctor();
 		for (int i = 0; i < lista.size(); i++) {
@@ -124,8 +124,9 @@ public class UtilitiesUI {
 		Doctor d = db.getDoctorId(idChosen);
 		System.out.println(d);
 	}
-	
-	public void deleteDoctorMenu(DBManager db, BufferedReader reader) throws NumberFormatException, IOException, SQLException {
+
+	public void deleteDoctorMenu(DBManager db, BufferedReader reader)
+			throws NumberFormatException, IOException, SQLException {
 		List<Doctor> lista = new ArrayList<Doctor>();
 		lista = db.selectDoctor();
 		for (int i = 0; i < lista.size(); i++) {
@@ -137,8 +138,9 @@ public class UtilitiesUI {
 		db.deleteDoctor(idChosen);
 		System.out.println("Doctor deleted");
 	}
-	
-	public void updateDoctorMenu(DBManager db,BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException, SQLException {
+
+	public void updateDoctorMenu(DBManager db, BufferedReader reader, DateTimeFormatter formatter)
+			throws NumberFormatException, IOException, SQLException {
 
 		List<Doctor> lisDoc = new ArrayList<Doctor>();
 		lisDoc = db.selectDoctor();
@@ -178,11 +180,28 @@ public class UtilitiesUI {
 		db.updateDoctor(doctor1);
 		System.out.println("Update finished.");
 	}
+
+	// NURSE
 	
-	//NURSE
+	public void insertNurseSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter) throws IOException {
+		System.out.println("Please, input the nurse info:");
+		System.out.print("Name: ");
+		String name = reader.readLine();
+		System.out.print("Gender: ");
+		String gender = reader.readLine();
+		System.out.print("Hours: ");
+		int hours = Integer.parseInt(reader.readLine());
+		System.out.print("Date of Birth (yyyy-MM-dd): ");
+		String dob = reader.readLine();
+		LocalDate dobDate = LocalDate.parse(dob, formatter);
+		Date d = Date.valueOf(dobDate);
+		Nurse nurse = new Nurse(name, gender, d, hours);
+		System.out.println("Nurse created correctly");
+		db.insertNurse(nurse);
+	}
 
 	public void insertNurseMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
-			throws IOException {
+			throws IOException, SQLException {
 
 		System.out.println("Please, input the nurse info:");
 		System.out.print("Name: ");
@@ -199,14 +218,48 @@ public class UtilitiesUI {
 		System.out.println("Nurse created correctly");
 		db.insertNurse(nurse);
 
-		jpa.selectPatient();
-		do {
-			System.out.println("Select patient id");
-			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipNP(nurse.getId(), chosenId);
-		} while (reader.readLine() == "");
+		System.out.println("Do you want to introduce a patient? (yes / no )");
+		while (true) {
+			String leido = reader.readLine();
+			if (leido.equalsIgnoreCase("yes")) {
 
-		System.out.println("Patient(s) selected correctly");
+				System.out.println("Is your patient created already?(yes/no)");
+				while (true) {
+					String respuesta = reader.readLine();
+					if (respuesta.equalsIgnoreCase("yes")) {
+						assignPatientToNurse(jpa, reader, db, nurse);
+
+						break;
+
+					}
+					if (respuesta.equalsIgnoreCase("no")) {
+						insertPatientSimple(db, reader, jpa, formatter);
+						
+					}
+					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+
+				}
+
+			}
+			if (leido.equalsIgnoreCase("no")) {
+				System.out.println("Your new nurse doesn´t have a patient");
+				break;
+			}
+			System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+		}
+
+		// System.out.println(db.selectNurse());
+		// int nid = Integer.parseInt(reader.readLine());
+		// Nurse nu = db.getNurseId(nid);
+
+		// System.out.println(db.selectDoctor());
+		// int did = Integer.parseInt(reader.readLine());
+		// Doctor doc = db.getDoctorId(did);
+
+		db.insertNurse(nurse);
+		System.out.println("Nurse created correctly");
+
+		//System.out.println("Nurse(s) selected correctly");
 		System.out.println("Nurse inserted");
 	}
 
@@ -225,7 +278,8 @@ public class UtilitiesUI {
 
 	}
 
-	public void deleteNurseMenu(DBManager db, BufferedReader reader) throws NumberFormatException, IOException, SQLException {
+	public void deleteNurseMenu(DBManager db, BufferedReader reader)
+			throws NumberFormatException, IOException, SQLException {
 		List<Nurse> lista = new ArrayList<Nurse>();
 		lista = db.selectNurse();
 		for (int i = 0; i < lista.size(); i++) {
@@ -237,8 +291,9 @@ public class UtilitiesUI {
 		db.deleteNurse(idChosen);
 		System.out.println("Nurse deleted");
 	}
-	
-	public void updateNurseMenu(DBManager db, BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException, SQLException {
+
+	public void updateNurseMenu(DBManager db, BufferedReader reader, DateTimeFormatter formatter)
+			throws NumberFormatException, IOException, SQLException {
 		List<Nurse> lis = new ArrayList<Nurse>();
 		lis = db.selectNurse();
 		for (int i = 0; i < lis.size(); i++) {
@@ -278,42 +333,83 @@ public class UtilitiesUI {
 		System.out.println("Update finished.");
 	}
 
-	
-	
-	
-	public void assignNurseToPatient(JPAManager jpa, BufferedReader reader, DBManager db, Patient patient) throws NumberFormatException, IOException {
+	public void assignNurseToPatient(JPAManager jpa, BufferedReader reader, DBManager db, Patient patient)
+			throws NumberFormatException, IOException {
 		jpa.selectNurse();
-		
+
 		do {
 			System.out.println("Select  id");
 			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipNP(patient.getId(), chosenId);
+			db.createRelationshipNP(chosenId, patient.getId());
 		} while (reader.readLine() == "");
-		
+
 	}
+
 	
-	public void insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter) throws IOException, SQLException {
+	//PATIENT
+	public void insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter) throws IOException {
 		System.out.println("Please, input the patient info:");
 		System.out.print("Name: ");
 		String nameP = reader.readLine();
 		System.out.print("Gender: ");
 		String genderP = reader.readLine();
-
 		System.out.print("Date of Birth (yyyy-MM-dd): ");
 		String dobP = reader.readLine();
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
-		Patient patient=new Patient(nameP,genderP,dP);
+		Patient patient = new Patient(nameP, genderP, dP);
 		
-		
-	
-		System.out.println(db.selectNurse());
-		int nid = Integer.parseInt(reader.readLine());
-		Nurse nu = db.getNurseId(nid);
-		System.out.println(db.selectDoctor());
-		int did = Integer.parseInt(reader.readLine());
-		Doctor doc = db.getDoctorId(did);
-		
+	}
+	public void insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
+			throws IOException, SQLException {
+		System.out.println("Please, input the patient info:");
+		System.out.print("Name: ");
+		String nameP = reader.readLine();
+		System.out.print("Gender: ");
+		String genderP = reader.readLine();
+		System.out.print("Date of Birth (yyyy-MM-dd): ");
+		String dobP = reader.readLine();
+		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
+		Date dP = Date.valueOf(dobDateP);
+		Patient patient = new Patient(nameP, genderP, dP);
+
+		System.out.println("Do you want to introduce a nurse? (yes / no )");
+		while (true) {
+			String leido = reader.readLine();
+			if (leido.equalsIgnoreCase("yes")) {
+
+				System.out.println("Is your nurse created already?(yes/no)");
+				while (true) {
+					String respuesta = reader.readLine();
+					if (respuesta.equalsIgnoreCase("yes")) {
+						assignNurseToPatient(jpa, reader, db, patient);
+
+						break;
+
+					}
+					if (respuesta.equalsIgnoreCase("no")) {
+						insertNurseSimple(db, jpa, reader, formatter);
+					}
+					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+
+				}
+
+			}
+			if (leido.equalsIgnoreCase("no")) {
+				System.out.println("Your new patient doesn´t have a nurse");
+				break;
+			}
+			System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+		}
+
+		// System.out.println(db.selectNurse());
+		// int nid = Integer.parseInt(reader.readLine());
+		// Nurse nu = db.getNurseId(nid);
+
+		// System.out.println(db.selectDoctor());
+		// int did = Integer.parseInt(reader.readLine());
+		// Doctor doc = db.getDoctorId(did);
+
 		jpa.insertPatient(patient);
 		System.out.println("Patient created correctly");
 
@@ -327,7 +423,8 @@ public class UtilitiesUI {
 		}
 	}
 
-	public void updatePatientMenu() {
+	public void updatePatientMenu(DBManager db, BufferedReader reader, DateTimeFormatter formatter)
+			throws NumberFormatException, IOException {
 		List<Patient> listPat = new ArrayList<Patient>();
 		listPat = db.selectPatient();
 		for (int i = 0; i < listPat.size(); i++) {
@@ -364,18 +461,28 @@ public class UtilitiesUI {
 
 	}
 
-	
-	
+	public void assignPatientToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse)
+			throws NumberFormatException, IOException {
+		jpa.selectPatient();
+
+		do {
+			System.out.println("Select  id");
+			int chosenId = Integer.parseInt(reader.readLine());
+			db.createRelationshipNP(nurse.getId(), chosenId);
+		} while (reader.readLine() == "");
+
+	}
+
 	public void insertTreatmentMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
 			throws NumberFormatException, IOException, SQLException {
-		
+
 		System.out.println("Please, input the treatment info:");
 		System.out.print("Name of treatment: ");
 		String nameTreatment = reader.readLine();
 		System.out.print("Number: ");
 		int number = Integer.parseInt(reader.readLine());
-		
-		Treatment treatment = new Treatment(nameTreatment,number);
+
+		Treatment treatment = new Treatment(nameTreatment, number);
 		db.insertTreatment(treatment);
 		System.out.println(jpa.selectPatient());
 		do {
@@ -385,22 +492,18 @@ public class UtilitiesUI {
 		} while (reader.readLine() == "");
 
 		System.out.println("Patient(s) selected correctly");
-		
+
 		System.out.println(db.selectDoctor());
 		System.out.println("Select doctor id");
 		int chosenId = Integer.parseInt(reader.readLine());
 		String sql = "UPDATE treatment SET id=? ";
-		Connection c=db.getConnection();
+		Connection c = db.getConnection();
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setInt(1, chosenId);
-		
+
 		System.out.println("Doctor selected correctly");
 		System.out.println("Treatment inserted");
-		
+
 	}
-
-	
-
-	
 
 }

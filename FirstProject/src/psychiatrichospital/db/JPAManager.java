@@ -130,6 +130,9 @@ public class JPAManager implements Manager {
 		r.addPatient(p);
 		em.getTransaction().commit();
 	}
+	
+
+
 
 	public List<Patient> selectPatientByName(String name) {
 		Query q1 = em.createNativeQuery("SELECT * FROM patient WHERE name LIKE ?", Patient.class);
