@@ -129,16 +129,16 @@ public class UserInterface {
 					int optionTreatment = Integer.parseInt(reader.readLine());
 					switch (optionTreatment) {
 					case 1:
-						uui.selectTreatmentMenu(db, reader);
+						//uui.selectTreatmentMenu(db, reader);
 						break;
 					case 2:
 						uui.insertTreatmentMenu(db, jpa, reader, formatter);
 						break;
 					case 3:
-						uui.deleteTreatmentMenu(db, reader);
+						//uui.deleteTreatmentMenu(db, reader);
 						break;
 					case 4:
-						uui.updateTreatmentMenu(db, reader, formatter);
+						//uui.updateTreatmentMenu(db, reader, formatter);
 						break;
 					}
 

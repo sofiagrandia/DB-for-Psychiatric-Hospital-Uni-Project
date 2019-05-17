@@ -12,17 +12,24 @@ import Project.Patient;
 @Entity
 @Table(name = "room")
 public class Room  implements Serializable{
-	
+
+	private static final long serialVersionUID = -50179526691591647L;
+
 	@Id
 	@GeneratedValue(generator="room")
 	@TableGenerator(name="room", table="sqlite_sequence",
 		    pkColumnName="floor", valueColumnName="seq", pkColumnValue="room")
-	private static final long serialVersionUID = -50179526691591647L;
-	private int id;
+	private Integer id;
 	private int floor;
     @OneToMany(mappedBy= "room")
-    @JoinColumn
 	private List <Patient> patients;
+    
+    
+	public Room() {
+		super();
+		this.patients = new ArrayList<Patient>();
+	}
+	
 	public Room(int id, int floor, List <Patient> patients) {
 		super();
 		this.id = id;
@@ -34,10 +41,10 @@ public class Room  implements Serializable{
 		this.floor = floor;
 		this.patients = patients;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public int getFloor() {

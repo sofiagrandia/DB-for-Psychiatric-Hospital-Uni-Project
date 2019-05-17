@@ -105,15 +105,30 @@ public class JPAManager implements Manager {
 	
 	// PATIENT añadir lo de abajo
 	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment) {
-		em.getTransaction().begin();
-		em.persist(patient);
-		patient.setRoom(room);
-		room.addPatient(patient);
-		patient.addNurse(nurse);
-		patient.addDoctor(doctor);
-		patient.addTreatment(treatment);
-		em.getTransaction().commit();
+		this.insertPatient(patient);
+		this.assignPatientRoom(patient, room);
+//		em.getTransaction().begin();
+//		em.persist(patient);
+//		patient.setRoom(room);
+//		room.addPatient(patient);
+//		patient.addNurse(nurse);
+//		patient.addDoctor(doctor);
+//		patient.addTreatment(treatment);
+//		em.getTransaction().commit();
 
+	}
+	
+	public void insertPatient(Patient p) {
+		em.getTransaction().begin();
+		em.persist(p);
+		em.getTransaction().commit();
+	}
+	
+	public void assignPatientRoom(Patient p, Room r) {
+		em.getTransaction().begin();
+		p.setRoom(r);
+		r.addPatient(p);
+		em.getTransaction().commit();
 	}
 
 	public List<Patient> selectPatientByName(String name) {
@@ -217,7 +232,6 @@ public class JPAManager implements Manager {
 
 		em.getTransaction().begin();
 		em.persist(room);
-		// 2.- Link room and patient
 		room.addPatient(patient);
 		patient.setRoom(room);
 		em.getTransaction().commit();

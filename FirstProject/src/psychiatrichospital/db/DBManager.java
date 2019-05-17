@@ -253,6 +253,7 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
+
 	
 
 	public List<Treatment> getTreatmentId(String type) throws SQLException {

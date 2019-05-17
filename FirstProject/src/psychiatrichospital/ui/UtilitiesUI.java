@@ -280,48 +280,46 @@ public class UtilitiesUI {
 
 	
 	
-	public void insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter) {
+	
+	public void assignNurseToPatient(JPAManager jpa, BufferedReader reader, DBManager db, Patient patient) throws NumberFormatException, IOException {
+		jpa.selectNurse();
+		
+		do {
+			System.out.println("Select  id");
+			int chosenId = Integer.parseInt(reader.readLine());
+			db.createRelationshipNP(patient.getId(), chosenId);
+		} while (reader.readLine() == "");
+		
+	}
+	
+	public void insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter) throws IOException, SQLException {
 		System.out.println("Please, input the patient info:");
 		System.out.print("Name: ");
 		String nameP = reader.readLine();
 		System.out.print("Gender: ");
 		String genderP = reader.readLine();
-		System.out.print("Hours: ");
-		int hours=Integer.parseInt(reader.readLine());
+
 		System.out.print("Date of Birth (yyyy-MM-dd): ");
 		String dobP = reader.readLine();
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
+		Patient patient=new Patient(nameP,genderP,dP);
 		
 		
-		jpa.selectRoom();
-		
-		do {
-			System.out.println("Select  id");
-			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipNP(nurse.getId(), chosenId);
-		} while (reader.readLine() == "");
-		
-		
-		Patient patient = new Patient(nameP, genderP, dP, room_idP);
-		System.out.println(jpa.selectRoom());
-		int rid = Integer.parseInt(reader.readLine());
-		Room r = jpa.selectRoomById(rid);
+	
 		System.out.println(db.selectNurse());
 		int nid = Integer.parseInt(reader.readLine());
 		Nurse nu = db.getNurseId(nid);
 		System.out.println(db.selectDoctor());
 		int did = Integer.parseInt(reader.readLine());
 		Doctor doc = db.getDoctorId(did);
-		System.out.println(db.selectTreatment());
-		int tid = Integer.parseInt(reader.readLine());
-		Treatment t = db.getTreatmentId(tid);
-		db.insertPatient(patient, r, nu, doc, t);
+		
+		jpa.insertPatient(patient);
 		System.out.println("Patient created correctly");
 
 	}
 
-	public void selectPatientMenu() {
+	public void selectPatientMenu(DBManager db) {
 		List<Patient> listaP = new ArrayList<Patient>();
 		listaP = db.selectPatient();
 		for (int i = 0; i < listaP.size(); i++) {

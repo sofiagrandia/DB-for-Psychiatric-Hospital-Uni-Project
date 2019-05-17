@@ -1,6 +1,7 @@
 package Project;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import Project.Contract;
@@ -14,8 +15,16 @@ public class Nurse implements Serializable  {
 	private String  gender;
 	private Date dob;
 	private int hours;
+	
 	private List<Patient> patients;
 	private Contract contract;
+	
+	
+	public Nurse() {
+		super();
+		this.patients=new ArrayList<Patient>();
+		
+	}
 	public Nurse(int id, String name, String gender, Date dob, int hours, List<Patient> patients, Contract contract) {
 		super();
 		this.id = id;
@@ -42,8 +51,14 @@ public class Nurse implements Serializable  {
 	public Nurse(int id2, String name2, String gender2, Date dob2, int hours2) {
 		// TODO Auto-generated constructor stub
 	}
-	public Nurse(String name2, String gender2, Date d, int hours2) {
-		// TODO Auto-generated constructor stub
+	
+	
+	public Nurse(String name, String gender, Date dob, int hours) {
+		super();
+		this.name = name;
+		this.gender = gender;
+		this.dob = dob;
+		this.hours = hours;
 	}
 	public int getId() {
 		return id;

@@ -33,8 +33,11 @@ public class Treatment implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public Treatment() {
+	public Treatment(int id, String type, int number ) {
 		super();
+		this.id=id;
+		this.type=type;
+		this.number=number;
 	}
 	
 	@Id

@@ -8,6 +8,7 @@ import Project.Treatment;
 import Project.Room;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,48 +16,56 @@ import javax.persistence.*;
 import javax.persistence.OneToMany;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "patient")
 
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = -4386205613920392395L;
 	@Id
-	@GeneratedValue(generator="patients")
-	@TableGenerator(name="patients", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="patients")
+	@GeneratedValue(generator="patient")
+	@TableGenerator(name="patient", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="patient")
 	private int id;
 	private String name;
 	private String gender;
 	private Date dob;
-	private byte [] photo;
-    @OneToMany(mappedBy= "patients")
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "room_id")
 	private Room room;
     @Transient
 	private List <Treatment> treatments;
+    @Transient
 	private List <Doctor> doctors;
+    @Transient
 	private List <Nurse> nurses;
-	public Patient(int id, String name, String gender, Date dob, int room_id, byte[] photo, Room room,
+    
+    
+	public Patient() {
+		super();
+		this.nurses = new ArrayList<Nurse>();	
+		this.doctors = new ArrayList<Doctor>();	
+		this.treatments = new ArrayList<Treatment>();	
+		}
+	
+	public Patient(int id, String name, String gender, Date dob, int room_id, Room room,
 			List<Treatment> treatments, List<Doctor> doctors, List<Nurse> nurses) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
 		this.dob = dob;
-		this.room_id = room_id;
-		this.photo = photo;
 		this.room = room;
 		this.treatments = treatments;
 		this.doctors = doctors;
 		this.nurses = nurses;
 	}
-	public Patient(String name, String gender, Date dob, int room_id, byte[] photo, Room room,
+	public Patient(String name, String gender, Date dob, int room_id,  Room room,
 			List<Treatment> treatments, List<Doctor> doctors, List<Nurse> nurses) {
 		super();
 		this.name = name;
 		this.gender = gender;
 		this.dob = dob;
-		this.room_id = room_id;
-		this.photo = photo;
+		this.room.setId(room_id);
 		this.room = room;
 		this.treatments = treatments;
 		this.doctors = doctors;
@@ -68,11 +77,26 @@ public class Patient implements Serializable {
 		this.doctors = doctors;
 		this.nurses = nurses;
 	}
-	public Patient(int id2, String name2, String gender2, Date date, int room_id2, byte[] blobArray) {
-		// TODO Auto-generated constructor stub
+	public Patient(int id2, String name2, String gender2, Date date, int room_id2) {
+		this.id=id2;
+		this.name=name2;
+		this.gender=gender2;
+		this.dob=date;
+		this.room.setId(room_id2);
 	}
-	public Patient(String nameP, String genderP, Date dP, int room_idP, byte[] bytesBlob) {
-		// TODO Auto-generated constructor stub
+	public Patient(String nameP, String genderP, Date dP, int room_idP) {
+		this.name=nameP;
+		this.gender=genderP;
+		this.dob=dP;
+		this.room.setId(room_idP);
+	}
+	
+
+	public Patient(String name, String gender, Date dob) {
+		super();
+		this.name = name;
+		this.gender = gender;
+		this.dob = dob;
 	}
 
 	public int getId() {
@@ -100,17 +124,13 @@ public class Patient implements Serializable {
 		this.dob = dob;
 	}
 	public int getRoom_id() {
-		return room_id;
+		return room.getId();
 	}
 	public void setRoom_id(int room_id) {
-		this.room_id = room_id;
+		this.room.setId(room_id);
 	}
-	public byte[] getPhoto() {
-		return photo;
-	}
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
+
+	
 	public Room getRoom() {
 		return room;
 	}
@@ -174,8 +194,8 @@ public class Patient implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob + ", room_id=" + room_id
-				+ ", photo=" + Arrays.toString(photo) + ", room=" + room + ", treatments=" + treatments + ", doctors="
+		return "Patient [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob + ", room_id=" + room.getId()
+				 + ", room=" + room + ", treatments=" + treatments + ", doctors="
 				+ doctors + ", nurses=" + nurses + "]";
 	}
 	@Override

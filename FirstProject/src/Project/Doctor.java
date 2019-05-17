@@ -48,10 +48,18 @@ public class Doctor implements Serializable {
 		this.treatments = treatments;
 	}
 	public Doctor(String nameDoc, String genderDoc, Date dDoc, int hoursDoc) {
-		// TODO Auto-generated constructor stub
+		super();
+		this.name=nameDoc;
+		this.gender=genderDoc;
+		this.dob=dDoc;
+		this.hours=hoursDoc;
 	}
 	public Doctor(int id1, String name2, String gender2, Date date, int hours2) {
-		// TODO Auto-generated constructor stub
+		this.id=id1;
+		this.name=name2;
+		this.gender=gender2;
+		this.dob=date;
+		this.hours=hours2;
 	}
 	public int getId() {
 		return id;
