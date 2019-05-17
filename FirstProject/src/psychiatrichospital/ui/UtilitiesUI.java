@@ -182,8 +182,9 @@ public class UtilitiesUI {
 	}
 
 	// NURSE
-	
-	public void insertNurseSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter) throws IOException {
+
+	public void insertNurseSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
+			throws IOException {
 		System.out.println("Please, input the nurse info:");
 		System.out.print("Name: ");
 		String name = reader.readLine();
@@ -196,8 +197,8 @@ public class UtilitiesUI {
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
 		Date d = Date.valueOf(dobDate);
 		Nurse nurse = new Nurse(name, gender, d, hours);
-		System.out.println("Nurse created correctly");
-		db.insertNurse(nurse);
+
+	
 	}
 
 	public void insertNurseMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
@@ -219,7 +220,7 @@ public class UtilitiesUI {
 		db.insertNurse(nurse);
 
 		System.out.println("Do you want to introduce a patient? (yes / no )");
-		while (true) {
+
 			String leido = reader.readLine();
 			if (leido.equalsIgnoreCase("yes")) {
 
@@ -231,22 +232,20 @@ public class UtilitiesUI {
 
 						break;
 
-					}
-					if (respuesta.equalsIgnoreCase("no")) {
+					} else if (respuesta.equalsIgnoreCase("no")) {
 						insertPatientSimple(db, reader, jpa, formatter);
-						
-					}
-					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+						break;
+					} else
+						System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
 
 				}
 
 			}
 			if (leido.equalsIgnoreCase("no")) {
 				System.out.println("Your new nurse doesn´t have a patient");
-				break;
+				
 			}
-			System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
-		}
+		
 
 		// System.out.println(db.selectNurse());
 		// int nid = Integer.parseInt(reader.readLine());
@@ -259,7 +258,7 @@ public class UtilitiesUI {
 		db.insertNurse(nurse);
 		System.out.println("Nurse created correctly");
 
-		//System.out.println("Nurse(s) selected correctly");
+		// System.out.println("Nurse(s) selected correctly");
 		System.out.println("Nurse inserted");
 	}
 
@@ -345,9 +344,9 @@ public class UtilitiesUI {
 
 	}
 
-	
-	//PATIENT
-	public void insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter) throws IOException {
+	// PATIENT
+	public void insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
+			throws IOException {
 		System.out.println("Please, input the patient info:");
 		System.out.print("Name: ");
 		String nameP = reader.readLine();
@@ -358,8 +357,10 @@ public class UtilitiesUI {
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
 		Patient patient = new Patient(nameP, genderP, dP);
-		
+	
+
 	}
+
 	public void insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
 			throws IOException, SQLException {
 		System.out.println("Please, input the patient info:");
@@ -374,7 +375,7 @@ public class UtilitiesUI {
 		Patient patient = new Patient(nameP, genderP, dP);
 
 		System.out.println("Do you want to introduce a nurse? (yes / no )");
-		while (true) {
+	
 			String leido = reader.readLine();
 			if (leido.equalsIgnoreCase("yes")) {
 
@@ -389,7 +390,8 @@ public class UtilitiesUI {
 					}
 					if (respuesta.equalsIgnoreCase("no")) {
 						insertNurseSimple(db, jpa, reader, formatter);
-					}
+						break;
+					}else
 					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
 
 				}
@@ -397,10 +399,10 @@ public class UtilitiesUI {
 			}
 			if (leido.equalsIgnoreCase("no")) {
 				System.out.println("Your new patient doesn´t have a nurse");
-				break;
 			}
-			System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
-		}
+
+
+		
 
 		// System.out.println(db.selectNurse());
 		// int nid = Integer.parseInt(reader.readLine());
