@@ -236,16 +236,16 @@ public class UtilitiesUI {
 						insertPatientSimple(db, reader, jpa, formatter);
 						
 					}
-					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+					System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
 
 				}
 
 			}
 			if (leido.equalsIgnoreCase("no")) {
-				System.out.println("Your new nurse doesn´t have a patient");
+				System.out.println("Your new nurse doesnï¿½t have a patient");
 				break;
 			}
-			System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+			System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
 		}
 
 		// System.out.println(db.selectNurse());
@@ -390,16 +390,16 @@ public class UtilitiesUI {
 					if (respuesta.equalsIgnoreCase("no")) {
 						insertNurseSimple(db, jpa, reader, formatter);
 					}
-					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+					System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
 
 				}
 
 			}
 			if (leido.equalsIgnoreCase("no")) {
-				System.out.println("Your new patient doesn´t have a nurse");
+				System.out.println("Your new patient doesnï¿½t have a nurse");
 				break;
 			}
-			System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+			System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
 		}
 
 		// System.out.println(db.selectNurse());
@@ -472,6 +472,49 @@ public class UtilitiesUI {
 		} while (reader.readLine() == "");
 
 	}
+	
+	public void assignPatientToTreatment(JPAManager jpa, BufferedReader reader, DBManager db, Treatment treatment)
+			throws NumberFormatException, IOException {
+		jpa.selectPatient();
+
+		do {
+			System.out.println("Select  id");
+			int chosenId = Integer.parseInt(reader.readLine());
+			db.createRelationshipNP(treatment.getId(), chosenId);
+		} while (reader.readLine() == "");
+
+	}
+	
+	public void assignDoctorToTreatment(JPAManager jpa, BufferedReader reader, DBManager db, Treatment treatment)
+			throws NumberFormatException, IOException {
+		jpa.selectDoctor();
+
+		do {
+			System.out.println("Select  id");
+			int chosenId = Integer.parseInt(reader.readLine());
+			db.createRelationshipNP(treatment.getId(), chosenId);
+		} while (reader.readLine() == "");
+
+	}
+	
+	public void insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
+			throws NumberFormatException, IOException {
+		System.out.println("Please, input the doctor info:");
+		System.out.print("Name: ");
+		String nameDoc = reader.readLine();
+		System.out.print("Gender: ");
+		String genderDoc = reader.readLine();
+		System.out.print("Hours: ");
+		int hoursDoc = Integer.parseInt(reader.readLine());
+		System.out.print("Date of Birth (yyyy-MM-dd): ");
+		String dobDoc = reader.readLine();
+		LocalDate dobDateDoc = LocalDate.parse(dobDoc, formatter);
+		Date dDoc = Date.valueOf(dobDateDoc);
+		Doctor doctor = new Doctor(nameDoc, genderDoc, dDoc, hoursDoc);
+		db.insertDoctor(doctor);
+	}
+	
+	
 
 	public void insertTreatmentMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
 			throws NumberFormatException, IOException, SQLException {
@@ -484,26 +527,72 @@ public class UtilitiesUI {
 
 		Treatment treatment = new Treatment(nameTreatment, number);
 		db.insertTreatment(treatment);
-		System.out.println(jpa.selectPatient());
-		do {
-			System.out.println("Select patient id");
-			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipPT(treatment.getId(), chosenId);
-		} while (reader.readLine() == "");
+		
+		System.out.println("Do you want to introduce a patient?(yes/no)");
+		//while (true) {
+			String leido = reader.readLine();
+			if (leido.equals("yes")) {
 
-		System.out.println("Patient(s) selected correctly");
+				System.out.println("Is your patient created already?(yes/no)");
+				while (true) {
+					String respuesta = reader.readLine();
+					if (respuesta.equalsIgnoreCase("yes")) {
+						assignPatientToTreatment(jpa, reader, db, treatment);
 
-		System.out.println(db.selectDoctor());
-		System.out.println("Select doctor id");
-		int chosenId = Integer.parseInt(reader.readLine());
-		String sql = "UPDATE treatment SET id=? ";
-		Connection c = db.getConnection();
-		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setInt(1, chosenId);
+						break;
 
-		System.out.println("Doctor selected correctly");
+					}
+					else if (respuesta.equalsIgnoreCase("no")) {
+						insertPatientSimple(db, reader, jpa, formatter);
+						break;
+					}
+					else System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
+
+				}
+
+			}
+			if (leido.equals("no")) {
+				System.out.println("Your new treatment doesnï¿½t have a patient");
+				//break;
+			}
+		//	System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
+		//}
+		
+
+		System.out.println("Patient introduced in treatment correctly");
+		
+		System.out.println("Do you want to introduce a doctor?(yes/no)");
+			String leido2 = reader.readLine();
+			if (leido2.equalsIgnoreCase("yes")) {
+
+				System.out.println("Is your doctor created already?(yes/no)");
+				while (true) {
+					String respuesta = reader.readLine();
+					if (respuesta.equalsIgnoreCase("yes")) {
+						assignDoctorToTreatment(jpa, reader, db, treatment);
+
+						break;
+
+					}
+					if (respuesta.equalsIgnoreCase("no")) {
+						insertDoctorSimple(db, jpa, reader, formatter);
+						break;
+					}
+					System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
+
+				}
+
+			}
+			if (leido.equalsIgnoreCase("no")) {
+				System.out.println("Your new treatment doesnï¿½t have a doctor");
+			}
+			//System.out.println("Oh no! You didnï¿½t choose a valid option! :( Try again");
+		
+
+		
+
+		System.out.println("Doctor introduced in treatment correctly");
 		System.out.println("Treatment inserted");
 
 	}
-
-}
+	}
