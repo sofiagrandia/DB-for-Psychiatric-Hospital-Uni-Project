@@ -61,7 +61,7 @@ public interface Manager {
 
 	public List<Contract> getContractId(float money) throws SQLException;
 
-	public Contract getContractId(Integer id) throws SQLException;
+	public Contract getContractbyId(Integer id) throws SQLException;
 
 	public List<Contract> selectContract();
 
