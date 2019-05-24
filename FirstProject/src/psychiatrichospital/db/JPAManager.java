@@ -16,6 +16,7 @@ import Project.Nurse;
 import Project.Patient;
 import Project.Room;
 import Project.Treatment;
+import Project.TreatmentList;
 
 public class JPAManager implements Manager {
 	private EntityManager em;
@@ -27,6 +28,7 @@ public class JPAManager implements Manager {
 		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 		em.getTransaction().commit();
 	}
+
 
 	@Override
 	public void closeConnection() {
@@ -360,6 +362,12 @@ public class JPAManager implements Manager {
 
 		@Override
 		public void deleteRelationshipPD(int pid, int did) throws SQLException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void marshaller(TreatmentList tl, String direccion) {
 			// TODO Auto-generated method stub
 			
 		}

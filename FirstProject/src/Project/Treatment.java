@@ -69,6 +69,13 @@ public class Treatment implements Serializable {
 		this.doctor = doctor;
 		this.p = p;
 	}
+	
+	
+	public Treatment() {
+		super();
+	}
+
+
 	public Treatment(String type, Integer number, Doctor doctor, List<Patient> p) {
 		super();
 		this.type = type;

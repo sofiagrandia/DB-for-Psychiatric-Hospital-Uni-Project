@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TreatmentList>
+    <listTreatment type="antibiotico" number="3" id="1"/>
+    <listTreatment type="ibuprofeno" number="4" id="2"/>
+    <listTreatment type="ibu" number="2" id="3"/>
+    <listTreatment type="ibu" number="2" id="4"/>
+    <listTreatment type="so" number="2" id="5"/>
+    <listTreatment type="ola" number="3" id="6"/>
+    <listTreatment type="ola" number="4" id="7"/>
+    <listTreatment type="So" number="20" id="8"/>
+    <listTreatment type="ibuprofeno" number="35" id="9"/>
+    <listTreatment type="ibuprofeno" number="35" id="10"/>
+</TreatmentList>

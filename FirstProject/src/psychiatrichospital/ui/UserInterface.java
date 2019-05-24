@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
+
 import Project.Patient;
 import Project.Room;
 import Project.Treatment;
@@ -26,7 +29,7 @@ public class UserInterface {
 	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	// It is going to have a main
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, JAXBException {
 
 		DBManager db = new DBManager();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -46,6 +49,7 @@ public class UserInterface {
 				option = Integer.parseInt(stringLeido);
 				db.connection();
 				jpa.connection();
+				
 				db.createTables();
 
 				switch (option) {
@@ -140,10 +144,15 @@ public class UserInterface {
 					case 4:
 						//uui.updateTreatmentMenu(db, reader, formatter);
 						break;
+					case 5:
+						uui.marshall(db, reader);
 					}
 
 					break;
-
+					
+					
+				
+				case 7: System.exit(0);
 				}
 
 			} while (option != 0);

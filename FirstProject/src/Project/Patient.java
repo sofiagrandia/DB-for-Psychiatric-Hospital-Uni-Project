@@ -5,6 +5,7 @@ package Project;
 import Project.Nurse;
 import Project.Doctor;
 import Project.Treatment;
+import xmlUtils.SQLDateAdapter;
 import Project.Room;
 import java.io.Serializable;
 import java.sql.Date;
@@ -13,10 +14,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.persistence.OneToMany;
+
+
 
 @Entity
 @Table(name = "patient")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Patient")
+@XmlType(propOrder = { "id", "name", "gender", "dob" })
 
 public class Patient implements Serializable {
 
@@ -25,19 +38,31 @@ public class Patient implements Serializable {
 	@GeneratedValue(generator="patient")
 	@TableGenerator(name="patient", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="patient")
+	@XmlAttribute
 	private int id;
+	@XmlAttribute
 	private String name;
+	@XmlAttribute
 	private String gender;
+	@XmlAttribute
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dob;
+ 
+    @XmlTransient
+    @OneToMany(mappedBy= "patient")
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "room_id")
 	private Room room;
+    @XmlTransient
     @Transient
 	private List <Treatment> treatments;
+    @XmlTransient
     @Transient
 	private List <Doctor> doctors;
+    @XmlTransient
     @Transient
 	private List <Nurse> nurses;
+
     
     
 	public Patient() {

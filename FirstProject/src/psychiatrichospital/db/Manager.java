@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
+
 import Project.Contract;
 import Project.Doctor;
 import Project.Nurse;
 import Project.Patient;
 import Project.Room;
 import Project.Treatment;
+import Project.TreatmentList;
 
 public interface Manager {
 	public void connection();
@@ -111,4 +114,9 @@ public interface Manager {
 		public void createRelationshipPD(int did, int pid);
 		
 		public void deleteRelationshipPD(int pid, int did) throws SQLException;
+		
+		
+		//MARSHALL
+		
+		public void marshaller (TreatmentList tl, String direccion) throws JAXBException, SQLException;
 }

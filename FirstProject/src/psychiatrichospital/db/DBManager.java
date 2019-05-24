@@ -13,6 +13,7 @@ import Project.Nurse;
 import Project.Patient;
 import Project.Room;
 import Project.Treatment;
+import Project.TreatmentList;
 import Project.Doctor;
 import Project.Contract;
 
@@ -578,6 +579,8 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	
+	//public void createRelationShip
+	
 	// CREATE TABLES
 	public void createTables() {
 			try {
@@ -684,5 +687,10 @@ public class DBManager implements Manager {
 			}
 
 		}
+	@Override
+	public void marshaller(TreatmentList tl, String direccion) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

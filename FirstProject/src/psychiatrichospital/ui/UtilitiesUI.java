@@ -13,13 +13,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
+
 import Project.Doctor;
 import Project.Nurse;
 import Project.Patient;
 import Project.Room;
 import Project.Treatment;
+import Project.TreatmentList;
 import psychiatrichospital.db.DBManager;
 import psychiatrichospital.db.JPAManager;
+import psychiatrichospital.db.XMLManager;
 
 public class UtilitiesUI {
 
@@ -31,6 +35,7 @@ public class UtilitiesUI {
 		System.out.println("4)Patient");
 		System.out.println("5)Room");
 		System.out.println("6)Treatement");
+		System.out.println("7)Exit");
 
 	}
 
@@ -80,6 +85,7 @@ public class UtilitiesUI {
 		System.out.println("2)Create treatment");
 		System.out.println("3)Delete treatment");
 		System.out.println("4)Update treatment");
+		System.out.println("5)Marshall treatment");
 	}
 
 	// DOCTOR
@@ -103,7 +109,8 @@ public class UtilitiesUI {
 		do {
 			System.out.println("Select patient id");
 			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipNP(doctor.getId(), chosenId);
+			//FALLO
+			db.createRelationshipPD(doctor.getId(), chosenId);
 		} while (reader.readLine() == "");
 
 		System.out.println("Patient(s) selected correctly");
@@ -182,8 +189,9 @@ public class UtilitiesUI {
 	}
 
 	// NURSE
-	
-	public void insertNurseSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter) throws IOException {
+
+	public void insertNurseSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
+			throws IOException {
 		System.out.println("Please, input the nurse info:");
 		System.out.print("Name: ");
 		String name = reader.readLine();
@@ -196,8 +204,8 @@ public class UtilitiesUI {
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
 		Date d = Date.valueOf(dobDate);
 		Nurse nurse = new Nurse(name, gender, d, hours);
-		System.out.println("Nurse created correctly");
-		db.insertNurse(nurse);
+
+	
 	}
 
 	public void insertNurseMenu(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
@@ -219,7 +227,7 @@ public class UtilitiesUI {
 		db.insertNurse(nurse);
 
 		System.out.println("Do you want to introduce a patient? (yes / no )");
-		while (true) {
+
 			String leido = reader.readLine();
 			if (leido.equalsIgnoreCase("yes")) {
 
@@ -231,22 +239,31 @@ public class UtilitiesUI {
 
 						break;
 
-					}
-					if (respuesta.equalsIgnoreCase("no")) {
+					} else if (respuesta.equalsIgnoreCase("no")) {
 						insertPatientSimple(db, reader, jpa, formatter);
+                        break;
 						
-					}
-					System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
+					
+					} else
+						System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
+
 
 				}
 
 			}
 			if (leido.equalsIgnoreCase("no")) {
+
 				System.out.println("Your new nurse doesn�t have a patient");
-				break;
+				
+
+				
+				
+
 			}
-			System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
-		}
+
+			
+		
+
 
 		// System.out.println(db.selectNurse());
 		// int nid = Integer.parseInt(reader.readLine());
@@ -259,7 +276,7 @@ public class UtilitiesUI {
 		db.insertNurse(nurse);
 		System.out.println("Nurse created correctly");
 
-		//System.out.println("Nurse(s) selected correctly");
+		// System.out.println("Nurse(s) selected correctly");
 		System.out.println("Nurse inserted");
 	}
 
@@ -340,14 +357,14 @@ public class UtilitiesUI {
 		do {
 			System.out.println("Select  id");
 			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipNP(chosenId, patient.getId());
+			db.createRelationshipPD(chosenId, patient.getId());
 		} while (reader.readLine() == "");
 
 	}
 
-	
-	//PATIENT
-	public void insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter) throws IOException {
+	// PATIENT
+	public Patient insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
+			throws IOException {
 		System.out.println("Please, input the patient info:");
 		System.out.print("Name: ");
 		String nameP = reader.readLine();
@@ -358,8 +375,10 @@ public class UtilitiesUI {
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
 		Patient patient = new Patient(nameP, genderP, dP);
-		
+		return patient;
+
 	}
+
 	public void insertPatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
 			throws IOException, SQLException {
 		System.out.println("Please, input the patient info:");
@@ -372,9 +391,10 @@ public class UtilitiesUI {
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
 		Patient patient = new Patient(nameP, genderP, dP);
+		System.out.println("Patient created correctly");
 
 		System.out.println("Do you want to introduce a nurse? (yes / no )");
-		while (true) {
+	
 			String leido = reader.readLine();
 			if (leido.equalsIgnoreCase("yes")) {
 
@@ -386,21 +406,32 @@ public class UtilitiesUI {
 
 						break;
 
-					}
-					if (respuesta.equalsIgnoreCase("no")) {
+					}else if (respuesta.equalsIgnoreCase("no")) {
 						insertNurseSimple(db, jpa, reader, formatter);
-					}
+						break;
+
+					
+					
+					}else
 					System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
+
 
 				}
 
-			}
+			
 			if (leido.equalsIgnoreCase("no")) {
+
 				System.out.println("Your new patient doesn�t have a nurse");
-				break;
+				
 			}
-			System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
+
+			
 		}
+
+		
+
+		
+
 
 		// System.out.println(db.selectNurse());
 		// int nid = Integer.parseInt(reader.readLine());
@@ -497,8 +528,9 @@ public class UtilitiesUI {
 
 	}
 	
-	public void insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
+	public Doctor insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
 			throws NumberFormatException, IOException {
+		
 		System.out.println("Please, input the doctor info:");
 		System.out.print("Name: ");
 		String nameDoc = reader.readLine();
@@ -512,6 +544,7 @@ public class UtilitiesUI {
 		Date dDoc = Date.valueOf(dobDateDoc);
 		Doctor doctor = new Doctor(nameDoc, genderDoc, dDoc, hoursDoc);
 		db.insertDoctor(doctor);
+		return doctor;
 	}
 	
 	
@@ -537,28 +570,30 @@ public class UtilitiesUI {
 				while (true) {
 					String respuesta = reader.readLine();
 					if (respuesta.equalsIgnoreCase("yes")) {
+						System.out.println(db.selectPatient());
 						assignPatientToTreatment(jpa, reader, db, treatment);
 
 						break;
 
 					}
-					else if (respuesta.equalsIgnoreCase("no")) {
-						insertPatientSimple(db, reader, jpa, formatter);
+					if (respuesta.equalsIgnoreCase("no")) {
+						Patient p=insertPatientSimple(db, reader, jpa, formatter);
+						db.createRelationshipPT(treatment.getId(), p.getId());
 						break;
 					}
-					else System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
+					else System.out.println("Oh no! You didn't choose a valid option! :( Try again");
 
 				}
 
 			}
-			if (leido.equals("no")) {
-				System.out.println("Your new treatment doesn�t have a patient");
+			if (leido.equalsIgnoreCase("no")) {
+				System.out.println("Your new treatment doesn't have a patient");
 				//break;
 			}
 		//	System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
 		//}
 		
-
+       db.insertTreatment(treatment);
 		System.out.println("Patient introduced in treatment correctly");
 		
 		System.out.println("Do you want to introduce a doctor?(yes/no)");
@@ -574,8 +609,9 @@ public class UtilitiesUI {
 						break;
 
 					}
-					if (respuesta.equalsIgnoreCase("no")) {
-						insertDoctorSimple(db, jpa, reader, formatter);
+					else if (respuesta.equalsIgnoreCase("no")) {
+						Doctor d=insertDoctorSimple(db, jpa, reader, formatter);
+						db.createRelationshipPD(treatment.getId(), d.getId());
 						break;
 					}
 					System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
@@ -594,5 +630,22 @@ public class UtilitiesUI {
 		System.out.println("Doctor introduced in treatment correctly");
 		System.out.println("Treatment inserted");
 
+		}
+	public void marshall(DBManager db, BufferedReader reader) throws IOException, JAXBException, SQLException {
+		System.out.println("Introduce the name of the document you want to marshall (always ending with .xml)");
+		//BufferedReader consola = new BufferedReader (new InputStreamReader (System.in));
+		String leido = reader.readLine();
+		List<Treatment> lista = db.selectTreatment();
+		TreatmentList treatments= new TreatmentList(lista);
+		XMLManager.marshaller(treatments, leido);
+		
+		
 	}
-	}
+	
+	
+	
+}
+
+
+
+

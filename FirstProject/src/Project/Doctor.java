@@ -1,24 +1,54 @@
 package Project;
 import Project.Patient;
 import Project.Treatment;
+import xmlUtils.SQLDateAdapter;
 import Project.Contract;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+
+@Entity
+@Table(name = "doctor")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Doctor")
+@XmlType(propOrder = { "name", "gender", "dob" ,"hours"})
 
 public class Doctor implements Serializable {
 	/**
 	 * 
 	 */
+	@Id
+	@GeneratedValue(generator="doctor")
+	@TableGenerator(name="doctor", table="sqlite_sequence",
+	   pkColumnName="name", valueColumnName="seq", pkColumnValue="doctor")
+	
+
 	private static final long serialVersionUID = 4922702477075776313L;
+	@XmlTransient
 	int id;
+	@XmlElement
 	private String name;
+	@XmlElement
 	private String  gender;
+	@XmlElement
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dob;
+	@XmlElement
 	private int hours;
+	@XmlTransient
 	private Contract contract;
+	@XmlTransient
 	private List <Patient> patients;
+	@XmlTransient
 	private List <Treatment> treatments;
+
 	public Doctor(int id, String name, String gender, Date dob, int hours, Contract contract, List<Patient> patients,
 			List<Treatment> treatments) {
 		super();
@@ -175,6 +205,10 @@ public class Doctor implements Serializable {
 	public String toString() {
 		return "Doctor [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob + ", hours=" + hours
 				+ ", contract=" + contract + ", patients=" + patients + ", treatments=" + treatments + "]";
+	}
+	public Doctor() {
+		super();
+		// TODO INITIALIZE LISTS
 	}
 	
 	
