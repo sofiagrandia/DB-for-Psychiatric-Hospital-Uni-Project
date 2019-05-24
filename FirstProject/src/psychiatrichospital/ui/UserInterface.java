@@ -106,8 +106,8 @@ public class UserInterface {
 					switch (optionPatient) {
 					case 1: uui.selectPatientMenu(db,reader,jpa);break;
 					case 2: uui.insertPatientMenu(db,reader,jpa,formatter);break;
-					case 3: uui.updatePatientMenu(db, reader, jpa, formatter);break;
-					case 4:
+					case 3: uui.deletePatientMenu( jpa,  reader);break;
+					case 4:uui.updatePatientMenu(db, reader, jpa, formatter);break;
 					}
 
 					break;
