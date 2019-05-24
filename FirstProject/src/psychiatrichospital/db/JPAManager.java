@@ -203,7 +203,7 @@ public class JPAManager implements Manager {
 	}
 
 	@Override
-	public Contract getContractId(Integer id) throws SQLException {
+	public Contract getContractbyId(Integer id) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

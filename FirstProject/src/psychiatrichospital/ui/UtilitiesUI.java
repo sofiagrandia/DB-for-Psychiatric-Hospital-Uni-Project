@@ -100,11 +100,7 @@ public class UtilitiesUI {
 		return contract;
 	}
 	
-	public Contract assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse)
-			throws NumberFormatException, IOException, SQLException {
-		
-		return c;
-	}
+	
 
 	// DOCTOR
 	public Doctor insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
@@ -165,8 +161,7 @@ public class UtilitiesUI {
 		}
 		System.out.println("Introduce a contract?");
 		Contract c=insertContractSimple(db, jpa, reader, formatter);
-		//ehesth
-		assignContractToNurse(jpa, reader, db, nurse)
+		//falta el contract
 		System.out.println("Patient(s) selected correctly");
 		System.out.println("Doctor inserted");
 
