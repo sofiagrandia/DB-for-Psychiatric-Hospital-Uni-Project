@@ -85,6 +85,42 @@ public class UtilitiesUI {
 	}
 
 	// CONTRACT
+	public void updateContract(DBManager db, BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException, SQLException {
+		List<Contract> lisCon = new ArrayList<Contract>();
+		lisCon = db.selectContract();
+		for (int i = 0; i < lisCon.size(); i++) {
+			System.out.println(lisCon.get(i));
+		}
+		System.out.println("Choose a contract, type its Id: ");
+		int idCon = Integer.parseInt(reader.readLine());
+		Contract contract = db.getContractbyId(idCon);
+		System.out.print("Amount: " + contract.getMoney());
+		System.out.println("Introduce the new amount");
+		String newAmount = (reader.readLine());
+		if (!newAmount.equals("")) {
+			float newA=Float.parseFloat(reader.readLine());
+			contract.setMoney(newA);
+		}
+		System.out.print("Holidays: " + contract.getHolidays());
+		System.out.println("Introduce the new holidays");
+		String newHolidays = (reader.readLine());
+		if (!newHolidays.equals("")) {
+			int newH=Integer.parseInt(reader.readLine());
+			contract.setHolidays(newH);
+		}
+		System.out.print("End date: " + contract.getDob());
+		System.out.println("Introduce the new end date");
+		String newDate = (reader.readLine());
+		if (!newDate.equals("")) {
+			LocalDate newDateContract = LocalDate.parse(newDate, formatter);
+			Date newDD = Date.valueOf(newDateContract);
+			contract.setDob(newDD);
+		}
+		db.updateContract(contract);
+		System.out.println("Update finished.");
+		
+	}
+	
 	public Contract insertContractSimple(DBManager db, JPAManager jpa,BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException {
 		System.out.println("Please, input the contract info:");
 		System.out.print("Amount: ");
@@ -100,7 +136,32 @@ public class UtilitiesUI {
 		return contract;
 	}
 	
+<<<<<<< HEAD
 	
+=======
+	public Contract assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse)
+			throws NumberFormatException, IOException, SQLException {
+		System.out.println(db.selectContract());
+		System.out.println("Select  id");
+		int chosenId = Integer.parseInt(reader.readLine());
+		Contract c = (Contract) db.getContractId(chosenId);
+		return c;
+	}
+	
+	
+	public void selectContract(DBManager db,  BufferedReader reader) throws NumberFormatException, IOException, SQLException {
+		List<Contract> lista = new ArrayList<Contract>();
+		lista = db.selectContract();
+		for (int i = 0; i < lista.size(); i++) {
+			System.out.println(lista.get(i));
+		}
+
+		System.out.println("Insert Contract id you wish to see");
+		int idChosen = Integer.parseInt(reader.readLine());
+		Contract c = db.getContractbyId(idChosen);
+		System.out.println(c);
+	}
+>>>>>>> branch 'master' of https://github.com/sofiagrandia/Repository
 
 	// DOCTOR
 	public Doctor insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
