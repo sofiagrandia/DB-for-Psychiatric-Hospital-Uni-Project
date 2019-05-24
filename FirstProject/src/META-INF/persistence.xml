@@ -12,6 +12,7 @@
 		<!-- Entity Class -->
 		<class>Project.Patient</class>
 		<class>Project.Room</class>
+		<class>Project.Treatment</class>
 
  
 		<properties>	

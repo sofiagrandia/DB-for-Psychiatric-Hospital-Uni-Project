@@ -41,6 +41,13 @@ public class Room  implements Serializable{
 		this.floor = floor;
 		this.patients = patients;
 	}
+	public Room(int floor) {
+		super();
+		this.floor = floor;
+		
+	}
+	
+	
 	public Integer getId() {
 		return id;
 	}

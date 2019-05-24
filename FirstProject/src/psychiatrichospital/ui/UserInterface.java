@@ -104,9 +104,9 @@ public class UserInterface {
 					uui.menuPatient();
 					int optionPatient = Integer.parseInt(reader.readLine());
 					switch (optionPatient) {
-					case 1: uui.insertPatientMenu(db,reader,jpa,formatter);break;
+					case 1: uui.selectPatientMenu(db,reader,jpa);break;
 					case 2: uui.insertPatientMenu(db,reader,jpa,formatter);break;
-					case 3:
+					case 3: uui.updatePatientMenu(db, reader, jpa, formatter);break;
 					case 4:
 					}
 

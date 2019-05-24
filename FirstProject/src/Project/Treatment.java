@@ -1,6 +1,7 @@
 package Project;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -18,6 +19,13 @@ import javax.xml.bind.annotation.*;
 @XmlType(propOrder = { "type", "number", "doctor", "p" })
 
 public class Treatment implements Serializable {
+	
+	
+	public Treatment() {
+		super();
+		p = new ArrayList<Patient>();
+	}
+
 	public Treatment(String type, Integer number) {
 		super();
 
@@ -39,15 +47,16 @@ public class Treatment implements Serializable {
 
 	@Id
 	@GeneratedValue(generator = "treatment")
-	@TableGenerator(name = "treatment", table = "sqlite_sequence", pkColumnName = "type", valueColumnName = "number", pkColumnValue = "treatment")
+	@TableGenerator(name = "treatment", table = "sqlite_sequence", 
+		    pkColumnName="name", valueColumnName="seq", pkColumnValue="patient")
 	@XmlAttribute
 	private Integer id;
 	@XmlAttribute
 	private String type;
 	@XmlAttribute
 	private Integer number;
-	@OneToMany(mappedBy = "treatment")
-	@XmlElement(name = "Doctor")
+@Transient
+@XmlElement(name = "Doctor")
 	// @XmlElementWrapper(name = "Doctors")
 	private Doctor doctor;
 	@ManyToMany
