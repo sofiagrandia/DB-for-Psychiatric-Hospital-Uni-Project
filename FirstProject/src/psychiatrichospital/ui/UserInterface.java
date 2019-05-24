@@ -143,7 +143,8 @@ public class UserInterface {
 					}
 
 					break;
-				case 7: System.exit(0);
+				case 7:
+					System.exit(0);
 				}
 
 			} while (option != 0);

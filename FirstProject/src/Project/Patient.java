@@ -192,6 +192,9 @@ public class Patient implements Serializable {
 	public void removeRoom() {
 		this.room=null;
 	}
+	/*public String showSimplePatient() {
+		return "name="+this.name+"\ngender"+this.gender+"\ndob"+this.dob;
+	}*/
 	@Override
 	public String toString() {
 		return "Patient [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob + ", room_id=" + room.getId()

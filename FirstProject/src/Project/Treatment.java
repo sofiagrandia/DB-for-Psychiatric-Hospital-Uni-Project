@@ -11,20 +11,16 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.*;
 
-
-
-
-
 @Entity
 @Table(name = "treatment")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Treatment")
-@XmlType(propOrder = { "type", "number", "doctor" ,"p"})
+@XmlType(propOrder = { "type", "number", "doctor", "p" })
 
 public class Treatment implements Serializable {
 	public Treatment(String type, Integer number) {
 		super();
-		
+
 		this.type = type;
 		this.number = number;
 	}
@@ -33,34 +29,35 @@ public class Treatment implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public Treatment(int id, String type, int number ) {
+
+	public Treatment(int id, String type, int number) {
 		super();
-		this.id=id;
-		this.type=type;
-		this.number=number;
+		this.id = id;
+		this.type = type;
+		this.number = number;
 	}
-	
+
 	@Id
-	@GeneratedValue(generator="treatment")
-	@TableGenerator(name="treatment", table="sqlite_sequence",
-	    pkColumnName="type", valueColumnName="number", pkColumnValue="treatment")
+	@GeneratedValue(generator = "treatment")
+	@TableGenerator(name = "treatment", table = "sqlite_sequence", pkColumnName = "type", valueColumnName = "number", pkColumnValue = "treatment")
 	@XmlAttribute
 	private Integer id;
 	@XmlAttribute
 	private String type;
 	@XmlAttribute
 	private Integer number;
-	@OneToMany(mappedBy="treatment")
+	@OneToMany(mappedBy = "treatment")
 	@XmlElement(name = "Doctor")
-    //@XmlElementWrapper(name = "Doctors")
+	// @XmlElementWrapper(name = "Doctors")
 	private Doctor doctor;
 	@ManyToMany
-	@JoinTable(name="patients",
-		joinColumns={@JoinColumn(name="treatment_id", referencedColumnName="id")},
-			    inverseJoinColumns={@JoinColumn(name="patient_id", referencedColumnName="id")})
+	@JoinTable(name = "patients", joinColumns = {
+			@JoinColumn(name = "treatment_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "patient_id", referencedColumnName = "id") })
 	@XmlElement(name = "Patient")
-    @XmlElementWrapper(name = "Patients")
+	@XmlElementWrapper(name = "Patients")
 	private List<Patient> p;
+
 	public Treatment(Integer id, String type, Integer number, Doctor doctor, List<Patient> p) {
 		super();
 		this.id = id;
@@ -69,6 +66,7 @@ public class Treatment implements Serializable {
 		this.doctor = doctor;
 		this.p = p;
 	}
+
 	public Treatment(String type, Integer number, Doctor doctor, List<Patient> p) {
 		super();
 		this.type = type;
@@ -76,6 +74,7 @@ public class Treatment implements Serializable {
 		this.doctor = doctor;
 		this.p = p;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,6 +82,7 @@ public class Treatment implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -99,36 +99,47 @@ public class Treatment implements Serializable {
 			return false;
 		return true;
 	}
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public Integer getNumber() {
 		return number;
 	}
+
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+
 	public Doctor getDoctor() {
 		return doctor;
 	}
+
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
 	}
+
 	public List<Patient> getP() {
 		return p;
 	}
+
 	public void setP(List<Patient> p) {
 		this.p = p;
 	}
+
 	@Override
 	public String toString() {
 		return "Treatment [id=" + id + ", type=" + type + ", number=" + number + ", doctor=" + doctor + ", p=" + p
