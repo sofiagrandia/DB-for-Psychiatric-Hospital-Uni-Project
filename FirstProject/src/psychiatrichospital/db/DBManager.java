@@ -399,7 +399,7 @@ public class DBManager implements Manager {
 			int holidays = rs.getInt("holidays");
 			Date d1 = rs.getDate("d1");
 			Date d2 = rs.getDate("d2");
-			Contract contract = new Contract(id4, money1, holidays, d1, d2);
+			Contract contract = new Contract(id4, money1, holidays, d1);
 			cn.add(contract);
 		}
 		rs.close();
@@ -417,8 +417,7 @@ public class DBManager implements Manager {
 			float money = rs.getFloat("money");
 			int holidays = rs.getInt("holidays");
 			Date d1 = rs.getDate("d1");
-			Date d2 = rs.getDate("d2");
-			contract = new Contract(idCon, money, holidays, d1, d2);
+			contract = new Contract( money, holidays, d1);
 		}
 		rs.close();
 		stmt.close();
@@ -437,9 +436,9 @@ public class DBManager implements Manager {
 				float money = rs.getFloat("money");
 				int holidays = rs.getInt("holidays");
 				Date d1 = rs.getDate("d1");
-				Date d2 = rs.getDate("d2");
+				
 
-				contract1 = new Contract(id, money, holidays, d1, d2);
+				contract1 = new Contract( money, holidays, d1);
 				n.add(contract1);
 
 			}

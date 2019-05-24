@@ -85,7 +85,21 @@ public class UtilitiesUI {
 	}
 
 	// CONTRACT
-
+	public Contract insertContractSimple(DBManager db, JPAManager jpa,BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException {
+		System.out.println("Please, input the contract info:");
+		System.out.print("Amount: ");
+		Float amount = Float.parseFloat(reader.readLine());
+		System.out.print("Contract valid until (yyyy-MM-dd): ");
+		String date = reader.readLine();
+		LocalDate dDate = LocalDate.parse(date, formatter);
+		Date d = Date.valueOf(dDate);
+		System.out.print("Holidays: ");
+		Integer holidays = Integer.parseInt(reader.readLine());
+		
+		Contract contract = new Contract(amount, holidays, d);
+		return contract;
+	}
+	
 	public Contract assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse)
 			throws NumberFormatException, IOException, SQLException {
 		System.out.println(db.selectContract());

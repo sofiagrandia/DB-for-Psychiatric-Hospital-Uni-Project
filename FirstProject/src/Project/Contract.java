@@ -36,9 +36,16 @@ public class Contract implements Serializable{
 			this.nurse = nurse;
 		}
 		 
-	public Contract(int id2, float money2, int holidays2, Date d1, Date d2) {
-			// TODO Auto-generated constructor stub
-		}
+	public Contract( float money2, int holidays2, Date d) {
+			this.money=money2;
+			this.holidays=holidays2;
+			this.dob=d;}
+	
+	public Contract( int id,float money2, int holidays2, Date d) {
+		this.id=id;
+		this.money=money2;
+		this.holidays=holidays2;
+		this.dob=d;}
 	public int getId() {
 		return id;
 	}
