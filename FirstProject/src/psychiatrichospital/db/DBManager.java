@@ -479,7 +479,7 @@ public class DBManager implements Manager {
 	
 	// ROOM
 	@Override
-	public void insertRoom(Room room, Patient patient) {
+	public void insertRoom(Room room) {
 		// TODO Auto-generated method stub
 
 	}
@@ -510,7 +510,7 @@ public class DBManager implements Manager {
 	// NURSE-PATIENT
 	public void createRelationshipNP(int nid, int pid) {
 		try {
-			String s = "INSERT INTO nurse_patient (nid, pid)" + " VALUES (?, ?)";
+			String s = "INSERT INTO nurse_patient (nurse_id, patient_id)" + " VALUES (?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setInt(1, nid);
 			p.setInt(2, pid);
@@ -557,7 +557,7 @@ public class DBManager implements Manager {
 	//PATIENT-DOCTOR
 	public void createRelationshipPD(int did, int pid) {
 		try {
-			String s = "INSERT INTO doctor_patient (did, pid)" + " VALUES (?, ?)";
+			String s = "INSERT INTO doctor_patient (doctor_id, patient_id)" + " VALUES (?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setInt(1, did);
 			p.setInt(2, pid);

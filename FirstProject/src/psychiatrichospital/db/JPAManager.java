@@ -227,15 +227,10 @@ public class JPAManager implements Manager {
 	
 	
 	// ROOM
-	// Nos falta un metodo que muestre todas las rooms
-	public void insertRoom(Room room, Patient patient) {
-
+	public void insertRoom(Room room) {
 		em.getTransaction().begin();
 		em.persist(room);
-		room.addPatient(patient);
-		patient.setRoom(room);
 		em.getTransaction().commit();
-
 	}
 
 	public Room selectRoomById(Integer id) {

@@ -44,10 +44,7 @@ public class Room  implements Serializable{
 	public Room(int floor) {
 		super();
 		this.floor = floor;
-		
 	}
-	
-	
 	public Integer getId() {
 		return id;
 	}
@@ -71,6 +68,10 @@ public class Room  implements Serializable{
 	}
 	
 	public void addPatient(Patient p) {
+		if(this.patients==null) {
+			this.patients= new ArrayList<>();
+			this.patients.add(p);
+		}else
 		if (!patients.contains(p)) {
 			this.patients.add(p);
 		}

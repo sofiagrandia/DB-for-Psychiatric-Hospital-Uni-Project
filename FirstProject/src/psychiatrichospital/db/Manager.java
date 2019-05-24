@@ -71,7 +71,7 @@ public interface Manager {
 
 	
 	// ROOM jpa
-	public void insertRoom(Room room, Patient patient);
+	public void insertRoom(Room room);
 
 	public Room selectRoomById(Integer id);
 
