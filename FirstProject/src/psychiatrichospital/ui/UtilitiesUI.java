@@ -102,10 +102,7 @@ public class UtilitiesUI {
 	
 	public Contract assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse)
 			throws NumberFormatException, IOException, SQLException {
-		System.out.println(db.selectContract());
-		System.out.println("Select  id");
-		int chosenId = Integer.parseInt(reader.readLine());
-		Contract c = (Contract) db.getContractId(chosenId);
+		
 		return c;
 	}
 
@@ -142,13 +139,34 @@ public class UtilitiesUI {
 		Date dDoc = Date.valueOf(dobDateDoc);
 		Doctor doctor = new Doctor(nameDoc, genderDoc, dDoc, hoursDoc);
 		db.insertDoctor(doctor);
-		jpa.selectPatient();
-		do {
-			System.out.println("Select patient id");
-			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipNP(doctor.getId(), chosenId);
-		} while (reader.readLine() == "");
+		
+		System.out.println("Do you want to introduce a patient? (yes / no )");
+		String leido = reader.readLine();
+		if (leido.equalsIgnoreCase("yes")) {
 
+			System.out.println("Is your patient created already?(yes/no)");
+			while (true) {
+				String answer = reader.readLine();
+				if (answer.equalsIgnoreCase("yes")) {
+					System.out.println(jpa.selectPatient());
+					assignPatientToDoctor(jpa, reader, db, doctor);
+					break;
+				}
+				if (answer.equalsIgnoreCase("no")) {
+					Patient p = insertPatientSimple(db, reader, jpa, formatter);
+					db.createRelationshipPD(doctor.getId(), p.getId());
+					break;
+				} else
+					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
+			}
+		}
+		if (leido.equalsIgnoreCase("no")) {
+			System.out.println("Your new doctor doesn´t have a patient");
+		}
+		System.out.println("Introduce a contract?");
+		Contract c=insertContractSimple(db, jpa, reader, formatter);
+		//ehesth
+		assignContractToNurse(jpa, reader, db, nurse)
 		System.out.println("Patient(s) selected correctly");
 		System.out.println("Doctor inserted");
 
@@ -649,6 +667,18 @@ public class UtilitiesUI {
 			System.out.println("Select  id");
 			int chosenId = Integer.parseInt(reader.readLine());
 			db.createRelationshipNP(nurse.getId(), chosenId);
+		} while (reader.readLine() != "");
+
+	}
+	
+	public void assignPatientToDoctor(JPAManager jpa, BufferedReader reader, DBManager db, Doctor doctor)
+			throws NumberFormatException, IOException {
+		System.out.println(jpa.selectPatient());
+
+		do {
+			System.out.println("Select  id");
+			int chosenId = Integer.parseInt(reader.readLine());
+			db.createRelationshipPD(doctor.getId(), chosenId);
 		} while (reader.readLine() != "");
 
 	}

@@ -407,7 +407,7 @@ public class DBManager implements Manager {
 		return cn;
 	}
 
-	public Contract getContractId(Integer id) throws SQLException {
+	public Contract getContractbyId(Integer id) throws SQLException {
 		Contract contract = null;
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM contract WHERE id ='" + id + "' ";
