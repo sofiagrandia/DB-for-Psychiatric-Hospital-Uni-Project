@@ -90,8 +90,9 @@ public class DBManager implements Manager {
 				String gender = rs.getString("gender");
 				Date dob = rs.getDate("dob");
 				int hours = rs.getInt("hours");
-
+			
 				nurse = new Nurse(id, name, gender, dob, hours);
+			
 				n.add(nurse);
 
 			}
@@ -113,6 +114,7 @@ public class DBManager implements Manager {
 		while (rs.next()) {
 			int id1 = rs.getInt("id");
 			String name = rs.getString("name");
+			System.out.println(name);
 			String gender = rs.getString("gender");
 			Date date = rs.getDate("dob");
 			int hours = rs.getInt("hours");

@@ -147,7 +147,7 @@ public class UtilitiesUI {
 
 	public void assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse,Contract contract)
 			throws NumberFormatException, IOException, SQLException {
-		String sql = "UPDATE nurse SET contract_id=? WHERE id=?";
+		String sql = "UPDATE nurse SET contract_id=? WHERE id=? ";
 		PreparedStatement prep = db.getConnection().prepareStatement(sql);
 		prep.setInt(1, contract.getId());
 		prep.setInt(2, nurse.getId());
@@ -158,7 +158,8 @@ public class UtilitiesUI {
 	
 	public void assignContractToDoctor(JPAManager jpa, BufferedReader reader, DBManager db, Doctor doctor,Contract contract)
 			throws NumberFormatException, IOException, SQLException {
-		String sql = "UPDATE doctor SET contract_id=? WHERE id=?";
+		String sql = "UPDATE doctor SET contract_id=? WHERE id=? ";
+		
 		PreparedStatement prep = db.getConnection().prepareStatement(sql);
 		prep.setInt(1, contract.getId());
 		prep.setInt(2, doctor.getId());
@@ -256,6 +257,7 @@ public class UtilitiesUI {
 		Contract c=insertContractSimple(db, jpa, reader, formatter);
 		doctor.setContract(c);*/
 		Contract contract= insertContractSimple(db,jpa,reader,formatter);
+		System.out.println(doctor);
 		System.out.println(contract);
 		assignContractToDoctor(jpa,reader,db,doctor,contract);
 		
@@ -410,6 +412,8 @@ public class UtilitiesUI {
 		ResultSet rs =pr.executeQuery();
 		Integer lastId =rs.getInt("lastId");
 		nurse.setId(lastId);
+
+		System.out.println(nurse);
 		System.out.println(lastId);
 		
 		System.out.println("Do you want to introduce a patient? (yes / no )");
@@ -559,12 +563,8 @@ public class UtilitiesUI {
 		System.out.print("Floor: ");
 		int floor = Integer.parseInt(reader.readLine());
 		Room room = new Room(floor);
-		String query= "SELECT last_insert_rowid() AS lastId";
-		Connection c=db.getConnection();
-		PreparedStatement pr= c.prepareStatement(query);
-		ResultSet rs =pr.executeQuery();
-		Integer lastId =rs.getInt("lastId");
-		room.setId(lastId);
+		System.out.println(room);
+		jpa.insertRoom(room);
 		String leido;
 		System.out.println("Room created correctly");
 		Patient p=null;
@@ -594,7 +594,6 @@ public class UtilitiesUI {
 
 			}
 		}
-		jpa.insertRoom(room);
 		System.out.println("Patient created correctly");
 
 	}
