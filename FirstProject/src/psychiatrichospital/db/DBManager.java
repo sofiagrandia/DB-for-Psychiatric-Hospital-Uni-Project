@@ -537,12 +537,16 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	// TREATMENT-PATIENT
-	public void createRelationshipPT(int tid, int pid) {
+	
+	
+	public void createRelationshipPT(int treatment_id,int patient_id) {
 		try {
-			String s = "INSERT INTO patient_treatment (tid, pid)" + " VALUES (?, ?)";
+			System.out.println("TID: "+ treatment_id);
+			System.out.println("PID: "+ patient_id);
+			String s = "INSERT INTO patient_treatment (treatment_id, patient_id)" + " VALUES (?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1, tid);
-			p.setInt(2, pid);
+			p.setInt(1,treatment_id);
+			p.setInt(2,patient_id);
 			p.executeUpdate();
 			p.close();
 
@@ -558,6 +562,21 @@ public class DBManager implements Manager {
 		prep.setInt(1,pid);
 		prep.setInt(2,tid);
 		prep.executeUpdate();
+	}
+	// TREATMENT-DOCTOR
+	public void createRelationshipDT(int tid, int did) {
+		try {
+			String s = "UPDATE treatment SET doctor_id=? WHERE id=?";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, did);
+			p.setInt(2,  tid);
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//PATIENT-DOCTOR
@@ -575,7 +594,8 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-	public void deleteRelationshipPD(int pid, int did) throws SQLException {
+	public void deleteRelationshipPD(int pid, int did)
+			throws SQLException {
 		String sql = "DELETE FROM doctor_patient WHERE patient_id=? AND doctor_id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setInt(1, pid);
@@ -597,7 +617,7 @@ public class DBManager implements Manager {
 				// OJO CÓMO SE ESCRIBE. LOS ESPACIOS, LAS COMAS, LAS COMILLLAS....
 				Statement stmt1 = c.createStatement();
 				String sql1 = "CREATE TABLE room " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT, "
-						+ " type TEXT NOT NULL, " + " floor  INTEGER NOT NULL)";
+						+ " floor  INTEGER NOT NULL)";
 				stmt1.executeUpdate(sql1);
 				stmt1.close();
 
@@ -630,7 +650,7 @@ public class DBManager implements Manager {
 				stmt5.close();
 
 				Statement stmt6 = c.createStatement();
-				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT NOT NULL,"
+				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT,"
 						+ "number INTEGER NOT NULL," + "doctor_id INTEGER,"
 						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id))";
 				stmt6.executeUpdate(sql6);
@@ -690,7 +710,7 @@ public class DBManager implements Manager {
 
 		}
 	@Override
-	public void marshaller(TreatmentList tl, String direccion) throws JAXBException, SQLException {
+	public void marshaller(TreatmentList tl, String direccion) {
 		// TODO Auto-generated method stub
 		
 	}

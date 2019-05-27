@@ -120,7 +120,7 @@ public class UserInterface {
 					switch (optionRoom) {
 					case 1:uui.selectRoomMenu(jpa,reader);break;
 					case 2:uui.insertRoomMenu(db, reader, jpa, formatter);break;
-					case 3:
+					case 3:uui.deleteRoomMenu(jpa, reader, db);
 					}
 
 					break;
