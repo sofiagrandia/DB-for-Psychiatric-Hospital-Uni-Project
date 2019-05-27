@@ -1,6 +1,7 @@
 package Project;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.*;
 @Table(name = "treatment")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Treatment")
-@XmlType(propOrder = { "type", "number", "doctor" ,"p"})
+@XmlType(propOrder = { "id", "type", "number", "doctor" ,"p"})
 
 public class Treatment implements Serializable {
 	
@@ -57,8 +58,8 @@ public class Treatment implements Serializable {
 	private String type;
 	@XmlAttribute
 	private Integer number;
-@Transient
-@XmlElement(name = "Doctor")
+	@Transient
+	@XmlElement(name = "Doctor")
 	// @XmlElementWrapper(name = "Doctors")
 	private Doctor doctor;
 	@ManyToMany
@@ -79,11 +80,7 @@ public class Treatment implements Serializable {
 	}
 	
 	
-	public Treatment() {
-		super();
-	}
-
-
+	
 
 	public Treatment(String type, Integer number, Doctor doctor, List<Patient> p) {
 		super();

@@ -3,29 +3,20 @@
 
 <xsl:template match="/">
    <html>
-   <xsl:for-each select="//Treatment">
-   <p><b><xsl:value-of select="@id" /></b></p>
-   <p><b><xsl:value-of select="@type" /></b></p>
-   <p><b><xsl:value-of select="@number" /></b></p>
+   <p><b>TREATMENTS</b></p>
+   <table border = "1">
+   <th>ID</th>
+   <th>TYPE</th>
+   <th>NUMBER</th>
+   <xsl:for-each select="TreatmentList/Treatment">
+   <xsl:sort select="@id" />
+   <tr>
+   <td><i><xsl:value-of select="@id" /></i></td>
+   <td><xsl:value-of select="@type" /></td>
+   <td><xsl:value-of select="@number" /></td>
+   </tr>
    </xsl:for-each>
-  <!-- <p><b>Contents: </b><xsl:value-of select="//content" /></p>
-   <p><b>Paid authors:</b></p>
-   <table border="1">
-      <th>Author</th>
-      <th>Date of Birth</th>
-      <th>Address</th>
-      <xsl:for-each select="Report/Authors/Employee">
-      <xsl:sort select="@name" />
-         <xsl:if test="salary &gt; 0">
-            <tr>
-            <td><i><xsl:value-of select="@name" /></i></td>
-            <td><xsl:value-of select="dob" /></td>
-            <td><xsl:value-of select="address" /></td>
-            </tr>
-         </xsl:if>
-      </xsl:for-each>
-   </table>-->
+   </table>
    </html>
 </xsl:template>
-
 </xsl:stylesheet>

@@ -143,6 +143,14 @@ public class UserInterface {
 						break;
 					case 5:
 						uui.marshall(db, reader);
+						break;
+						
+					case 6: uui.unmarshall(db, reader);
+					  break;
+					case 7: uui.DTDChecker();
+					break;
+					case 8: XMLManager.simpleTransform("./xmls/treatment.xml", "./xmls/Treatment.xslt","./xmls/External-Treatment.html");
+					break;
 					}
 					
 				

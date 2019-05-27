@@ -202,9 +202,7 @@ public class UtilitiesUI {
 
 	// DOCTOR
 	public Doctor insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
-			throws NumberFormatException, IOException {
-		
-			throws IOException, SQLException {
+			throws NumberFormatException, IOException, SQLException {
 		System.out.println("Please, input the doctor info:");
 		System.out.print("Name: ");
 		String name = reader.readLine();
@@ -908,9 +906,9 @@ public class UtilitiesUI {
 	}
 
 	// TREATMENT
-
+ 
 	public Treatment insertTreatmentSimple(DBManager db, JPAManager jpa, BufferedReader reader,
-			DateTimeFormatter formatter) throws IOException {
+			DateTimeFormatter formatter) throws IOException, SQLException {
 		System.out.println("Please, input the treatment info:");
 		System.out.print("Type: ");
 		String type = reader.readLine();
@@ -926,6 +924,8 @@ public class UtilitiesUI {
 		
 		return t;
 	}
+	
+	
 
 	public void insertTreatmentMenu(DBManager db,  BufferedReader reader,JPAManager jpa, DateTimeFormatter formatter)
 			throws NumberFormatException, IOException, SQLException {
@@ -997,7 +997,10 @@ public class UtilitiesUI {
 					}
 					 if (respuesta.equalsIgnoreCase("no")) {
 						Doctor d=insertDoctorSimple(db, jpa, reader, formatter);
+						System.out.println(d);
+						System.out.println(treatment);
 						db.createRelationshipDT(treatment.getId(), d.getId());
+						
 						break;
 					}
 					System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
@@ -1024,9 +1027,9 @@ public class UtilitiesUI {
 		//BufferedReader consola = new BufferedReader (new InputStreamReader (System.in));
 		String leido = reader.readLine();
 		List<Treatment> lista = db.selectTreatment();
-		for (Treatment treatment : lista) {
-			treatment.setP(db.selectPatientByTreatment(treatment.getId()));
-		}
+	//	for (Treatment treatment : lista) {
+		//	treatment.setP(db.selectPatientByTreatment(treatment.getId()));
+		//}
 		TreatmentList treatments= new TreatmentList(lista);
 		XMLManager.marshaller(treatments, leido);
 		
@@ -1067,7 +1070,7 @@ public class UtilitiesUI {
 	}
 	
 	 public static void DTDChecker() {
-	        File xmlFile = new File("./xmls/lol.xml"); 
+	        File xmlFile = new File("./xmls/treatment.xml"); 
 	        try {
 	        	// Create a DocumentBuilderFactory
 	            DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();

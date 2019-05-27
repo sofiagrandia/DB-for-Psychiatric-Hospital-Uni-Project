@@ -585,10 +585,10 @@ public class DBManager implements Manager {
 	// TREATMENT-DOCTOR
 	public void createRelationshipDT(int tid, int did) {
 		try {
-			String s = "INSERT INTO treatment (doctor_id)" + " VALUES ( ?)";
+			String s = "UPDATE treatment SET doctor_id=? WHERE id=?";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setInt(1, did);
-			//p.setInt(2, pid);
+			p.setInt(2,  tid);
 			p.executeUpdate();
 			p.close();
 
@@ -671,7 +671,7 @@ public class DBManager implements Manager {
 				stmt5.close();
 
 				Statement stmt6 = c.createStatement();
-				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT NOT NULL,"
+				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT,"
 						+ "number INTEGER NOT NULL," + "doctor_id INTEGER,"
 						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id))";
 				stmt6.executeUpdate(sql6);

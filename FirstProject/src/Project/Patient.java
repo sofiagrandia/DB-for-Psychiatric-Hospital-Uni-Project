@@ -206,9 +206,9 @@ public class Patient implements Serializable {
 				ids[i] = d.getId();
 				i++;
 			}
+		
 			return ids;
 		}
-		return ids;
 	}
 
 	public int[] getNursesId() {
@@ -225,7 +225,7 @@ public class Patient implements Serializable {
 			}
 			return ids;
 		}
-		return ids;
+		
 	}
 
 	public int[] getTreatmentsId() {
@@ -242,7 +242,7 @@ public class Patient implements Serializable {
 			}
 			return ids;
 		}
-		return ids;
+	
 	}
 	public void removeNurse(Nurse n) {
 		if (nurses.contains(n)) {

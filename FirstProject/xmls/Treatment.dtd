@@ -4,10 +4,4 @@
 <!ATTLIST Treatment id CDATA #REQUIRED
 					type CDATA #REQUIRED
 					number CDATA #REQUIRED>
-<!ELEMENT Patients (Patient+)>
-<!ATTLIST Patient id CDATA 
-					name CDATA
-					gender CDATA 
-					dob CDATA >
-					
 ]>
