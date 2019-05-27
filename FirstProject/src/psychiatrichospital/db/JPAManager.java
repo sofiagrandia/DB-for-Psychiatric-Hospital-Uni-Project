@@ -158,16 +158,20 @@ public class JPAManager implements Manager {
 		// String newName = reader.readLine();
 		// String newGender = reader.readLine();
 		// Date newDate = reader.readLine();
+		
+			em.getTransaction().begin();
 		em.flush();
+		System.out.println(patient);
 		// Integer newRoom = reader.readLine();
 		// Blob newPhoto = reader.readLine();
 		// OBJETOS
 		// Begin transaction
-		em.getTransaction().begin();
+	
 		// Make changes
 		// patient.setFloor(newF);
 		// End transaction
 		em.getTransaction().commit();
+	
 	}
 
 	@Override
