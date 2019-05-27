@@ -44,7 +44,7 @@ public class DBManager implements Manager {
 	public void insertNurse(Nurse nurse) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
-			String s = "INSERT INTO nurse (name,gender,dob,hours)" + "VALUES (?, ?, ?, ?)";
+			String s = "INSERT INTO nurse (name,gender,dob,hours)" + " VALUES (?, ?, ?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setString(1, nurse.getName());
 			p.setString(2, nurse.getGender());
@@ -58,7 +58,6 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-
 	public List<Nurse> getNurse(String name) throws SQLException {
 		List<Nurse> n = new ArrayList<Nurse>();
 		Statement stmt = c.createStatement();
@@ -84,7 +83,7 @@ public class DBManager implements Manager {
 			String sql = "SELECT * FROM nurse";
 			PreparedStatement p = c.prepareStatement(sql);
 			ResultSet rs = p.executeQuery();
-			Nurse nurse1;
+			Nurse nurse;
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
@@ -92,8 +91,8 @@ public class DBManager implements Manager {
 				Date dob = rs.getDate("dob");
 				int hours = rs.getInt("hours");
 
-				nurse1 = new Nurse(id, name, gender, dob, hours);
-				n.add(nurse1);
+				nurse = new Nurse(id, name, gender, dob, hours);
+				n.add(nurse);
 
 			}
 
