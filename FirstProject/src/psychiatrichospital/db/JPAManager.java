@@ -124,6 +124,7 @@ public class JPAManager implements Manager {
 		em.getTransaction().begin();
 		em.persist(p);
 		em.getTransaction().commit();
+		
 	}
 	
 	public void assignPatientRoom(Patient p, Room r) {
@@ -206,7 +207,7 @@ public class JPAManager implements Manager {
 	}
 
 	@Override
-	public Contract getContractId(Integer id) throws SQLException {
+	public Contract getContractbyId(Integer id) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -230,15 +231,10 @@ public class JPAManager implements Manager {
 	
 	
 	// ROOM
-	// Nos falta un metodo que muestre todas las rooms
-	public void insertRoom(Room room, Patient patient) {
-
+	public void insertRoom(Room room) {
 		em.getTransaction().begin();
 		em.persist(room);
-		room.addPatient(patient);
-		patient.setRoom(room);
 		em.getTransaction().commit();
-
 	}
 
 	public Room selectRoomById(Integer id) {

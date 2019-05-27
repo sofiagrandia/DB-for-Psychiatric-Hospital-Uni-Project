@@ -64,7 +64,7 @@ public interface Manager {
 
 	public List<Contract> getContractId(float money) throws SQLException;
 
-	public Contract getContractId(Integer id) throws SQLException;
+	public Contract getContractbyId(Integer id) throws SQLException;
 
 	public List<Contract> selectContract();
 
@@ -74,7 +74,7 @@ public interface Manager {
 
 	
 	// ROOM jpa
-	public void insertRoom(Room room, Patient patient);
+	public void insertRoom(Room room);
 
 	public Room selectRoomById(Integer id);
 

@@ -57,10 +57,8 @@ public class UserInterface {
 					uui.menuContract();
 					int optionContract = Integer.parseInt(reader.readLine());
 					switch (optionContract) {
-					case 1:
-					case 2:
-					case 3:
-					case 4:
+					case 1:uui.selectContractMenu(db, reader);break;
+					case 2:uui.updateContractMenu(db, reader, formatter);break;
 					}
 
 					break;
@@ -110,8 +108,8 @@ public class UserInterface {
 					switch (optionPatient) {
 					case 1: uui.selectPatientMenu(db,reader,jpa);break;
 					case 2: uui.insertPatientMenu(db,reader,jpa,formatter);break;
-					case 3: uui.updatePatientMenu(db, reader, jpa, formatter);break;
-					case 4:
+					case 3: uui.deletePatientMenu( jpa,  reader);break;
+					case 4:uui.updatePatientMenu(db, reader, jpa, formatter);break;
 					}
 
 					break;
@@ -121,9 +119,8 @@ public class UserInterface {
 					int optionRoom = Integer.parseInt(reader.readLine());
 					switch (optionRoom) {
 					case 1:
-					case 2:
+					case 2:uui.insertRoomMenu(db, reader, jpa, formatter);break;
 					case 3:
-					case 4:
 					}
 
 					break;
