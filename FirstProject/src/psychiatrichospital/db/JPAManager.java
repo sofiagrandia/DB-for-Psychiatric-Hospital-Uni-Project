@@ -105,18 +105,12 @@ public class JPAManager implements Manager {
 		// TODO Auto-generated method stub
 	}
 	
-	// PATIENT añadir lo de abajo
+	// PATIENT 
 	public void insertPatient(Patient patient, Room room, Nurse nurse, Doctor doctor, Treatment treatment) {
 		this.insertPatient(patient);
 		this.assignPatientRoom(patient, room);
-//		em.getTransaction().begin();
-//		em.persist(patient);
-//		patient.setRoom(room);
-//		room.addPatient(patient);
-//		patient.addNurse(nurse);
-//		patient.addDoctor(doctor);
-//		patient.addTreatment(treatment);
-//		em.getTransaction().commit();
+
+       em.getTransaction().commit();
 
 	}
 	
@@ -125,7 +119,10 @@ public class JPAManager implements Manager {
 		em.persist(p);
 		em.getTransaction().commit();
 		
+		
 	}
+	
+	
 	
 	public void assignPatientRoom(Patient p, Room r) {
 		em.getTransaction().begin();
@@ -341,7 +338,7 @@ public class JPAManager implements Manager {
 		}
 
 		@Override
-		public void createRelationshipPT(int tid, int pid) {
+		public void createRelationshipPT(int pid, int tid) {
 			// TODO Auto-generated method stub
 			
 		}

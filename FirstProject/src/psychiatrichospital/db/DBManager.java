@@ -340,6 +340,7 @@ public class DBManager implements Manager {
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, t.getType());
 			prep.setInt(2, t.getNumber());
+			prep.setInt(3, t.getId());
 			prep.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -556,17 +557,15 @@ public class DBManager implements Manager {
 	// TREATMENT-PATIENT
 	
 	
-	public void createRelationshipPT(int treatment_id,int patient_id) {
+	
+	public void createRelationshipPT(int pid, int tid) {
 		try {
-			System.out.println("TID: "+ treatment_id);
-			System.out.println("PID: "+ patient_id);
-			String s = "INSERT INTO patient_treatment (treatment_id, patient_id)" + " VALUES (?, ?)";
+			String s = "INSERT INTO patient_treatment (patient_id, treatment_id)" + " VALUES (?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1,treatment_id);
-			p.setInt(2,patient_id);
+			p.setInt(1, pid);
+			p.setInt(2, tid);
 			p.executeUpdate();
 			p.close();
-			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -585,6 +584,9 @@ public class DBManager implements Manager {
 	public void createRelationshipDT(int tid, int did) {
 		try {
 			String s = "UPDATE treatment SET doctor_id=? WHERE id=?";
+			//String s = "INSERT INTO treatment  (doctor_id) " + "VALUES (?)";
+			System.out.println(did);
+			System.out.println(tid);
 			PreparedStatement p = c.prepareStatement(s);
 			p.setInt(1, did);
 			p.setInt(2,  tid);
@@ -621,7 +623,7 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	
-	//public void createRelationShip
+	
 	
 	// CREATE TABLES
 	public void createTables() {
@@ -699,15 +701,7 @@ public class DBManager implements Manager {
 				stmt9.close();
 
 				System.out.println("Tables created.");
-				// Create table: end
-
-				// - Set initial values for the Primary Keys
-				// - Don't try to understand this until JPA is explained
-				// This is usually not needed, since the initial values
-				// are set when the first row is inserted, but since we
-				// are using JPA and JDBC in the same project, and JPA
-				// needs an initial value, we do this.
-				// TODAVIA NO ENTENDEMOS
+				
 				Statement stmtSeq = c.createStatement();
 				String sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('patient', 1)";
 				stmtSeq.executeUpdate(sqlSeq);

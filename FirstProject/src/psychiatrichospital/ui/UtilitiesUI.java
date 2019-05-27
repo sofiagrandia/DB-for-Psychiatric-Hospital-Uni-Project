@@ -215,7 +215,7 @@ public class UtilitiesUI {
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
 		Date d = Date.valueOf(dobDate);
 		Doctor doctor = new Doctor(name, gender, d, hours);
-		
+		db.insertDoctor(doctor);
 		String query= "SELECT last_insert_rowid() AS lastId";
 		Connection c=db.getConnection();
 		PreparedStatement pr= c.prepareStatement(query);
@@ -262,7 +262,7 @@ public class UtilitiesUI {
 					break;
 				}
 				if (answer.equalsIgnoreCase("no")) {
-					///noooooooooo vaaaaaaaaaaaa
+					
 					Patient p = insertPatientSimple(db, reader, jpa, formatter);
 					db.createRelationshipPD(doctor.getId(), p.getId());
 					break;
@@ -273,9 +273,7 @@ public class UtilitiesUI {
 		if (leido.equalsIgnoreCase("no")) {
 			System.out.println("Your new doctor doesn�t have a patient");
 		}
-		/*System.out.println("Introduce a contract");
-		Contract c=insertContractSimple(db, jpa, reader, formatter);
-		doctor.setContract(c);*/
+		
 		Contract contract= insertContractSimple(db,jpa,reader,formatter);
 		System.out.println(contract);
 		assignContractToDoctor(jpa,reader,db,doctor,contract);
@@ -626,7 +624,7 @@ public class UtilitiesUI {
 	
 	// PATIENT
 
-	public Patient insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
+	public Patient insertPatientSimple( DBManager db,BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
 			throws IOException, SQLException {
 		System.out.println("Please, input the patient info:");
 		System.out.print("Name: ");
@@ -639,6 +637,7 @@ public class UtilitiesUI {
 		Date dP = Date.valueOf(dobDateP);
 		Patient patient = new Patient(nameP, genderP, dP);
 		jpa.insertPatient(patient);
+		System.out.println(patient);
 		return patient;
 	}
      
@@ -654,7 +653,7 @@ public class UtilitiesUI {
 		System.out.println("\nChoose a Treatment, type its Id: ");
 		int id = Integer.parseInt(reader.readLine());
 		Treatment t = db.getTreatmentId(id);
-		System.out.print("Type: " + t.getType());
+		System.out.print("\nType: " + t.getType());
 		System.out.println("\nIntroduce the new type");
 		String newType = reader.readLine();
 		if (!newType.equals("")) {
@@ -1019,40 +1018,37 @@ public class UtilitiesUI {
 		ResultSet rs = ps.executeQuery();
 		Integer lastId = rs.getInt("lastId");
 		treatment.setId(lastId);
-		
-		System.out.println("Do you want to introduce a patient?(yes/no)");
+
+		System.out.println("Do you want to introduce a patient? (yes / no )");
 		String leido = reader.readLine();
+		if (leido.equalsIgnoreCase("yes")) {
 
-		//while (true) {
-			if (leido.equalsIgnoreCase("yes")) {
-
-				System.out.println("Is your patient created already?(yes/no)");
-				while (true) {
-					String respuesta = reader.readLine();
-					if (respuesta.equalsIgnoreCase("yes")) {
-						System.out.println(jpa.selectPatient());
-						assignPatientToTreatment(jpa, reader, db, treatment);
-
-						break;
-
-					} if (respuesta.equalsIgnoreCase("no")) {
-						Patient p=insertPatientSimple(db, reader, jpa, formatter);
-						System.out.println(p);
-						System.out.println(treatment);
-						db.createRelationshipPT(treatment.getId(), p.getId());
-						break;
-					}
-					else System.out.println("Oh no! You didn't choose a valid option! :( Try again");
-
+			System.out.println("Is your patient created already?(yes/no)");
+			while (true) {
+				String answer = reader.readLine();
+				if (answer.equalsIgnoreCase("yes")) {
+					System.out.println(jpa.selectPatient());
+					assignPatientToTreatment(jpa, reader, db, treatment);
+					break;
 				}
+				if (answer.equalsIgnoreCase("no")) {
+					
+					Patient p = insertPatientSimple(db, reader, jpa, formatter);
+					
+					db.createRelationshipPT(p.getId(), treatment.getId());
+					break;
+				} else
+					System.out.println("Oh no! You didn�t choose a valid option! :( Try again");
+			}
+		}
+		if (leido.equalsIgnoreCase("no")) {
+			System.out.println("Your new treatment doesn�t have a patient");
+		}
+		
+		
+		
+		System.out.println("Patient(s) selected correctly");
 
-			}
-			if (leido.equalsIgnoreCase("no")) {
-				System.out.println("Your new treatment doesn't have a patient");
-				//break;
-			}
-		//	System.out.println("Oh no! You didn't choose a valid option! :( Try again");
-		//}
 		
        
 		System.out.println("Patient introduced in treatment correctly");
@@ -1075,7 +1071,12 @@ public class UtilitiesUI {
 						Doctor d=insertDoctorSimple(db, jpa, reader, formatter);
 						System.out.println(d);
 						System.out.println(treatment);
-						db.createRelationshipDT(treatment.getId(), d.getId());
+						int tid=treatment.getId();
+						int did=d.getId();
+						//db.createRelationshipDT(treatment.getId(), d.getId());
+						db.createRelationshipDT(tid,did);
+						System.out.println(treatment);
+						
 						
 						break;
 					}
@@ -1087,7 +1088,7 @@ public class UtilitiesUI {
 			if (leido.equalsIgnoreCase("no")) {
 				System.out.println("Your new treatment doesn�t have a doctor");
 			}
-			//System.out.println("Oh no! You didn't choose a valid option! :( Try again");
+			
 		
 
 		
@@ -1100,12 +1101,10 @@ public class UtilitiesUI {
 	
 	public void marshall(DBManager db, BufferedReader reader) throws IOException, JAXBException, SQLException {
 		System.out.println("Introduce the name of the document you want to marshall (always ending with .xml)");
-		//BufferedReader consola = new BufferedReader (new InputStreamReader (System.in));
+		
 		String leido = reader.readLine();
 		List<Treatment> lista = db.selectTreatment();
-	//	for (Treatment treatment : lista) {
-		//	treatment.setP(db.selectPatientByTreatment(treatment.getId()));
-		//}
+	
 		TreatmentList treatments= new TreatmentList(lista);
 		XMLManager.marshaller(treatments, leido);
 		
@@ -1148,15 +1147,15 @@ public class UtilitiesUI {
 	 public static void DTDChecker() {
 	        File xmlFile = new File("./xmls/treatment.xml"); 
 	        try {
-	        	// Create a DocumentBuilderFactory
+	        	
 	            DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();
-	            // Set it up so it validates XML documents
+	            
 	            dBF.setValidating(true);
-	            // Create a DocumentBuilder and an ErrorHandler (to check validity)
+	            
 	            DocumentBuilder builder = dBF.newDocumentBuilder();
 	            CustomErrorHandler customErrorHandler = new CustomErrorHandler();
 	            builder.setErrorHandler(customErrorHandler);
-	            // Parse the XML file and print out the result
+	            
 	            Document doc = builder.parse(xmlFile);
 	            if (customErrorHandler.isValid()) {
 	                System.out.println(xmlFile + " was valid!");

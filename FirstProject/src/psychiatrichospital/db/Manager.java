@@ -107,7 +107,7 @@ public interface Manager {
 		
 		public void deleteRelationshipNP(int pid, int nid) throws SQLException;
 		
-		public void createRelationshipPT(int tid, int pid) ;
+		public void createRelationshipPT(int pid, int tid) ;
 		
 		public void deleteRelationshipPT(int tid, int pid) throws SQLException;
 		

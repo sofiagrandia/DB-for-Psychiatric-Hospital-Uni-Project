@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.*;
 
 public class Treatment implements Serializable {
 	
-	
+	private static final long serialVersionUID = 1L;
 	public Treatment() {
 		super();
 		p = new ArrayList<Patient>();
@@ -40,7 +40,7 @@ public class Treatment implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	public Treatment(int id, String type, int number ) {
 		super();
 		this.id=id;
@@ -89,6 +89,8 @@ public class Treatment implements Serializable {
 		this.doctor = doctor;
 		this.p = p;
 	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

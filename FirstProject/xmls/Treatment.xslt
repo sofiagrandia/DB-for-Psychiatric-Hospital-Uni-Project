@@ -3,8 +3,12 @@
 
 <xsl:template match="/">
    <html>
-   <p><b>TREATMENTS</b></p>
-   <table border = "1">
+   <body bgcolor="F1F1F1">
+   <title>FOR YOU DATA BASE</title>
+   <p><b><FONT FACE = "consolas" SIZE = "8"><center> - PSYCHIATRIC HOSPITAL - </center></FONT></b></p>
+   <p><b><FONT FACE = "helvetica" SIZE = "5"><center> - TREATMENTS - </center></FONT></b></p>
+   
+   <table border = "5" bordercolor="#0000FF" bordercolorlight="#33CCFF" cellspacing = "5" width="50%" align="center">
    <th>ID</th>
    <th>TYPE</th>
    <th>NUMBER</th>
@@ -17,6 +21,7 @@
    </tr>
    </xsl:for-each>
    </table>
+   </body>
    </html>
 </xsl:template>
 </xsl:stylesheet>

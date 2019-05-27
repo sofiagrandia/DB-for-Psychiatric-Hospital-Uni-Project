@@ -36,10 +36,6 @@ public class UserInterface {
 		JPAManager jpa = new JPAManager();
 		UtilitiesUI uui = new UtilitiesUI();
 
-		// Shows several options to the user and lest her choose one
-		// One option includes reading from the keyboard the information of the nurse
-		// and creating a nurse object
-		// Call the nurse method with the information received
 		try {
 
 			int option;
@@ -158,7 +154,7 @@ public class UserInterface {
 				}
 
 			} while (option != 0);
-			// Close database connection!!!!! IMPORTANT
+			
 			db.closeConnection();
 			jpa.closeConnection();
 			System.out.println("Database connection closed.");
