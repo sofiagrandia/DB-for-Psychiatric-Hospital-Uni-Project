@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TreatmentList>
+    <Treatment type="gelocatil" number="3" id="2"/>
+    <Treatment type="l" number="4" id="3"/>
+    <Treatment type="gelocatil" number="4" id="4"/>
+    <Treatment type="a" number="2" id="5"/>
+    <Treatment type="a" number="2" id="6"/>
+    <Treatment type="a" number="2" id="7"/>
+    <Treatment type="a" number="2" id="8"/>
+    <Treatment type="a" number="2" id="9"/>
+    <Treatment type="a" number="2" id="10"/>
+</TreatmentList>

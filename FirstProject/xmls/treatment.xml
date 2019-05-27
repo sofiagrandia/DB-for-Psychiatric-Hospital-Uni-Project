@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+
+<!DOCTYPE TreatmentList [
+<!ELEMENT TreatmentList (Treatment+)>
+<!ELEMENT Treatment (#PCDATA)>
+<!ATTLIST Treatment	id CDATA #REQUIRED
+					type CDATA #REQUIRED
+					number CDATA #REQUIRED>
+]>
+
+
+<TreatmentList>
+    <Treatment id="2" type="gelocatil" number="3"/>
+    <Treatment id="3" type="l" number="4"/>
+    <Treatment id="4" type="gelocatil" number="4"/>
+    <Treatment id="5" type="a" number="2"/>
+    <Treatment id="6" type="a" number="2"/>
+    <Treatment id="7" type="a" number="2"/>
+    <Treatment id="8" type="a" number="2"/>
+    <Treatment id="9" type="a" number="2"/>
+    <Treatment id="10" type="a" number="2"/>
+</TreatmentList>
