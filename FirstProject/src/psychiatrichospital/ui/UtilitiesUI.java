@@ -167,7 +167,7 @@ public class UtilitiesUI {
 
 	public void assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse,Contract contract)
 			throws NumberFormatException, IOException, SQLException {
-		String sql = "UPDATE nurse SET contract_id=? WHERE id=?";
+		String sql = "UPDATE nurse SET contract_id=? WHERE id=? ";
 		PreparedStatement prep = db.getConnection().prepareStatement(sql);
 		prep.setInt(1, contract.getId());
 		prep.setInt(2, nurse.getId());
@@ -178,7 +178,8 @@ public class UtilitiesUI {
 	
 	public void assignContractToDoctor(JPAManager jpa, BufferedReader reader, DBManager db, Doctor doctor,Contract contract)
 			throws NumberFormatException, IOException, SQLException {
-		String sql = "UPDATE doctor SET contract_id=? WHERE id=?";
+		String sql = "UPDATE doctor SET contract_id=? WHERE id=? ";
+		
 		PreparedStatement prep = db.getConnection().prepareStatement(sql);
 		prep.setInt(1, contract.getId());
 		prep.setInt(2, doctor.getId());
@@ -264,6 +265,7 @@ public class UtilitiesUI {
 				if (answer.equalsIgnoreCase("no")) {
 					
 					Patient p = insertPatientSimple(db, reader, jpa, formatter);
+					doctor.addPatients(p);
 					db.createRelationshipPD(doctor.getId(), p.getId());
 					break;
 				} else
@@ -275,8 +277,9 @@ public class UtilitiesUI {
 		}
 		
 		Contract contract= insertContractSimple(db,jpa,reader,formatter);
-		System.out.println(contract);
+		
 		assignContractToDoctor(jpa,reader,db,doctor,contract);
+		doctor.setContract(contract);
 		
 		System.out.println("Patient(s) selected correctly");
 		System.out.println("Doctor inserted");
@@ -295,6 +298,15 @@ public class UtilitiesUI {
 		int idChosen = Integer.parseInt(reader.readLine());
 		Doctor d = db.getDoctorId(idChosen);
 		System.out.println(d);
+		System.out.println(d.getContract().getId());
+		/*System.out.println("CONTRACT");
+		System.out.println(db.getContract().getId());
+		System.out.println("PATIENTS");
+		for(Patient aux:d.getPatients()) {
+			System.out.println(aux);
+		}*/
+		
+		
 	}
 
 	public void deleteDoctorMenu(DBManager db, BufferedReader reader)
@@ -354,7 +366,7 @@ public class UtilitiesUI {
 	}
 
 	public void assignDoctorToPatient(JPAManager jpa, BufferedReader reader, DBManager db, Patient patient)
-			throws NumberFormatException, IOException {
+			throws NumberFormatException, IOException, SQLException {
 		System.out.println(db.selectDoctor());
 		do {
 			System.out.println("Select  id");
@@ -362,9 +374,12 @@ public class UtilitiesUI {
 			if(s.equals("")) {
 				break;
 			}else {
-			int chosenId = Integer.parseInt(reader.readLine());
-			db.createRelationshipPD(chosenId, patient.getId());}
+			int chosenId = Integer.parseInt(s);
+			db.createRelationshipPD(chosenId, patient.getId());
+			}
+			
 		} while (reader.readLine() != "");
+		System.out.println();
 
 	}
 	// NURSE
@@ -431,6 +446,8 @@ public class UtilitiesUI {
 		ResultSet rs =pr.executeQuery();
 		Integer lastId =rs.getInt("lastId");
 		nurse.setId(lastId);
+
+		System.out.println(nurse);
 		System.out.println(lastId);
 		
 	
@@ -537,7 +554,7 @@ public class UtilitiesUI {
 			if(s.equals("")) {
 				break;
 			}else {
-			int chosenId = Integer.parseInt(reader.readLine());
+			int chosenId = Integer.parseInt(s);
 			db.createRelationshipNP(chosenId, patient.getId());}
 		} while (reader.readLine() != "");
 
@@ -567,12 +584,6 @@ public class UtilitiesUI {
 		int floor = Integer.parseInt(reader.readLine());
 		Room room = new Room(floor);
 		jpa.insertRoom(room);
-		String query= "SELECT last_insert_rowid() AS lastId";
-		Connection c=db.getConnection();
-		PreparedStatement pr= c.prepareStatement(query);
-		ResultSet rs =pr.executeQuery();
-		Integer lastId =rs.getInt("lastId");
-		room.setId(lastId);
 		return room;
 	}
 	
@@ -582,12 +593,10 @@ public class UtilitiesUI {
 		System.out.print("Floor: ");
 		int floor = Integer.parseInt(reader.readLine());
 		Room room = new Room(floor);
-		String query= "SELECT last_insert_rowid() AS lastId";
-		Connection c=db.getConnection();
-		PreparedStatement pr= c.prepareStatement(query);
-		ResultSet rs =pr.executeQuery();
-		Integer lastId =rs.getInt("lastId");
-		room.setId(lastId);
+		System.out.println(room);
+
+		jpa.insertRoom(room);
+		
 		String leido;
 		System.out.println("Room created correctly");
 		Patient p=null;
@@ -617,9 +626,22 @@ public class UtilitiesUI {
 
 			}
 		}
-		jpa.insertRoom(room);
 		System.out.println("Patient created correctly");
 
+	}
+	
+	public void deleteRoomMenu(JPAManager jpa, BufferedReader reader,DBManager db) throws NumberFormatException, IOException, SQLException {
+		List<Room> lista = new ArrayList<Room>();
+		lista = jpa.selectRoom();
+		for (int i = 0; i < lista.size(); i++) {
+			System.out.println(lista.get(i));
+		}
+
+		System.out.println("Insert room id you wish to remove");
+		int idChosen = Integer.parseInt(reader.readLine());
+		jpa.deleteRoom(idChosen);
+		System.out.println("Room deleted");
+		
 	}
 	
 	// PATIENT
@@ -723,7 +745,6 @@ public class UtilitiesUI {
 			while (true) {
 				String respuesta = reader.readLine();
 				if (respuesta.equalsIgnoreCase("yes")) {
-					System.out.println(db.selectDoctor());
 					assignDoctorToPatient(jpa, reader, db, patient);
 					break;
 				}
@@ -814,7 +835,7 @@ public class UtilitiesUI {
 		}
 
 	public void updatePatientMenu(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
-			throws NumberFormatException, IOException {
+			throws NumberFormatException, IOException, SQLException {
 		List<Patient> listPat = new ArrayList<Patient>();
 		listPat = jpa.selectPatient();
 		for (int i = 0; i < listPat.size(); i++) {
@@ -928,7 +949,7 @@ public class UtilitiesUI {
 	
 	public void assignDoctorToTreatment(JPAManager jpa, BufferedReader reader, DBManager db, Treatment treatment)
 			throws NumberFormatException, IOException {
-		jpa.selectDoctor();
+		db.selectDoctor();
 
 		do {
 			System.out.println("Select  id");

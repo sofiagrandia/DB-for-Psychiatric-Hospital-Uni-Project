@@ -5,6 +5,7 @@ import xmlUtils.SQLDateAdapter;
 import Project.Contract;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -21,16 +22,13 @@ import javax.persistence.TableGenerator;
 @XmlType(propOrder = { "name", "gender", "dob" ,"hours"})
 
 public class Doctor implements Serializable {
-	/**
-	 * 
-	 */
+
+	private static final long serialVersionUID = 4922702477075776313L;
 	@Id
 	@GeneratedValue(generator="doctor")
 	@TableGenerator(name="doctor", table="sqlite_sequence",
 	   pkColumnName="name", valueColumnName="seq", pkColumnValue="doctor")
-	
 
-	private static final long serialVersionUID = 4922702477075776313L;
 	@XmlTransient
 	int id;
 	@XmlElement
@@ -83,6 +81,9 @@ public class Doctor implements Serializable {
 		this.gender=genderDoc;
 		this.dob=dDoc;
 		this.hours=hoursDoc;
+		this.patients=new ArrayList<>();
+		this.treatments=new ArrayList<>();
+		this.contract=new Contract();
 	}
 	public Doctor(int id1, String name2, String gender2, Date date, int hours2) {
 		this.id=id1;
@@ -132,6 +133,12 @@ public class Doctor implements Serializable {
 	}
 	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
+	}
+	public void addPatients(Patient p) {
+		this.patients.add(p);
+	}
+	public void addTreatments(Treatment t) {
+		this.treatments.add(t);
 	}
 	public List<Treatment> getTreatments() {
 		return treatments;

@@ -18,7 +18,10 @@ public class Contract implements Serializable{
 	 private Doctor doctor;
 	 private Nurse nurse;
 	 
-	 public Contract(int id, int money, int holidays, Date dob, Doctor doctor, Nurse nurse) {
+	 public Contract() {
+		super();
+	}
+	public Contract(int id, int money, int holidays, Date dob, Doctor doctor, Nurse nurse) {
 			super();
 			this.id = id;
 			this.money = money;

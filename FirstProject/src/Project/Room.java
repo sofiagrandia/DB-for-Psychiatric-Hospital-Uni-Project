@@ -18,8 +18,8 @@ public class Room  implements Serializable{
 	@Id
 	@GeneratedValue(generator="room")
 	@TableGenerator(name="room", table="sqlite_sequence",
-		    pkColumnName="floor", valueColumnName="seq", pkColumnValue="room")
-	private Integer id;
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="room")
+	private int id;
 	private int floor;
     @OneToMany(mappedBy= "room")
 	private List <Patient> patients;
@@ -44,6 +44,7 @@ public class Room  implements Serializable{
 	public Room(int floor) {
 		super();
 		this.floor = floor;
+		this.patients = new ArrayList<Patient>();
 	}
 	public Integer getId() {
 		return id;
@@ -57,10 +58,10 @@ public class Room  implements Serializable{
 	public void setFloor(int floor) {
 		this.floor = floor;
 	}
-	public List <Patient> getPatient() {
+	public List <Patient> getPatients() {
 		return patients;
 	}
-	public void setPatient(List <Patient> patients) {
+	public void setPatients(List <Patient> patients) {
 		this.patients = patients;
 	}
 	public static long getSerialversionuid() {

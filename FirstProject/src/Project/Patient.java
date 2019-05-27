@@ -50,7 +50,7 @@ public class Patient implements Serializable {
 	private Date dob;
  
     @XmlTransient
-    @OneToMany(mappedBy= "patient")
+   // @OneToMany(mappedBy= "patient")
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "room_id")
 	private Room room;

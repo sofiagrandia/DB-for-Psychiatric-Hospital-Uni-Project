@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
+
 import Project.Nurse;
 import Project.Patient;
 import Project.Room;
@@ -91,8 +94,9 @@ public class DBManager implements Manager {
 				String gender = rs.getString("gender");
 				Date dob = rs.getDate("dob");
 				int hours = rs.getInt("hours");
-
+			
 				nurse = new Nurse(id, name, gender, dob, hours);
+			
 				n.add(nurse);
 
 			}
@@ -105,27 +109,6 @@ public class DBManager implements Manager {
 		return n;
 
 	}
-	
-	public List<Patient> selectPatientByTreatment (int id) throws SQLException{
-		List<Patient> p = new ArrayList<Patient>();
-		String sql = "SELECT patient_id FROM patient_treatment";
-		PreparedStatement ps = c.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		Patient patient1;
-		while (rs.next()) {
-			int id1 = rs.getInt("id");
-			String name = rs.getString("name");
-			String gender = rs.getString("gender");
-			Date dob = rs.getDate("dob");
-			int hours = rs.getInt("hours");
-
-			patient1 = new Patient (id1, name, gender, dob, hours);
-			p.add(patient1);
-
-		}
-		
-		return p;
-	}
 
 	public Nurse getNurseId(Integer id) throws SQLException {
 		Nurse nurse = null;
@@ -135,6 +118,7 @@ public class DBManager implements Manager {
 		while (rs.next()) {
 			int id1 = rs.getInt("id");
 			String name = rs.getString("name");
+			System.out.println(name);
 			String gender = rs.getString("gender");
 			Date date = rs.getDate("dob");
 			int hours = rs.getInt("hours");
@@ -273,7 +257,7 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	
 
 	public List<Treatment> getTreatmentId(String type) throws SQLException {
@@ -323,7 +307,6 @@ public class DBManager implements Manager {
 				t2.add(t1);
 
 			}
-		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -623,8 +606,11 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> branch 'master' of https://github.com/sofiagrandia/Repository
 	// CREATE TABLES
 	public void createTables() {
 			try {
@@ -639,7 +625,7 @@ public class DBManager implements Manager {
 				// OJO CÓMO SE ESCRIBE. LOS ESPACIOS, LAS COMAS, LAS COMILLLAS....
 				Statement stmt1 = c.createStatement();
 				String sql1 = "CREATE TABLE room " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT, "
-						+ " type TEXT NOT NULL, " + " floor  INTEGER NOT NULL)";
+						+ " floor  INTEGER NOT NULL)";
 				stmt1.executeUpdate(sql1);
 				stmt1.close();
 
