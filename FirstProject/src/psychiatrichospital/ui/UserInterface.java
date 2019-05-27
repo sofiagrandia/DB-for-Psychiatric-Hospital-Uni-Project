@@ -130,16 +130,16 @@ public class UserInterface {
 					int optionTreatment = Integer.parseInt(reader.readLine());
 					switch (optionTreatment) {
 					case 1:
-						//uui.selectTreatmentMenu(db, reader);
+						uui.selectTreatmentMenu(db, reader);
 						break;
 					case 2:
 						uui.insertTreatmentMenu(db, reader, jpa, formatter);
 						break;
 					case 3:
-						//uui.deleteTreatmentMenu(db, reader);
+						uui.deleteTreatmentMenu(db, jpa, reader);
 						break;
 					case 4:
-						//uui.updateTreatmentMenu(db, reader, formatter);
+						uui.updateTreatmentMenu(db, reader, formatter);
 						break;
 					case 5:
 						uui.marshall(db, reader);
@@ -152,7 +152,7 @@ public class UserInterface {
 					case 8: XMLManager.simpleTransform("./xmls/treatment.xml", "./xmls/Treatment.xslt","./xmls/External-Treatment.html");
 					break;
 					}
-					
+					break;
 				
 				case 7: System.exit(0);
 				}
