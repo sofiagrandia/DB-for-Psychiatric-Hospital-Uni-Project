@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TreatmentList>
+    <listTreatment id="2" type="paracetamol" number="3"/>
+    <listTreatment id="3" type="aspirina" number="6"/>
+    <listTreatment id="4" type="lol" number="4"/>
+    <listTreatment id="5" type="ibu" number="3"/>
+    <listTreatment id="6" type="o" number="6"/>
+    <listTreatment id="7" type="e" number="3"/>
+    <listTreatment id="8" type="o" number="2"/>
+    <listTreatment id="9" type="r" number="3"/>
+    <listTreatment id="10" type="per" number="4"/>
+    <listTreatment id="11" type="p" number="4"/>
+    <listTreatment id="12" type="antibiotico" number="3"/>
+    <listTreatment id="13" type="ibuprofeno" number="4"/>
+    <listTreatment id="14" type="ibu" number="2"/>
+    <listTreatment id="15" type="ibu" number="2"/>
+    <listTreatment id="16" type="so" number="2"/>
+    <listTreatment id="17" type="ola" number="3"/>
+    <listTreatment id="18" type="ola" number="4"/>
+    <listTreatment id="19" type="So" number="20"/>
+    <listTreatment id="20" type="ibuprofeno" number="35"/>
+    <listTreatment id="21" type="ibuprofeno" number="35"/>
+    <listTreatment id="22" type="antibiotico" number="3"/>
+    <listTreatment id="23" type="ibuprofeno" number="4"/>
+    <listTreatment id="24" type="ibu" number="2"/>
+    <listTreatment id="25" type="ibu" number="2"/>
+    <listTreatment id="26" type="so" number="2"/>
+    <listTreatment id="27" type="ola" number="3"/>
+    <listTreatment id="28" type="ola" number="4"/>
+    <listTreatment id="29" type="So" number="20"/>
+    <listTreatment id="30" type="ibuprofeno" number="35"/>
+    <listTreatment id="31" type="ibuprofeno" number="35"/>
+    <listTreatment id="32" type="so" number="1"/>
+    <listTreatment id="33" type="so" number="1"/>
+    <listTreatment id="34" type="Ib" number="2"/>
+    <listTreatment id="35" type="a" number="2"/>
+    <listTreatment id="36" type="a" number="1"/>
+    <listTreatment id="37" type="a" number="2"/>
+    <listTreatment id="38" type="a" number="2"/>
+    <listTreatment id="39" type="ibu" number="6"/>
+    <listTreatment id="40" type="a" number="2"/>
+    <listTreatment id="41" type="lo" number="5"/>
+    <listTreatment id="42" type="a" number="2"/>
+    <listTreatment id="43" type="f" number="4"/>
+    <listTreatment id="44" type="a" number="2"/>
+</TreatmentList>

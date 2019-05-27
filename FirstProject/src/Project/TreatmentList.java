@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "TreatmentList")
 
 public class TreatmentList {
-	@XmlElement
+	@XmlElement(name="Treatment")
 	private List<Treatment> listTreatment;
 
 	public TreatmentList(List<Treatment> listTreatment) {

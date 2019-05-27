@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TreatmentList [
+<!ELEMENT TreatmentList (Treatment+)>
+<!ATTLIST Treatment id CDATA #REQUIRED
+					type CDATA #REQUIRED
+					number CDATA #REQUIRED>
+<!ELEMENT Patients (Patient+)>
+<!ATTLIST Patient id CDATA 
+					name CDATA
+					gender CDATA 
+					dob CDATA >
+					
+]>

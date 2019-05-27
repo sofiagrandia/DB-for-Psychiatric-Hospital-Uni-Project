@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.*;
@@ -188,6 +189,39 @@ public class Patient implements Serializable {
 			this.nurses.add(n);
 		}
 	}
+	public int [] getDoctorsId() {
+		int [] ids= new int [doctors.size()];
+		Iterator <Doctor>it =doctors.iterator();
+		int i=0;
+		while(it.hasNext()) {
+			Doctor d=it.next();
+			ids[i]=d.getId();
+			i++;
+		}
+		return ids;
+	}
+	public int [] getNursesId() {
+		int [] ids= new int [nurses.size()];
+		Iterator <Nurse>it =nurses.iterator();
+		int i=0;
+		while(it.hasNext()) {
+			Nurse n=it.next();
+			ids[i]=n.getId();
+			i++;
+		}
+		return ids;
+	}
+	public int [] getTreatmentsId() {
+		int [] ids= new int [treatments.size()];
+		Iterator <Treatment>it =treatments.iterator();
+		int i=0;
+		while(it.hasNext()) {
+			Treatment t=it.next();
+			ids[i]=t.getId();
+			i++;
+		}
+		return ids;
+	}
 	public void removeNurse(Nurse n) {
 		if (nurses.contains(n)) {
 			this.nurses.remove(n);
@@ -217,9 +251,12 @@ public class Patient implements Serializable {
 	public void removeRoom() {
 		this.room=null;
 	}
+	/*public String showSimplePatient() {
+		return "name="+this.name+"\ngender"+this.gender+"\ndob"+this.dob;
+	}*/
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob + ", room_id=" + room.getId()
+		return "Patient [id=" + id + ", name=" + name + ", gender=" + gender + ", dob=" + dob
 				 + ", room=" + room + ", treatments=" + treatments + ", doctors="
 				+ doctors + ", nurses=" + nurses + "]";
 	}

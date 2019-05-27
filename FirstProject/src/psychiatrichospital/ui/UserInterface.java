@@ -29,7 +29,7 @@ public class UserInterface {
 	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	// It is going to have a main
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, JAXBException {
+	public static void main(String[] args) throws ClassNotFoundException, JAXBException, SQLException {
 
 		DBManager db = new DBManager();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -108,9 +108,9 @@ public class UserInterface {
 					uui.menuPatient();
 					int optionPatient = Integer.parseInt(reader.readLine());
 					switch (optionPatient) {
-					case 1: uui.insertPatientMenu(db,reader,jpa,formatter);break;
+					case 1: uui.selectPatientMenu(db,reader,jpa);break;
 					case 2: uui.insertPatientMenu(db,reader,jpa,formatter);break;
-					case 3:
+					case 3: uui.updatePatientMenu(db, reader, jpa, formatter);break;
 					case 4:
 					}
 

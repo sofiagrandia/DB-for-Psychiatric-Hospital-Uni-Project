@@ -106,6 +106,27 @@ public class DBManager implements Manager {
 		return n;
 
 	}
+	
+	public List<Patient> selectPatientByTreatment (int id) throws SQLException{
+		List<Patient> p = new ArrayList<Patient>();
+		String sql = "SELECT patient_id FROM patient_treatment";
+		PreparedStatement ps = c.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		Patient patient1;
+		while (rs.next()) {
+			int id1 = rs.getInt("id");
+			String name = rs.getString("name");
+			String gender = rs.getString("gender");
+			Date dob = rs.getDate("dob");
+			int hours = rs.getInt("hours");
+
+			patient1 = new Patient (id1, name, gender, dob, hours);
+			p.add(patient1);
+
+		}
+		
+		return p;
+	}
 
 	public Nurse getNurseId(Integer id) throws SQLException {
 		Nurse nurse = null;
@@ -254,7 +275,7 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-
+	
 	
 
 	public List<Treatment> getTreatmentId(String type) throws SQLException {
@@ -304,6 +325,7 @@ public class DBManager implements Manager {
 				t2.add(t1);
 
 			}
+		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -533,14 +555,19 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	// TREATMENT-PATIENT
-	public void createRelationshipPT(int tid, int pid) {
+	
+	
+	public void createRelationshipPT(int treatment_id,int patient_id) {
 		try {
-			String s = "INSERT INTO patient_treatment (tid, pid)" + " VALUES (?, ?)";
+			System.out.println("TID: "+ treatment_id);
+			System.out.println("PID: "+ patient_id);
+			String s = "INSERT INTO patient_treatment (treatment_id, patient_id)" + " VALUES (?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1, tid);
-			p.setInt(2, pid);
+			p.setInt(1,treatment_id);
+			p.setInt(2,patient_id);
 			p.executeUpdate();
 			p.close();
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -554,6 +581,21 @@ public class DBManager implements Manager {
 		prep.setInt(1,pid);
 		prep.setInt(2,tid);
 		prep.executeUpdate();
+	}
+	// TREATMENT-DOCTOR
+	public void createRelationshipDT(int tid, int did) {
+		try {
+			String s = "INSERT INTO treatment (doctor_id)" + " VALUES ( ?)";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, did);
+			//p.setInt(2, pid);
+			p.executeUpdate();
+			p.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//PATIENT-DOCTOR
@@ -571,7 +613,8 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-	public void deleteRelationshipPD(int pid, int did) throws SQLException {
+	public void deleteRelationshipPD(int pid, int did)
+			throws SQLException {
 		String sql = "DELETE FROM doctor_patient WHERE patient_id=? AND doctor_id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setInt(1, pid);
@@ -602,7 +645,7 @@ public class DBManager implements Manager {
 				Statement stmt2 = c.createStatement();
 				String sql2 = "CREATE TABLE patient " + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 						+ " name     TEXT     NOT NULL, " + " gender  TEXT 	NOT NULL, " + " dob      DATE	 NOT NULL, "
-						+ " room_id   INTEGER NOT NULL, " 
+						+ " room_id   INTEGER, " 
 						+ " FOREIGN KEY (room_id) REFERENCES room (id) )";
 				stmt2.executeUpdate(sql2);
 				stmt2.close();
@@ -638,21 +681,21 @@ public class DBManager implements Manager {
 				String sql7 = "CREATE TABLE patient_treatment" + "(patient_id INTEGER," + "treatment_id INTEGER,"
 						+ "FOREIGN KEY (patient_id) REFERENCES patient (id),"
 						+ "FOREIGN KEY (treatment_id) REFERENCES treatment (id),"
-						+ "PRIMARY KEY (patient_id, treatment_id),)";
+						+ "PRIMARY KEY (patient_id, treatment_id))";
 				stmt7.executeUpdate(sql7);
 				stmt7.close();
 
 				Statement stmt8 = c.createStatement();
 				String sql8 = "CREATE TABLE nurse_patient" + "(patient_id INTEGER," + "nurse_id INTEGER,"
 						+ "FOREIGN KEY (patient_id) REFERENCES patient (id),"
-						+ "FOREIGN KEY (nurse_id) REFERENCES nurse (id)," + "PRIMARY KEY (patient_id, nurse_id),)";
+						+ "FOREIGN KEY (nurse_id) REFERENCES nurse (id)," + "PRIMARY KEY (patient_id, nurse_id))";
 				stmt8.executeUpdate(sql8);
 				stmt8.close();
 
 				Statement stmt9 = c.createStatement();
 				String sql9 = "CREATE TABLE doctor_patient" + "(patient_id INTEGER," + "doctor_id INTEGER,"
 						+ "FOREIGN KEY (patient_id) REFERENCES patient (id),"
-						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id)," + "PRIMARY KEY (patient_id, doctor_id),)";
+						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id)," + "PRIMARY KEY (patient_id, doctor_id))";
 				stmt9.executeUpdate(sql9);
 				stmt9.close();
 
@@ -667,11 +710,11 @@ public class DBManager implements Manager {
 				// needs an initial value, we do this.
 				// TODAVIA NO ENTENDEMOS
 				Statement stmtSeq = c.createStatement();
-				String sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('departments', 1)";
+				String sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('patient', 1)";
 				stmtSeq.executeUpdate(sqlSeq);
-				sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('employees', 1)";
+				sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('room', 1)";
 				stmtSeq.executeUpdate(sqlSeq);
-				sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('reports', 1)";
+				sqlSeq = "INSERT INTO sqlite_sequence (name, seq) VALUES ('treatment', 1)";
 				stmtSeq.executeUpdate(sqlSeq);
 				stmtSeq.close();
 			} catch (SQLException e) {

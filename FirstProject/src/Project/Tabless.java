@@ -34,7 +34,7 @@ public class Tabless {
 					   + " dob      DATE	 NOT NULL, "
 					   + " room_id   INTEGER NOT NULL, "
 					   + " photo	BLOB,"
-					   + " FOREIGN KEY (room_id) REFERENCES room (id) )";
+					   + " FOREIGN KEY (room_id) REFERENCES room (id),)";
 			stmt2.executeUpdate(sql2);
 			stmt2.close();
 			Statement stmt3 = c.createStatement();
@@ -42,7 +42,7 @@ public class Tabless {
 					   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					   + " money     REAL     NOT NULL, "
 					   + " duration  DATETIME, "
-					   + " holidays		INTEGER NOT NULL)";
+					   + " holidays		INTEGER NOT NULL),)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 			
@@ -55,7 +55,7 @@ public class Tabless {
 					   + " hours   INTEGER NOT NULL," 
 					   +" photo	BLOB," 
 					   + "contract_id INTEGER,"
-					   +" FOREIGN KEY (contract_id) REFERENCES contract (id) )";
+					   +" FOREIGN KEY (contract_id) REFERENCES contract (id),)";
 			
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
@@ -69,7 +69,7 @@ public class Tabless {
 					+ "hours INTEGER NOT NULL,"
 					+"photo BLOB,"
 					+"contract_id INTEGER,"
-					+"FOREIGN KEY (contract_id) REFERENCES contract (id))";
+					+"FOREIGN KEY (contract_id) REFERENCES contract (id),)";
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 			
@@ -79,7 +79,7 @@ public class Tabless {
 					+" type TEXT NOT NULL,"
 					+"number INTEGER NOT NULL,"
 					+"doctor_id INTEGER,"
-					+"FOREIGN KEY (doctor_id) REFERENCES doctor (id))";
+					+"FOREIGN KEY (doctor_id) REFERENCES doctor (id),)";
 			stmt6.executeUpdate(sql6);
 			stmt6.close();
 			
