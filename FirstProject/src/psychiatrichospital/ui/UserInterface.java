@@ -136,7 +136,7 @@ public class UserInterface {
 						//uui.selectTreatmentMenu(db, reader);
 						break;
 					case 2:
-						uui.insertTreatmentMenu(db, jpa, reader, formatter);
+						uui.insertTreatmentMenu(db, reader, jpa, formatter);
 						break;
 					case 3:
 						//uui.deleteTreatmentMenu(db, reader);
@@ -147,9 +147,6 @@ public class UserInterface {
 					case 5:
 						uui.marshall(db, reader);
 					}
-
-					break;
-					
 					
 				
 				case 7: System.exit(0);
