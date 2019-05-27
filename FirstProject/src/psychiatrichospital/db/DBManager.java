@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
+
 import Project.Nurse;
 import Project.Patient;
 import Project.Room;
@@ -105,27 +108,6 @@ public class DBManager implements Manager {
 
 		return n;
 
-	}
-	
-	public List<Patient> selectPatientByTreatment (int id) throws SQLException{
-		List<Patient> p = new ArrayList<Patient>();
-		String sql = "SELECT patient_id FROM patient_treatment";
-		PreparedStatement ps = c.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		Patient patient1;
-		while (rs.next()) {
-			int id1 = rs.getInt("id");
-			String name = rs.getString("name");
-			String gender = rs.getString("gender");
-			Date dob = rs.getDate("dob");
-			int hours = rs.getInt("hours");
-
-			patient1 = new Patient (id1, name, gender, dob, hours);
-			p.add(patient1);
-
-		}
-		
-		return p;
 	}
 
 	public Nurse getNurseId(Integer id) throws SQLException {
@@ -275,7 +257,7 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	
 
 	public List<Treatment> getTreatmentId(String type) throws SQLException {
@@ -325,7 +307,6 @@ public class DBManager implements Manager {
 				t2.add(t1);
 
 			}
-		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -556,19 +537,14 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	// TREATMENT-PATIENT
-	
-	
-	public void createRelationshipPT(int treatment_id,int patient_id) {
+	public void createRelationshipPT(int tid, int pid) {
 		try {
-			System.out.println("TID: "+ treatment_id);
-			System.out.println("PID: "+ patient_id);
-			String s = "INSERT INTO patient_treatment (treatment_id, patient_id)" + " VALUES (?, ?)";
+			String s = "INSERT INTO patient_treatment (tid, pid)" + " VALUES (?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1,treatment_id);
-			p.setInt(2,patient_id);
+			p.setInt(1, tid);
+			p.setInt(2, pid);
 			p.executeUpdate();
 			p.close();
-			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -582,21 +558,6 @@ public class DBManager implements Manager {
 		prep.setInt(1,pid);
 		prep.setInt(2,tid);
 		prep.executeUpdate();
-	}
-	// TREATMENT-DOCTOR
-	public void createRelationshipDT(int tid, int did) {
-		try {
-			String s = "UPDATE treatment SET doctor_id=? WHERE id=?";
-			PreparedStatement p = c.prepareStatement(s);
-			p.setInt(1, did);
-			p.setInt(2,  tid);
-			p.executeUpdate();
-			p.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	//PATIENT-DOCTOR
@@ -614,16 +575,13 @@ public class DBManager implements Manager {
 			e.printStackTrace();
 		}
 	}
-	public void deleteRelationshipPD(int pid, int did)
-			throws SQLException {
+	public void deleteRelationshipPD(int pid, int did) throws SQLException {
 		String sql = "DELETE FROM doctor_patient WHERE patient_id=? AND doctor_id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setInt(1, pid);
 		prep.setInt(2,did);
 		prep.executeUpdate();
 	}
-	
-	//public void createRelationShip
 	
 	// CREATE TABLES
 	public void createTables() {
@@ -672,7 +630,7 @@ public class DBManager implements Manager {
 				stmt5.close();
 
 				Statement stmt6 = c.createStatement();
-				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT,"
+				String sql6 = "CREATE TABLE treatment" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " type TEXT NOT NULL,"
 						+ "number INTEGER NOT NULL," + "doctor_id INTEGER,"
 						+ "FOREIGN KEY (doctor_id) REFERENCES doctor (id))";
 				stmt6.executeUpdate(sql6);
@@ -732,7 +690,7 @@ public class DBManager implements Manager {
 
 		}
 	@Override
-	public void marshaller(TreatmentList tl, String direccion) {
+	public void marshaller(TreatmentList tl, String direccion) throws JAXBException, SQLException {
 		// TODO Auto-generated method stub
 		
 	}
