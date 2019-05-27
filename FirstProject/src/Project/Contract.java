@@ -12,13 +12,13 @@ public class Contract implements Serializable{
 	 */
 	private static final long serialVersionUID = -7266906418797553220L;
 	int id;
-	 private float money;
+	 private int money;
 	 private int holidays;
 	 private Date dob;
 	 private Doctor doctor;
 	 private Nurse nurse;
 	 
-	 public Contract(int id, float money, int holidays, Date dob, Doctor doctor, Nurse nurse) {
+	 public Contract(int id, int money, int holidays, Date dob, Doctor doctor, Nurse nurse) {
 			super();
 			this.id = id;
 			this.money = money;
@@ -27,7 +27,7 @@ public class Contract implements Serializable{
 			this.doctor = doctor;
 			this.nurse = nurse;
 		}
-		public Contract(float money, int holidays, Date dob, Doctor doctor, Nurse nurse) {
+		public Contract(int money, int holidays, Date dob, Doctor doctor, Nurse nurse) {
 			super();
 			this.money = money;
 			this.holidays = holidays;
@@ -36,12 +36,12 @@ public class Contract implements Serializable{
 			this.nurse = nurse;
 		}
 		 
-	public Contract( float money2, int holidays2, Date d) {
+	public Contract( int money2, int holidays2, Date d) {
 			this.money=money2;
 			this.holidays=holidays2;
 			this.dob=d;}
 	
-	public Contract( int id,float money2, int holidays2, Date d) {
+	public Contract( int id,int money2, int holidays2, Date d) {
 		this.id=id;
 		this.money=money2;
 		this.holidays=holidays2;
@@ -52,10 +52,10 @@ public class Contract implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public float getMoney() {
-		return money;
+	public int getMoney() {
+		return this.money;
 	}
-	public void setMoney(float money) {
+	public void setMoney(int money) {
 		this.money = money;
 	}
 	public int getHolidays() {

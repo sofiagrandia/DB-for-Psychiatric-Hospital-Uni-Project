@@ -122,6 +122,7 @@ public class JPAManager implements Manager {
 		em.getTransaction().begin();
 		em.persist(p);
 		em.getTransaction().commit();
+		
 	}
 	
 	public void assignPatientRoom(Patient p, Room r) {

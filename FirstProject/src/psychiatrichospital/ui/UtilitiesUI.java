@@ -94,21 +94,23 @@ public class UtilitiesUI {
 		Contract contract = db.getContractbyId(idCon);
 		System.out.print("Amount: " + contract.getMoney());
 		System.out.println("Introduce the new amount");
-		String newAmount = (reader.readLine());
+		String newAmount = reader.readLine();
 		if (!newAmount.equals("")) {
-			float newA=Float.parseFloat(reader.readLine());
+			int newA=Integer.parseInt(newAmount);
 			contract.setMoney(newA);
 		}
 		System.out.print("Holidays: " + contract.getHolidays());
 		System.out.println("Introduce the new holidays");
 		String newHolidays = (reader.readLine());
 		if (!newHolidays.equals("")) {
-			int newH=Integer.parseInt(reader.readLine());
+			int newH=Integer.parseInt(newHolidays);
 			contract.setHolidays(newH);
 		}
 		System.out.print("End date: " + contract.getDob());
 		System.out.println("Introduce the new end date");
 		String newDate = (reader.readLine());
+		
+		
 		if (!newDate.equals("")) {
 			LocalDate newDateContract = LocalDate.parse(newDate, formatter);
 			Date newDD = Date.valueOf(newDateContract);
@@ -119,10 +121,10 @@ public class UtilitiesUI {
 		
 	}
 	
-	public Contract insertContractSimple(DBManager db, JPAManager jpa,BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException {
+	public Contract insertContractSimple(DBManager db, JPAManager jpa,BufferedReader reader, DateTimeFormatter formatter) throws NumberFormatException, IOException, SQLException {
 		System.out.println("Please, input the contract info:");
 		System.out.print("Amount: ");
-		Float amount = Float.parseFloat(reader.readLine());
+		int amount = Integer.parseInt(reader.readLine());
 		System.out.print("Contract valid until (yyyy-MM-dd): ");
 		String date = reader.readLine();
 		LocalDate dDate = LocalDate.parse(date, formatter);
@@ -131,19 +133,39 @@ public class UtilitiesUI {
 		Integer holidays = Integer.parseInt(reader.readLine());
 		
 		Contract contract = new Contract(amount, holidays, d);
+		db.insertContract(contract);
+		String query= "SELECT last_insert_rowid() AS lastId";
+		Connection c=db.getConnection();
+		PreparedStatement pr= c.prepareStatement(query);
+		ResultSet rs =pr.executeQuery();
+		Integer lastId =rs.getInt("lastId");
+		contract.setId(lastId);
+		
 		return contract;
 	}
 	
 
-	public Contract assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse)
+	public void assignContractToNurse(JPAManager jpa, BufferedReader reader, DBManager db, Nurse nurse,Contract contract)
 			throws NumberFormatException, IOException, SQLException {
-		System.out.println(db.selectContract());
-		System.out.println("Select  id");
-		int chosenId = Integer.parseInt(reader.readLine());
-		Contract c = (Contract) db.getContractId(chosenId);
-		return c;
+		String sql = "UPDATE nurse SET contract_id=? WHERE id=?";
+		PreparedStatement prep = db.getConnection().prepareStatement(sql);
+		prep.setInt(1, contract.getId());
+		prep.setInt(2, nurse.getId());
+		
+		prep.executeUpdate();
+	
 	}
 	
+	public void assignContractToDoctor(JPAManager jpa, BufferedReader reader, DBManager db, Doctor doctor,Contract contract)
+			throws NumberFormatException, IOException, SQLException {
+		String sql = "UPDATE doctor SET contract_id=? WHERE id=?";
+		PreparedStatement prep = db.getConnection().prepareStatement(sql);
+		prep.setInt(1, contract.getId());
+		prep.setInt(2, doctor.getId());
+		
+		prep.executeUpdate();
+	
+	}
 	
 	public void selectContractMenu(DBManager db,  BufferedReader reader) throws NumberFormatException, IOException, SQLException {
 		List<Contract> lista = new ArrayList<Contract>();
@@ -160,7 +182,7 @@ public class UtilitiesUI {
 
 	// DOCTOR
 	public Doctor insertDoctorSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
-			throws IOException {
+			throws IOException, SQLException {
 		System.out.println("Please, input the doctor info:");
 		System.out.print("Name: ");
 		String name = reader.readLine();
@@ -173,6 +195,13 @@ public class UtilitiesUI {
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
 		Date d = Date.valueOf(dobDate);
 		Doctor doctor = new Doctor(name, gender, d, hours);
+		
+		String query= "SELECT last_insert_rowid() AS lastId";
+		Connection c=db.getConnection();
+		PreparedStatement pr= c.prepareStatement(query);
+		ResultSet rs =pr.executeQuery();
+		Integer lastId =rs.getInt("lastId");
+		doctor.setId(lastId);
 		return doctor;
 	}
 
@@ -190,7 +219,15 @@ public class UtilitiesUI {
 		LocalDate dobDateDoc = LocalDate.parse(dobDoc, formatter);
 		Date dDoc = Date.valueOf(dobDateDoc);
 		Doctor doctor = new Doctor(nameDoc, genderDoc, dDoc, hoursDoc);
+		
 		db.insertDoctor(doctor);
+		String query= "SELECT last_insert_rowid() AS lastId";
+		Connection c=db.getConnection();
+		PreparedStatement pr= c.prepareStatement(query);
+		ResultSet rs =pr.executeQuery();
+		Integer lastId =rs.getInt("lastId");
+		doctor.setId(lastId);
+		
 		
 		System.out.println("Do you want to introduce a patient? (yes / no )");
 		String leido = reader.readLine();
@@ -206,14 +243,7 @@ public class UtilitiesUI {
 				}
 				if (answer.equalsIgnoreCase("no")) {
 					///noooooooooo vaaaaaaaaaaaa
-					Patient p = insertPatientSimple(db, reader, jpa, formatter);
-					String query= "SELECT last_insert_rowid() AS lastId";
-					Connection c=db.getConnection();
-					PreparedStatement pr= c.prepareStatement(query);
-					ResultSet rs =pr.executeQuery();
-					Integer lastId =rs.getInt("lastId");
-					
-					db.createRelationshipPD(doctor.getId(), lastId);
+					Patient p = insertPatientSimple(db, reader, jpa, formatter);db.createRelationshipPD(doctor.getId(), lastId);
 					break;
 				} else
 					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
@@ -225,6 +255,9 @@ public class UtilitiesUI {
 		/*System.out.println("Introduce a contract");
 		Contract c=insertContractSimple(db, jpa, reader, formatter);
 		doctor.setContract(c);*/
+		Contract contract= insertContractSimple(db,jpa,reader,formatter);
+		System.out.println(contract);
+		assignContractToDoctor(jpa,reader,db,doctor,contract);
 		
 		System.out.println("Patient(s) selected correctly");
 		System.out.println("Doctor inserted");
@@ -318,7 +351,7 @@ public class UtilitiesUI {
 	// NURSE
 
 	public Nurse insertNurseSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
-			throws IOException {
+			throws IOException, SQLException {
 		System.out.println("Please, input the nurse info:");
 		System.out.print("Name: ");
 		String name = reader.readLine();
@@ -331,6 +364,13 @@ public class UtilitiesUI {
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
 		Date d = Date.valueOf(dobDate);
 		Nurse nurse = new Nurse(name, gender, d, hours);
+		db.insertNurse(nurse);
+		String query= "SELECT last_insert_rowid() AS lastId";
+		Connection c=db.getConnection();
+		PreparedStatement pr= c.prepareStatement(query);
+		ResultSet rs =pr.executeQuery();
+		Integer lastId =rs.getInt("lastId");
+		nurse.setId(lastId);
 		return nurse;
 	}
 
@@ -349,8 +389,17 @@ public class UtilitiesUI {
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
 		Date d = Date.valueOf(dobDate);
 		Nurse nurse = new Nurse(name, gender, d, hours);
-		System.out.println("Nurse created correctly");
 		db.insertNurse(nurse);
+		System.out.println(nurse);
+		String query= "SELECT last_insert_rowid() AS lastId";
+		Connection c=db.getConnection();
+		PreparedStatement pr= c.prepareStatement(query);
+		ResultSet rs =pr.executeQuery();
+		Integer lastId =rs.getInt("lastId");
+		nurse.setId(lastId);
+		System.out.println("Nurse created correctly");
+		
+	
 		String leido;
 		System.out.println("Do you want to introduce a patient? (yes / no )");
 		leido = reader.readLine();
@@ -372,9 +421,11 @@ public class UtilitiesUI {
 			}
 		}
 		if (leido.equalsIgnoreCase("no")) {
-			System.out.println("Your new patient doesn´t have a nurse");
+			System.out.println("Your new nurse doesn´t have a patient");
 		}
-
+		Contract contract= insertContractSimple(db,jpa,reader,formatter);
+		System.out.println(contract);
+		assignContractToNurse(jpa,reader,db,nurse,contract);
 		// System.out.println("Nurse(s) selected correctly");
 		System.out.println("Nurse inserted");
 	}
@@ -468,11 +519,18 @@ public class UtilitiesUI {
 	// ROOM
 
 	public Room insertRoomSimple(DBManager db, JPAManager jpa, BufferedReader reader, DateTimeFormatter formatter)
-			throws NumberFormatException, IOException {
+			throws NumberFormatException, IOException, SQLException {
 		System.out.println("Please, input the room info:");
 		System.out.print("FLoor: ");
 		int floor = Integer.parseInt(reader.readLine());
 		Room room = new Room(floor);
+		jpa.insertRoom(room);
+		String query= "SELECT last_insert_rowid() AS lastId";
+		Connection c=db.getConnection();
+		PreparedStatement pr= c.prepareStatement(query);
+		ResultSet rs =pr.executeQuery();
+		Integer lastId =rs.getInt("lastId");
+		room.setId(lastId);
 		return room;
 	}
 	
@@ -507,6 +565,7 @@ public class UtilitiesUI {
 				}
 				if (answer.equalsIgnoreCase("no")) {
 					p = insertPatientSimple(db,  reader,jpa, formatter);
+					
 					System.out.println(p);
 					System.out.println(room);
 					jpa.assignPatientRoom(p, room);
@@ -524,7 +583,7 @@ public class UtilitiesUI {
 	// PATIENT
 
 	public Patient insertPatientSimple(DBManager db, BufferedReader reader, JPAManager jpa, DateTimeFormatter formatter)
-			throws IOException {
+			throws IOException, SQLException {
 		System.out.println("Please, input the patient info:");
 		System.out.print("Name: ");
 		String nameP = reader.readLine();
@@ -535,6 +594,7 @@ public class UtilitiesUI {
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
 		Patient patient = new Patient(nameP, genderP, dP);
+		jpa.insertPatient(patient);
 		return patient;
 	}
 
@@ -550,8 +610,10 @@ public class UtilitiesUI {
 		LocalDate dobDateP = LocalDate.parse(dobP, formatter);
 		Date dP = Date.valueOf(dobDateP);
 		Patient patient = new Patient(nameP, genderP, dP);
-		System.out.println("Patient created correctly");
 		jpa.insertPatient(patient);
+		System.out.println("Patient created correctly");
+		
+		
 		String leido;
 		System.out.println("Do you want to introduce a nurse? (yes / no )");
 		leido = reader.readLine();
@@ -567,8 +629,10 @@ public class UtilitiesUI {
 				}
 				if (respuesta.equalsIgnoreCase("no")) {
 					Nurse n = insertNurseSimple(db, jpa, reader, formatter);
+					System.out.println(n);
+					System.out.println(patient);
 					db.createRelationshipNP(n.getId(), patient.getId());
-					break;
+					break;					
 				} else
 					System.out.println("Oh no! You didn´t choose a valid option! :( Try again");
 			}

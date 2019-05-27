@@ -194,7 +194,6 @@ public class DBManager implements Manager {
 	public void insertDoctor(Doctor doctor) {
 		// Inserts into the data base the nurse that is passed as a parameter
 		try {
-			System.out.println(doctor);
 			String s = "INSERT INTO doctor (name,gender,dob,hours)" + " VALUES (?, ?, ?, ?)";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setString(1, doctor.getName());
@@ -319,6 +318,7 @@ public class DBManager implements Manager {
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, t.getType());
 			prep.setInt(2, t.getNumber());
+			prep.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -373,12 +373,12 @@ public class DBManager implements Manager {
 	// CONTRACT
 	public void insertContract(Contract contract) {
 		try {
-			String s = "INSERT INTO contract (money, holidays, d1, d2)" + " VALUES (?, ?, ?, ?)";
+			String s = "INSERT INTO contract (money, holidays, duration )" + " VALUES (?, ?, ? )";
 			PreparedStatement p = c.prepareStatement(s);
 			p.setFloat(1, contract.getMoney());
 			p.setInt(2, contract.getHolidays());
 			p.setDate(3, contract.getDob());
-			p.setDate(4, contract.getDob());
+		
 			p.executeUpdate();
 			p.close();
 
@@ -395,10 +395,10 @@ public class DBManager implements Manager {
 		ResultSet rs = stmt.executeQuery(sqlCon);
 		while (rs.next()) {
 			int id4 = rs.getInt("id");
-			float money1 = rs.getFloat("money");
+			int money1 = rs.getInt("money");
 			int holidays = rs.getInt("holidays");
-			Date d1 = rs.getDate("d1");
-			Date d2 = rs.getDate("d2");
+			Date d1 = rs.getDate("duration");
+
 			Contract contract = new Contract(id4, money1, holidays, d1);
 			cn.add(contract);
 		}
@@ -414,9 +414,9 @@ public class DBManager implements Manager {
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
 			int idCon = rs.getInt("id");
-			float money = rs.getFloat("money");
+			int money = rs.getInt("money");
 			int holidays = rs.getInt("holidays");
-			Date d1 = rs.getDate("d1");
+			Date d1 = rs.getDate("duration");
 			contract = new Contract(idCon, money, holidays, d1);
 		}
 		rs.close();
@@ -433,9 +433,9 @@ public class DBManager implements Manager {
 			Contract contract1;
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				float money = rs.getFloat("money");
+				int money = rs.getInt("money");
 				int holidays = rs.getInt("holidays");
-				Date d1 = rs.getDate("d1");
+				Date d1 = rs.getDate("duration");
 				
 
 				contract1 = new Contract(id, money, holidays, d1);
@@ -452,16 +452,17 @@ public class DBManager implements Manager {
 
 	}
 
-	/*cambio de fecha!!! era getD1 y getD2*/
+
 
 	public void updateContract(Contract contract) {
 		try {
-			String sql = "UPDATE contract SET money=?, holidays=?, d1=?, d2=? WHERE id=?";
+			String sql = "UPDATE contract SET money=?, duration=?, holidays=? WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setFloat(1, contract.getMoney());
-			prep.setInt(2, contract.getHolidays());
-			prep.setDate(3, contract.getDob());
-			prep.setDate(4, contract.getDob());
+			prep.setInt(1, contract.getMoney());
+			prep.setInt(3, contract.getHolidays());
+			prep.setDate(2, contract.getDob());
+			prep.setInt(4, contract.getId() );
+			prep.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
