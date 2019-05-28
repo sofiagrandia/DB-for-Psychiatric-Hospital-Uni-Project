@@ -32,7 +32,7 @@ public class JPAManager implements Manager {
 
 	@Override
 	public void closeConnection() {
-		// TODO Auto-generated method stub
+		em.close();
 
 	}
 

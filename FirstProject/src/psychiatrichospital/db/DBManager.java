@@ -606,11 +606,6 @@ public class DBManager implements Manager {
 		prep.executeUpdate();
 	}
 	
-<<<<<<< HEAD
-	
-	
-=======
->>>>>>> branch 'master' of https://github.com/sofiagrandia/Repository
 	// CREATE TABLES
 	public void createTables() {
 			try {

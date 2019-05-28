@@ -439,7 +439,7 @@ public class UtilitiesUI {
 		Nurse nurse = new Nurse(nameNu, genderNu, dNu, hoursNu);
 		
 		db.insertNurse(nurse);
-		System.out.println(nurse);
+		//System.out.println(nurse);
 		String query= "SELECT last_insert_rowid() AS lastId";
 		Connection c=db.getConnection();
 		PreparedStatement pr= c.prepareStatement(query);
@@ -448,7 +448,7 @@ public class UtilitiesUI {
 		nurse.setId(lastId);
 
 		System.out.println(nurse);
-		System.out.println(lastId);
+		//System.out.println(lastId);
 		
 	
 		String leido;
